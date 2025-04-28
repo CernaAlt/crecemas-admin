@@ -1,0 +1,104 @@
+<div class="reservation-container">
+  <div class="reservation-header">
+    <h2>Reserva de Asesoría Crediticia</h2>
+    <p>Complete el formulario para solicitar una asesoría en nuestras instalaciones</p>
+  </div>
+
+  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="reservation-form">
+    <div class="form-group">
+      <label for="lastName">Apellidos</label>
+      <input 
+        type="text" 
+        id="lastName" 
+        formControlName="LastName" 
+        [ngClass]="{'invalid': f['LastName'].invalid && f['LastName'].touched}"
+        placeholder="Ingrese sus apellidos"
+      >
+      <div class="error-message" *ngIf="f['LastName'].invalid && f['LastName'].touched">
+        <span *ngIf="f['LastName'].errors?.['required']">Los apellidos son obligatorios</span>
+        <span *ngIf="f['LastName'].errors?.['minlength']">Ingrese al menos 2 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="typeReason">Tipo de Asesoría</label>
+      <select 
+        id="typeReason" 
+        formControlName="typeReason"
+        [ngClass]="{'invalid': f['typeReason'].invalid && f['typeReason'].touched}"
+      >
+        <option value="">Seleccione un tipo</option>
+        <option *ngFor="let reason of reasonTypes" [value]="reason">{{ reason }}</option>
+      </select>
+      <div class="error-message" *ngIf="f['typeReason'].invalid && f['typeReason'].touched">
+        <span *ngIf="f['typeReason'].errors?.['required']">Seleccione un tipo de asesoría</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="detailReason">Detalle de la consulta</label>
+      <textarea 
+        id="detailReason" 
+        formControlName="detailReason" 
+        rows="4"
+        [ngClass]="{'invalid': f['detailReason'].invalid && f['detailReason'].touched}"
+        placeholder="Describa brevemente el motivo de su consulta"
+      ></textarea>
+      <div class="error-message" *ngIf="f['detailReason'].invalid && f['detailReason'].touched">
+        <span *ngIf="f['detailReason'].errors?.['required']">El detalle es obligatorio</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dni">DNI</label>
+      <input 
+        type="text" 
+        id="dni" 
+        formControlName="DNI" 
+        maxlength="8"
+        [ngClass]="{'invalid': f['DNI'].invalid && f['DNI'].touched}"
+        placeholder="Ingrese su DNI (8 dígitos)"
+      >
+      <div class="error-message" *ngIf="f['DNI'].invalid && f['DNI'].touched">
+        <span *ngIf="f['DNI'].errors?.['required']">El DNI es obligatorio</span>
+        <span *ngIf="f['DNI'].errors?.['pattern']">El DNI debe tener 8 dígitos numéricos</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Teléfono</label>
+      <input 
+        type="tel" 
+        id="phone" 
+        formControlName="Phone" 
+        maxlength="9"
+        [ngClass]="{'invalid': f['Phone'].invalid && f['Phone'].touched}"
+        placeholder="Ingrese su número telefónico (9 dígitos)"
+      >
+      <div class="error-message" *ngIf="f['Phone'].invalid && f['Phone'].touched">
+        <span *ngIf="f['Phone'].errors?.['required']">El teléfono es obligatorio</span>
+        <span *ngIf="f['Phone'].errors?.['pattern']">El teléfono debe tener 9 dígitos numéricos</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Enviando...' : 'Enviar Solicitud' }}
+      </button>
+      <button type="button" class="btn-reset" (click)="resetForm()" [disabled]="isSubmitting">
+        Limpiar
+      </button>
+    </div>
+
+    <!-- Mensajes de éxito o error -->
+    <div class="success-message" *ngIf="submitSuccess">
+      Su solicitud ha sido registrada correctamente. Nos comunicaremos con usted a la brevedad.
+    </div>
+    <div class="error-message-global" *ngIf="submitError">
+      {{ submitError }}
+    </div>
+    <div class="cooldown-message" *ngIf="cooldownError">
+      Ya tiene una solicitud registrada en las últimas 4 horas. Por favor, intente más tarde.
+    </div>
+  </form>
+</div>

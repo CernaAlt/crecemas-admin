@@ -1,0 +1,6 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <input type="email" formControlName="email" placeholder="Correo">
+    <input type="password" formControlName="password" placeholder="Contraseña">
+    <button type="submit">Iniciar sesión</button>
+    <div *ngIf="loginError" style="color: red;">{{ loginError }}</div>
+</form>

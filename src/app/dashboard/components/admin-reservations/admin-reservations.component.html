@@ -1,0 +1,62 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h2>Administración de Reservas</h2>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">Cargando reservaciones...</div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="reservations-table" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Apellidos</th>
+          <th>DNI</th>
+          <th>Teléfono</th>
+          <th>Tipo</th>
+          <th>Detalle</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let reservation of reservations"
+          [ngClass]="{ attended: reservation.atendido }"
+        >
+          <td>{{ formatDate(reservation.created_at) }}</td>
+          <td>{{ reservation.lastName }}</td>
+          <td>{{ reservation.DNI }}</td>
+          <td>{{ reservation.phone }}</td>
+          <td>{{ reservation.typeReason }}</td>
+          <td class="detail-cell">{{ reservation.detailReason }}</td>
+          <td
+            [ngClass]="{
+              'status-pending': !reservation.atendido,
+              'status-attended': reservation.atendido
+            }"
+          >
+            {{ reservation.atendido ? "Atendido" : "Pendiente" }}
+          </td>
+          <td>
+            <button class="toggle-btn" (click)="toggleAttended(reservation)">
+              {{
+                reservation.atendido
+                  ? "Marcar como pendiente"
+                  : "Marcar como atendido"
+              }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-data" *ngIf="!loading && !error && reservations.length === 0">
+    No hay reservaciones disponibles.
+  </div>
+</div>

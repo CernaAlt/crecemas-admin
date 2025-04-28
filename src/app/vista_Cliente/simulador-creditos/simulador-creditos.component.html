@@ -1,0 +1,280 @@
+<div class="container">
+  <header>
+    <div class="logo">
+      <img src="assets/logo.png" alt="Logo Cooperativa" />
+    </div>
+    <div class="title">
+      <h1>{{ title }}</h1>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <form [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="product">Producto:</label>
+          <select id="product" formControlName="product">
+            <option *ngFor="let product of loanProducts" [value]="product.id">
+              {{ product.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="currency">Moneda:</label>
+          <select id="currency" formControlName="currency">
+            <option *ngFor="let currency of currencies" [value]="currency.id">
+              {{ currency.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="amount">Monto:</label>
+          <input type="number" id="amount" formControlName="amount" />
+        </div>
+        <div class="form-group">
+          <label>Tipo periodo</label>
+          <div class="period-options">
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="fixedPeriod"
+                formControlName="fixedPeriod"
+                [value]="true"
+                (change)="loanForm.patchValue({ fixedDate: false })"
+              />
+              <label for="fixedPeriod">Periodo fijo</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="fixedDate"
+                formControlName="fixedDate"
+                [value]="true"
+                (change)="loanForm.patchValue({ fixedPeriod: false })"
+              />
+              <label for="fixedDate">Fecha fija</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="annualRate">TEA:</label>
+          <input
+            type="number"
+            id="annualRate"
+            formControlName="annualRate"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label for="dayOrDate"
+            >{{ loanForm.value.fixedDate ? "Día" : "Periodo" }}:</label
+          >
+          <div class="day-selection">
+            <input
+              type="number"
+              id="dayOrDate"
+              formControlName="dayOrDate"
+              min="1"
+              [max]="31"
+            />
+            <select formControlName="periodType">
+              <option *ngFor="let period of periodTypes" [value]="period.id">
+                {{ period.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="installments">Nro. de cuotas:</label>
+          <input
+            type="number"
+            id="installments"
+            formControlName="installments"
+            min="1"
+          />
+        </div>
+        <div class="form-group">
+          <div class="checkbox-option">
+            <input
+              type="checkbox"
+              id="propertyInsurance"
+              formControlName="propertyInsurance"
+            />
+            <label for="propertyInsurance">Seg. Bienes</label>
+            <input
+              type="number"
+              formControlName="propertyInsuranceRate"
+              step="0.01"
+              [disabled]="!loanForm.value.propertyInsurance"
+              class="small-input"
+            />
+            <span>%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="disbursementDate">Desembolso:</label>
+          <input
+            type="date"
+            id="disbursementDate"
+            formControlName="disbursementDate"
+          />
+        </div>
+        <div class="form-group">
+          <div class="checkbox-option">
+            <input
+              type="checkbox"
+              id="lifeInsurance"
+              formControlName="lifeInsurance"
+            />
+            <label for="lifeInsurance">Seg. inmueble</label>
+            <input
+              type="number"
+              formControlName="lifeInsuranceRate"
+              step="0.01"
+              [disabled]="!loanForm.value.lifeInsurance"
+              class="small-input"
+            />
+            <span>%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propertyValue">Monto Bien:</label>
+          <input
+            type="number"
+            id="propertyValue"
+            formControlName="propertyValue"
+          />
+        </div>
+        <div class="form-group">
+          <div class="checkbox-option">
+            <input
+              type="checkbox"
+              id="gracePeriod"
+              formControlName="gracePeriod"
+            />
+            <label for="gracePeriod">Gracia</label>
+            <input
+              type="number"
+              formControlName="gracePeriodMonths"
+              min="0"
+              [disabled]="!loanForm.value.gracePeriod"
+              class="small-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>TCEA:</label>
+          <div class="tcea-display">{{ loanForm.value.annualRate }}.00 %</div>
+        </div>
+        <div class="form-group">
+          <div class="insurance-options">
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="individual"
+                formControlName="insuranceOption"
+                value="individual"
+              />
+              <label for="individual">Indiv.</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="mancomunado1"
+                formControlName="insuranceOption"
+                value="mancomunado1"
+              />
+              <label for="mancomunado1">Man. [50-50]</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="mancomunado2"
+                formControlName="insuranceOption"
+                value="mancomunado2"
+              />
+              <label for="mancomunado2">Man. [100-100]</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button type="submit" class="btn-primary">Aplicar</button>
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+          Limpiar
+        </button>
+      </div>
+    </form>
+
+    <div class="results" *ngIf="showResults">
+      <h2>Calendario de Pagos</h2>
+      <div class="table-container">
+        <table class="payment-schedule">
+          <thead>
+            <tr>
+              <th>Nro</th>
+              <th>Fecha de pago</th>
+              <th>Importe de Cuota + ITF</th>
+              <th>Seg. Desg.</th>
+              <th>Seg. Bienes</th>
+              <th>Interés</th>
+              <th>Capital</th>
+              <th>Saldo Capital</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of paymentSchedule">
+              <td>{{ payment.number }}</td>
+              <td>{{ payment.date }}</td>
+              <td>{{ payment.installment.toFixed(2) }}</td>
+              <td>{{ payment.insurance.toFixed(2) }}</td>
+              <td>{{ payment.propertyInsurance.toFixed(2) }}</td>
+              <td>{{ payment.interest.toFixed(2) }}</td>
+              <td>{{ payment.principal.toFixed(2) }}</td>
+              <td>{{ payment.balance.toFixed(2) }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">Total Cuota</td>
+              <td>{{ totals.installment.toFixed(2) }}</td>
+              <td>{{ totals.insurance.toFixed(2) }}</td>
+              <td>{{ totals.propertyInsurance.toFixed(2) }}</td>
+              <td>{{ totals.interest.toFixed(2) }}</td>
+              <td>{{ totals.capital.toFixed(2) }}</td>
+              <td>{{ totals.totalPayment.toFixed(2) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="export-buttons">
+        <button type="button" class="btn-secondary" (click)="exportToPdf()">
+          PDF
+        </button>
+        <button type="button" class="btn-secondary" (click)="exportToExcel()">
+          Excel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SimuladorCreditosComponent } from "./vista_Cliente/simulador-creditos/simulador-creditos.component";
+import { ReservasClientesComponent } from "./vista_Cliente/reservas-clientes/reservas-clientes.component";
+import { AdminReservationsComponent } from './dashboard/components/admin-reservations/admin-reservations.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
