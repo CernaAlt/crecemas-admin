@@ -1,0 +1,188 @@
+/* src/app/components/usuarios/usuarios.component.css */
+
+.container {
+    max-width: 960px; /* Reduce el ancho máximo para mejor lectura */
+    margin: auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #333; /* Color de encabezado más oscuro */
+    border-bottom: 2px solid #eee; /* Línea sutil debajo del encabezado */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    border: 1px solid #ddd; /* Borde más suave para las tarjetas */
+    border-radius: 8px; /* Bordes redondeados para las tarjetas */
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  }
+  
+  .card-header {
+    background-color: #f8f9fa; /* Fondo claro para el encabezado */
+    color: #555; /* Color de texto del encabezado */
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    border-radius: 8px 8px 0 0; /* Bordes redondeados solo en la parte superior */
+    font-weight: bold;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .form-label {
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño para las etiquetas */
+    color: #555;
+    margin-bottom: 5px;
+    display: block; /* Asegura que la etiqueta ocupe todo el ancho */
+  }
+  
+  .form-control {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff; /* Color de borde al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra al enfocar */
+  }
+  
+  .invalid-feedback {
+    font-size: 0.8rem;
+    color: #dc3545; /* Color rojo para mensajes de error */
+    margin-top: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+    border-radius: 4px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #545b62;
+    border-color: #4e555b;
+  }
+  
+  .btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .table {
+    margin-bottom: 0; /* Elimina el margen inferior de la tabla */
+  }
+  
+  .table thead th {
+    background-color: #eee; /* Fondo gris claro para los encabezados de la tabla */
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding: 12px 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .table tbody td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+    color: #555;
+    border-bottom: 1px solid #f8f9fa; /* Líneas divisorias más claras */
+  }
+  
+  .table tbody tr:last-child td {
+    border-bottom: none; /* Elimina la línea inferior de la última fila */
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa; /* Filas impares con fondo ligeramente gris */
+  }
+  
+  .btn-group-sm > .btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+  
+  .spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+  }
+  
+  .d-flex.gap-2 {
+    gap: 10px; /* Espacio entre los botones del formulario */
+  }
+  
+  .justify-content-between {
+    justify-content: space-between; /* Espacia los elementos del encabezado de la tabla */
+  }
+  
+  .align-items-center {
+    align-items: center; /* Alinea verticalmente los elementos del encabezado de la tabla */
+  }
+  
+  .text-center {
+    text-align: center; /* Centra el texto de "No hay usuarios registrados" */
+    padding: 15px;
+    color: #777;
+  }
+  
+  .table-responsive {
+    overflow-x: auto; /* Permite el desplazamiento horizontal en pantallas pequeñas */
+  }

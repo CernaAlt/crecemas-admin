@@ -1,38 +1,94 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { supabase } from './supabase-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  
-  private validEmail = 'admin@crecmas.com';
-  private validPassword = '123456';
-
   private _isLoggedIn = false;
 
-  constructor() {
-    const stored = localStorage.getItem('isLoggedIn');
-    if (stored === 'true') {
-      this._isLoggedIn = true;
-    }
+  constructor(private router: Router) {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      this._isLoggedIn = !!session;
+      if (this._isLoggedIn) {
+        localStorage.setItem('isLoggedIn', 'true');
+      } else {
+        localStorage.removeItem('isLoggedIn');
+      }
+    });
   }
-
-
-  login(email: string, password: string): boolean {
-    if (email === this.validEmail && password === this.validPassword) {
+  
+  async login(dni: string, password: string): Promise<boolean> {
+    try {
+      const email = `${dni}@crecemas.com`;
+  
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+  
+      if (error) {
+        console.error('Login error:', error.message);
+        return false;
+      }
+  
       this._isLoggedIn = true;
-      localStorage.setItem('isLoggedIn', 'true'); // ✅ guardar sesión
+      localStorage.setItem('isLoggedIn', 'true');
       return true;
+  
+    } catch (err) {
+      console.error('Unexpected login error:', err);
+      return false;
     }
-    return false;
   }
 
   logout(): void {
+    supabase.auth.signOut();
     this._isLoggedIn = false;
-    localStorage.removeItem('isLoggedIn'); //cerrar sesión
+    localStorage.removeItem('isLoggedIn'); // Esta línea es importante
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
-    return this._isLoggedIn;
+    const localFlag = localStorage.getItem('isLoggedIn') === 'true';
+  
+    // Devuelve true si ya está logueado o si el flag está guardado
+    return this._isLoggedIn || localFlag;
   }
+  
+  
+
+  async register(dni: string, password: string): Promise<boolean> {
+    try {
+      const email = `${dni}@crecemas.com`;
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error('Error en registro:', error.message);
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Unexpected registration error:', err);
+      return false;
+    }
+  }
+
+  async initializeSession(): Promise<void> {
+    const { data: { session } } = await supabase.auth.getSession();
+    this._isLoggedIn = !!session;
+  
+    if (this._isLoggedIn) {
+      localStorage.setItem('isLoggedIn', 'true');
+    } else {
+      localStorage.removeItem('isLoggedIn');
+    }
+  }
+  
 }

@@ -1,0 +1,59 @@
+<div class="p-4 max-w-xl mx-auto">
+  <h2 class="text-xl font-semibold mb-4">Registrar nuevo socio</h2>
+
+  <form [formGroup]="socioForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Usuario -->
+    <div>
+      <label for="socio_id">Usuario</label>
+      <select id="socio_id" formControlName="socio_id">
+        <option value="">Seleccione un usuario</option>
+        <option *ngFor="let usuario of usuarios" [value]="usuario.identificacion">{{ usuario.nombre }}</option>
+      </select>
+    </div>
+  
+    <!-- Lugar de trabajo -->
+    <div>
+      <label for="lugar_trabajo">Lugar de trabajo</label>
+      <input id="lugar_trabajo" type="text" formControlName="lugar_trabajo" />
+    </div>
+  
+    <!-- Teléfono de trabajo -->
+    <div>
+      <label for="telefono_trabajo">Teléfono de trabajo</label>
+      <input id="telefono_trabajo" type="text" formControlName="telefono_trabajo" />
+    </div>
+  
+    <button type="submit" [disabled]="socioForm.invalid">Guardar socio</button>
+  </form>
+
+  <table class="w-full table-auto border">
+    <thead>
+      <tr>
+        <th>ID Usuario</th>
+        <th>Lugar Trabajo</th>
+        <th>Teléfono Trabajo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let socio of socios">
+        <td>{{ socio.usuario }}</td>
+        <td>{{ socio.lugar_trabajo }}</td>
+        <td>{{ socio.telefono_trabajo }}</td>
+        <td>
+          <a
+            [routerLink]="['/socios/editar', socio.identificacion]"
+            class="text-blue-600"
+            >Editar</a
+          >
+          <button
+            (click)="deleteSocio(socio.identificacion)"
+            class="text-red-600"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

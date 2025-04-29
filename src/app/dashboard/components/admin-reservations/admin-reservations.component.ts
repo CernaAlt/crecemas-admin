@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from '../../../supabase/supabase-client';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Reservation } from '../../interfaces/Reservation'; //Interfaces
+import { Reservation } from '../../interfaces/Reservation';
+
 
 @Component({
   selector: 'app-admin-reservations',
