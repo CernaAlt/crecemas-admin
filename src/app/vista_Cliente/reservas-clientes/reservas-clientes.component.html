@@ -5,66 +5,71 @@
   </div>
 
   <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="reservation-form">
+  
+    <!-- Nombres y Apellidos -->
     <div class="form-group">
-      <label for="lastName">Apellidos</label>
+      <label for="lastName">Nombres y Apellidos</label>
       <input 
         type="text" 
         id="lastName" 
-        formControlName="LastName" 
-        [ngClass]="{'invalid': f['LastName'].invalid && f['LastName'].touched}"
-        placeholder="Ingrese sus apellidos"
-      >
-      <div class="error-message" *ngIf="f['LastName'].invalid && f['LastName'].touched">
-        <span *ngIf="f['LastName'].errors?.['required']">Los apellidos son obligatorios</span>
-        <span *ngIf="f['LastName'].errors?.['minlength']">Ingrese al menos 2 caracteres</span>
+        formControlName="LastName"
+        [ngClass]="{'is-invalid': f['LastName'].invalid && f['LastName'].touched}" 
+        placeholder="Ingrese sus nombres y apellidos">
+      <div class="invalid-feedback" *ngIf="f['LastName'].touched">
+        <span *ngIf="f['LastName'].errors?.['required']">Los nombres y apellidos son obligatorios.</span>
+        <span *ngIf="f['LastName'].errors?.['minlength']">Ingrese al menos 2 caracteres.</span>
       </div>
     </div>
-
+  
+    <!-- Tipo de Asesoría -->
     <div class="form-group">
       <label for="typeReason">Tipo de Asesoría</label>
       <select 
         id="typeReason" 
         formControlName="typeReason"
-        [ngClass]="{'invalid': f['typeReason'].invalid && f['typeReason'].touched}"
-      >
+        [ngClass]="{'is-invalid': f['typeReason'].invalid && f['typeReason'].touched}">
         <option value="">Seleccione un tipo</option>
         <option *ngFor="let reason of reasonTypes" [value]="reason">{{ reason }}</option>
       </select>
-      <div class="error-message" *ngIf="f['typeReason'].invalid && f['typeReason'].touched">
-        <span *ngIf="f['typeReason'].errors?.['required']">Seleccione un tipo de asesoría</span>
+      <div class="invalid-feedback" *ngIf="f['typeReason'].touched">
+        <span *ngIf="f['typeReason'].errors?.['required']">Seleccione un tipo de asesoría.</span>
       </div>
     </div>
-
+  
+    <!-- Detalle de la Consulta -->
     <div class="form-group">
       <label for="detailReason">Detalle de la consulta</label>
       <textarea 
         id="detailReason" 
         formControlName="detailReason" 
         rows="4"
-        [ngClass]="{'invalid': f['detailReason'].invalid && f['detailReason'].touched}"
-        placeholder="Describa brevemente el motivo de su consulta"
-      ></textarea>
-      <div class="error-message" *ngIf="f['detailReason'].invalid && f['detailReason'].touched">
-        <span *ngIf="f['detailReason'].errors?.['required']">El detalle es obligatorio</span>
+        [ngClass]="{'is-invalid': f['detailReason'].invalid && f['detailReason'].touched}"
+        placeholder="Describa brevemente el motivo de su consulta"></textarea>
+      <div class="invalid-feedback" *ngIf="f['detailReason'].touched">
+        <span *ngIf="f['detailReason'].errors?.['required']">El detalle es obligatorio.</span>
       </div>
     </div>
-
+  
+    <!-- DNI -->
     <div class="form-group">
-      <label for="dni">DNI</label>
+      <label for="DNI" class="form-label">DNI</label>
       <input 
+        maxlength="8" 
         type="text" 
-        id="dni" 
-        formControlName="DNI" 
-        maxlength="8"
-        [ngClass]="{'invalid': f['DNI'].invalid && f['DNI'].touched}"
-        placeholder="Ingrese su DNI (8 dígitos)"
-      >
-      <div class="error-message" *ngIf="f['DNI'].invalid && f['DNI'].touched">
-        <span *ngIf="f['DNI'].errors?.['required']">El DNI es obligatorio</span>
-        <span *ngIf="f['DNI'].errors?.['pattern']">El DNI debe tener 8 dígitos numéricos</span>
+        class="form-control" 
+        id="DNI"
+        formControlName="DNI"
+        (keypress)="onlyNumbers($event)"
+        (paste)="preventPaste($event)"
+        [ngClass]="{'is-invalid': f['DNI'].invalid && f['DNI'].touched}" 
+        placeholder="Ingrese su DNI">
+      <div class="invalid-feedback" *ngIf="f['DNI'].touched">
+        <span *ngIf="f['DNI'].errors?.['required']">El DNI es obligatorio.</span>
+        <span *ngIf="f['DNI'].errors?.['pattern']">El DNI debe contener exactamente 8 dígitos.</span>
       </div>
     </div>
-
+  
+    <!-- Teléfono -->
     <div class="form-group">
       <label for="phone">Teléfono</label>
       <input 
@@ -72,33 +77,35 @@
         id="phone" 
         formControlName="Phone" 
         maxlength="9"
-        [ngClass]="{'invalid': f['Phone'].invalid && f['Phone'].touched}"
-        placeholder="Ingrese su número telefónico (9 dígitos)"
-      >
-      <div class="error-message" *ngIf="f['Phone'].invalid && f['Phone'].touched">
-        <span *ngIf="f['Phone'].errors?.['required']">El teléfono es obligatorio</span>
-        <span *ngIf="f['Phone'].errors?.['pattern']">El teléfono debe tener 9 dígitos numéricos</span>
+        (keypress)="onlyNumbers($event)"
+        (paste)="preventPaste($event)"
+        [ngClass]="{'is-invalid': f['Phone'].invalid && f['Phone'].touched}" 
+        placeholder="Ingrese su número telefónico (9 dígitos)">
+      <div class="invalid-feedback" *ngIf="f['Phone'].touched">
+        <span *ngIf="f['Phone'].errors?.['required']">El teléfono es obligatorio.</span>
+        <span *ngIf="f['Phone'].errors?.['pattern']">El teléfono debe contener exactamente 9 dígitos.</span>
       </div>
     </div>
-
+  
+    <!-- Botones de acción -->
     <div class="form-actions">
-      <button type="submit" class="btn-submit" [disabled]="isSubmitting">
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
         {{ isSubmitting ? 'Enviando...' : 'Enviar Solicitud' }}
       </button>
-      <button type="button" class="btn-reset" (click)="resetForm()" [disabled]="isSubmitting">
+      <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isSubmitting">
         Limpiar
       </button>
     </div>
-
+  
     <!-- Mensajes de éxito o error -->
-    <div class="success-message" *ngIf="submitSuccess">
-      Su solicitud ha sido registrada correctamente. Nos comunicaremos con usted a la brevedad.
+    <div class="alert alert-success mt-3" *ngIf="submitSuccess">
+      ✅ Su solicitud ha sido registrada correctamente. Nos comunicaremos con usted a la brevedad.
     </div>
-    <div class="error-message-global" *ngIf="submitError">
-      {{ submitError }}
+    <div class="alert alert-danger mt-3" *ngIf="submitError">
+      ❌ {{ submitError }}
     </div>
-    <div class="cooldown-message" *ngIf="cooldownError">
-      Ya tiene una solicitud registrada en las últimas 4 horas. Por favor, intente más tarde.
+    <div class="alert alert-warning mt-3" *ngIf="cooldownError">
+      ⚠️ Ya tiene una solicitud registrada en las últimas 4 horas. Por favor, intente más tarde.
     </div>
   </form>
 </div>

@@ -23,16 +23,16 @@ export class UsuarioComponent {
 
   constructor(private supabaseService: SocioService, private fb: FormBuilder) {
     this.usuarioForm = this.fb.group({
-      dni: ['', [Validators.required]], // Cambiado de DNI a dni
-      nombre: ['', [Validators.required]],
-      apellido: ['', [Validators.required]], // Ya corregido de Apellido a apellido
-      email: ['', [Validators.email]], // Cambiado de correo_electronico a email
-      telefono_movil: [''],
-      fecha_nacimiento: [''],
-      genero: [''],
-      ciudad: [''],
-      pais: [''],
-      rol_id: ['', Validators.required],
+      dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]], // Cambiado de DNI a dni
+      nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      apellido: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      telefono_movil: ['', [Validators.pattern(/^[0-9]{9}$/)]],
+      fecha_nacimiento: ['', Validators.required],
+      genero: ['', Validators.required],
+      ciudad: ['', [Validators.required, Validators.minLength(3)]],
+      pais: ['', [Validators.required, Validators.minLength(3)]],
+      rol_id: ['', Validators.required]
     });
   }
 
@@ -175,6 +175,23 @@ export class UsuarioComponent {
         'Error al eliminar usuario. Por favor intente de nuevo.';
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  //Permite ingresar solo numeros
+  onlyNumbers(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    // Permite solo números (0-9)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
+
+  //no permite ingresar simbolos
+  preventPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') ?? '';
+    if (!/^\d+$/.test(clipboardData)) {
+      event.preventDefault();
     }
   }
 

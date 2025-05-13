@@ -135,4 +135,20 @@ export class ReservasClientesComponent implements OnInit {
     this.reservationForm.markAsPristine();
     this.reservationForm.markAsUntouched();
   }
+
+  onlyNumbers(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    // Permite solo números (0-9)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
+  
+  preventPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') ?? '';
+    if (!/^\d+$/.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
+  
 }
