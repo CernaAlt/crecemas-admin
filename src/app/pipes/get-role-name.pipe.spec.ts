@@ -1,8 +1,10 @@
-import { GetRoleNamePipe } from './get-role-name.pipe';
+import { GetRoleNamePipe } from "./get-role-name.pipe";
+
 
 describe('GetRoleNamePipe', () => {
-  it('create an instance', () => {
-    const pipe = new GetRoleNamePipe();
+  it('debería crear una instancia', () => {
+    const pipe = new GetRoleNamePipe({} as any);
     expect(pipe).toBeTruthy();
   });
 });
+

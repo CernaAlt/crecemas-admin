@@ -13,6 +13,7 @@ import { supabase } from '../../supabase/supabase-client';
 export class LoginUserComponent {
   email: string = '';
   password: string = '';
+  errorMessage: string = '';
 
   constructor(
     private authService: AuthService,
@@ -34,9 +35,14 @@ export class LoginUserComponent {
       } else {
         console.log('✅ Sesión iniciada correctamente:', data);
         alert('✅ Bienvenido, redirigiendo al Dashboard...');
-        setTimeout(() => {
+        
+        /*setTimeout(() => {
           this.router.navigate(['/profile']); // Ajusta esta ruta a tu componente de Dashboard
-        }, 2000);
+        }, 2000);*/
+
+        // 🔄 Redirigir según el rol después de un inicio exitoso
+        await this.authService.redirectBasedOnRole();
+
       }
     } catch (err: any) {
       console.error('Error en la petición:', err);
@@ -52,7 +58,7 @@ export class LoginUserComponent {
 
     if (session) {
       console.log('Usuario ya autenticado. Redirigiendo al Dashboard.');
-      this.router.navigate(['/profile']);
+      await this.authService.redirectBasedOnRole();
     }
   }
 }

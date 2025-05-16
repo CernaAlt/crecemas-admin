@@ -23,7 +23,7 @@
         <p><strong>Género:</strong> {{ user.genero }}</p>
         <p><strong>Teléfono:</strong> {{ user.telefono_movil }}</p>
         <p><strong>Ubicación:</strong> {{ user.ciudad }}, {{ user.pais }}</p>
-        <p><strong>Rol:</strong> {{ user.rol_id| getRoleName  }}</p>
+        <p><strong>Rol:</strong> {{  user.rol_id | getRoleName }}</p>
         <p><strong>Fecha Ingreso:</strong> {{ user.fecha_ingreso | date:'longDate' }}</p>
       </div>
     </div>

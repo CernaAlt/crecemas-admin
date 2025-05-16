@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { RolesService } from '../services/roles.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Pipe({
   name: 'getRoleName',
@@ -7,17 +8,30 @@ import { RolesService } from '../services/roles.service';
 })
 export class GetRoleNamePipe implements PipeTransform {
 
+  private cache = new Map<string, BehaviorSubject<string>>();
+
   constructor(private rolesService: RolesService) {}
 
-  // 👇 El transform recibe el ID del rol y devuelve el nombre.
-  async transform(roleId: string): Promise<string> {
+  transform(roleId: string): string {
     if (!roleId) return 'Sin rol asignado';
-    
-    try {
-      const role = await this.rolesService.getRoleById(roleId);
-      return role?.nombre || 'Rol desconocido';
-    } catch {
-      return 'Error al cargar rol';
+
+    // Si ya existe en el cache, devolvemos el valor
+    if (this.cache.has(roleId)) {
+      return this.cache.get(roleId)!.value;
     }
+
+    // Si no existe, creamos el observable y lo añadimos al cache
+    const roleSubject = new BehaviorSubject<string>('Cargando...');
+    this.cache.set(roleId, roleSubject);
+
+    // Realizamos la petición y actualizamos el valor
+    this.rolesService.getRoleById(roleId).then((role) => {
+      roleSubject.next(role?.nombre || 'Rol desconocido');
+    }).catch(() => {
+      roleSubject.next('Error al cargar rol');
+    });
+
+    // Devolvemos el valor actual mientras carga
+    return roleSubject.value;
   }
 }
