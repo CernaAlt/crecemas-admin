@@ -15,7 +15,6 @@ import { SocioPanelComponent } from './socio/components/socio-panel/socio-panel.
 
 export const routes: Routes = [
 
- 
   {path: 'simulador-creditos', component: SimuladorCreditosComponent},
   {path: 'solicitud', component: ReservasClientesComponent},
   {path: 'register', component: RegisterUserComponent},
