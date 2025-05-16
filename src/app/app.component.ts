@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SimuladorCreditosComponent } from "./vista_Cliente/simulador-creditos/simulador-creditos.component";
-import { ReservasClientesComponent } from "./vista_Cliente/reservas-clientes/reservas-clientes.component";
-import { AdminReservationsComponent } from './dashboard/components/admin-reservations/admin-reservations.component';
-import { LoginComponent } from './vista_Cliente/components/login/login.component';
 import { AuthService } from './supabase/auth.service';
+import { FormsModule } from '@angular/forms';
+import { LoginUserComponent } from "./login/login-user/login-user.component";
+import { RegisterUserComponent } from "./login/register-user/register-user.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

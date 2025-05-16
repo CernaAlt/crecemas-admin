@@ -1,0 +1,36 @@
+<div class="profile-container">
+    <h2>Perfil del Usuario</h2>
+    
+    <div *ngIf="isLoading" class="loading-message">
+      Cargando datos del perfil...
+    </div>
+  
+    <div *ngIf="!isLoading && user" class="profile-info">
+      <!-- Datos de autenticación -->
+      <div class="section">
+        <h3>Información de Cuenta</h3>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Creado en:</strong> {{ user.created_at | date:'medium' }}</p>
+        <p><strong>Último inicio:</strong> {{ user.last_sign_in_at | date:'medium' }}</p>
+      </div>
+  
+      <!-- Datos de la tabla usuarios -->
+      <div class="section">
+        <h3>Información Personal</h3>
+        <p><strong>DNI:</strong> {{ user.dni }}</p>
+        <p><strong>Nombre:</strong> {{ user.nombre }} {{ user.apellido }}</p>
+        <p><strong>Fecha Nacimiento:</strong> {{ user.fecha_nacimiento | date:'longDate' }}</p>
+        <p><strong>Género:</strong> {{ user.genero }}</p>
+        <p><strong>Teléfono:</strong> {{ user.telefono_movil }}</p>
+        <p><strong>Ubicación:</strong> {{ user.ciudad }}, {{ user.pais }}</p>
+        <p><strong>Rol:</strong> {{ user.rol_id| getRoleName  }}</p>
+        <p><strong>Fecha Ingreso:</strong> {{ user.fecha_ingreso | date:'longDate' }}</p>
+      </div>
+    </div>
+  
+    <div *ngIf="!isLoading && !user" class="error-message">
+      No se pudieron cargar los datos del perfil.
+    </div>
+  
+    <app-logout-user></app-logout-user>
+  </div>
