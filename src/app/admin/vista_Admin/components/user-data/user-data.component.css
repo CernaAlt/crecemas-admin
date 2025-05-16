@@ -1,0 +1,23 @@
+/* Estilos básicos para la tabla */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+/* Espaciado para los botones de acción */
+:host ::ng-deep .p-button {
+  margin-right: 0.5rem;
+}
+
+/* Estilo para el diálogo de confirmación */
+:host ::ng-deep .p-confirm-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+/* Responsividad */
+@media screen and (max-width: 960px) {
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+  :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.5rem;
+  }
+}

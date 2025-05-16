@@ -1,0 +1,137 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { supabase } from '../../../supabase/supabase-client';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SociosService {
+  private sociosSubject = new BehaviorSubject<any[]>([]);
+  socios$ = this.sociosSubject.asObservable();
+
+  constructor() { }
+
+  // Cargar todos los socios con información del usuario
+  async cargarSocios(): Promise<void> {
+    const { data, error } = await supabase
+      .from('socios')
+      .select(`
+        *,
+        usuario:usuario_id (
+          nombre,
+          apellido,
+          dni,
+          email,
+          telefono_movil
+        )
+      `)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error al cargar socios:', error);
+      throw error;
+    }
+
+    this.sociosSubject.next(data || []);
+  }
+
+  // Obtener un socio por ID
+  async obtenerSocioPorId(id: string): Promise<any> {
+    const { data, error } = await supabase
+      .from('socios')
+      .select(`
+        *,
+        usuario:usuario_id (
+          nombre,
+          apellido,
+          dni,
+          email,
+          telefono_movil
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error('Error al obtener socio:', error);
+      throw error;
+    }
+
+    return data;
+  }
+
+  // Crear o actualizar un socio
+  async guardarSocio(socioData: any): Promise<any> {
+    try {
+      let data;
+      
+      if (socioData.id) {
+        // Actualizar socio existente
+        const { data: updatedData, error: updateError } = await supabase
+          .from('socios')
+          .update(socioData)
+          .eq('id', socioData.id)
+          .select();
+
+        if (updateError) throw updateError;
+        data = updatedData;
+      } else {
+        // Crear nuevo socio
+        const { data: newData, error: insertError } = await supabase
+          .from('socios')
+          .insert(socioData)
+          .select();
+
+        if (insertError) throw insertError;
+        data = newData;
+      }
+
+      // Actualizar la lista
+      await this.cargarSocios();
+      return data;
+    } catch (error) {
+      console.error('Error al guardar socio:', error);
+      throw error;
+    }
+  }
+
+  // Eliminar un socio (soft delete)
+  async eliminarSocio(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('socios')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error al eliminar socio:', error);
+      throw error;
+    }
+
+    // Actualizar la lista
+    await this.cargarSocios();
+  }
+
+  // Buscar socios por lugar de trabajo o datos del usuario
+  async buscarSocios(termino: string): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('socios')
+      .select(`
+        *,
+        usuario:usuario_id (
+          nombre,
+          apellido,
+          dni,
+          email,
+          telefono_movil
+        )
+      `)
+      .or(`lugar_trabajo.ilike.%${termino}%,telefono_trabajo.ilike.%${termino}%,usuario_id.nombre.ilike.%${termino}%,usuario_id.apellido.ilike.%${termino}%,usuario_id.dni.eq.${termino}`);
+
+    if (error) {
+      console.error('Error al buscar socios:', error);
+      return [];
+    }
+
+    return data || [];
+  }
+}

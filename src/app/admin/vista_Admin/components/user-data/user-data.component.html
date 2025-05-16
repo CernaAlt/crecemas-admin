@@ -1,1 +1,84 @@
-<p>user-data works!</p>
+<div class="card">
+  <h1>Administración de Usuarios</h1>
+
+  <div class="grid">
+    <div class="col-12 md:col-6">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [(ngModel)]="terminoBusqueda" 
+               placeholder="Buscar por nombre, email o DNI"
+               (keyup.enter)="buscarUsuarios()">
+      </span>
+      <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text"
+              (click)="cargarUsuarios()" [disabled]="loading"></button>
+    </div>
+    <div class="col-12 md:col-6 text-right">
+      <button pButton icon="pi pi-plus" label="Nuevo Usuario" 
+              class="p-button-success"
+              (click)="mostrarDialogoEditar()"></button>
+    </div>
+  </div>
+
+  <p-table [value]="usuarios" [loading]="loading" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>DNI</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td>{{usuario.dni}}</td>
+        <td>{{usuario.nombre}} {{usuario.apellido}}</td>
+        <td>{{usuario.email}}</td>
+        <td>{{usuario.telefono_movil}}</td>
+        <td>{{usuario.roles?.nombre || 'Sin rol'}}</td>
+        <td>
+          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-primary"
+                  (click)="mostrarDialogoEditar(usuario)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                  (click)="confirmarEliminar(usuario)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog header="{{usuarioSeleccionado.auth_user_id ? 'Editar Usuario' : 'Nuevo Usuario'}}" 
+            [(visible)]="displayDialog" [style]="{width: '500px'}">
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-6">
+        <label for="dni">DNI</label>
+        <input pInputText id="dni" [(ngModel)]="usuarioSeleccionado.dni">
+      </div>
+      <div class="col-12 md:col-6">
+        <label for="nombre">Nombre</label>
+        <input pInputText id="nombre" [(ngModel)]="usuarioSeleccionado.nombre">
+      </div>
+      <div class="col-12 md:col-6">
+        <label for="apellido">Apellido</label>
+        <input pInputText id="apellido" [(ngModel)]="usuarioSeleccionado.apellido">
+      </div>
+      <div class="col-12 md:col-6">
+        <label for="email">Email</label>
+        <input pInputText id="email" [(ngModel)]="usuarioSeleccionado.email">
+      </div>
+      <div class="col-12 md:col-6">
+        <label for="telefono">Teléfono</label>
+        <input pInputText id="telefono" [(ngModel)]="usuarioSeleccionado.telefono_movil">
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton icon="pi pi-times" label="Cancelar" class="p-button-text"
+              (click)="displayDialog = false"></button>
+      <button pButton icon="pi pi-check" label="Guardar" class="p-button-success"
+              (click)="guardarUsuario()"></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-toast></p-toast>
+  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+</div>
