@@ -1,34 +1,38 @@
-<div class="container mt-4">
+<div class="container">
   <h2>Historial de Pagos</h2>
-  <a routerLink="/historial-pagos/nuevo" class="btn btn-primary mb-3">Nuevo Pago</a>
 
-  <table class="table table-bordered table-striped">
+  <table class="table">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Préstamo ID</th>
-        <th>Fecha de Pago</th>
+        <th>Fecha</th>
         <th>Monto Pagado</th>
         <th>Cuota Nº</th>
-        <th>Método de Pago</th>
+        <th>Método</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let pago of pagos; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ pago.prestamo_id }}</td>
-        <td>{{ pago.fecha_pago | date }}</td>
-        <td>S/. {{ pago.monto_pagado }}</td>
-        <td>{{ pago.cuota_numero }}</td>
-        <td>{{ pago.metodo_pago }}</td>
+      <tr *ngFor="let h of historialPagos">
+        <td>{{ h.fecha_pago }}</td>
+        <td>{{ h.monto_pagado }}</td>
+        <td>{{ h.cuota_numero }}</td>
+        <td>{{ h.metodo_pago }}</td>
         <td>
-          <a [routerLink]="['/historial-pagos/editar', pago.id]" class="btn btn-sm btn-warning me-1">Editar</a>
-          <button class="btn btn-sm btn-danger" (click)="deletePago(pago.id!)">Eliminar</button>
+          <button class="btn secondary" (click)="selectHistorialPago(h)">Editar</button>
+          <button class="btn danger" (click)="deleteHistorialPago(h.id!)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <hr />
+  <app-historial-pagos-form
+    [pago]="selectedPago"
+    (formSaved)="loadHistorialPagos(); clearForm()"
+    (cancel)="clearForm()"
+  ></app-historial-pagos-form>
 </div>
+
+
 
 

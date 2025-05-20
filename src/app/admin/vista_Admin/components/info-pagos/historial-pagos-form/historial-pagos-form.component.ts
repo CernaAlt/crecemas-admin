@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { HistorialPago } from '../../../interfaces/historial-pago.model';
 import { HistorialPagosService } from '../../../services/historial-pagos.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-historial-pagos-form',
@@ -11,46 +10,60 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './historial-pagos-form.component.css'
 })
 export class HistorialPagosFormComponent implements OnInit {
-  form!: FormGroup;
-  isEdit = false;
-  id?: string;
+  @Input() pago: HistorialPago | null = null;
+  @Output() formSaved = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
+  
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private historialService: HistorialPagosService
-  ) {}
-
-  async ngOnInit() {
+    private historialPagosService: HistorialPagosService
+  ) {
     this.form = this.fb.group({
       prestamo_id: ['', Validators.required],
       fecha_pago: ['', Validators.required],
-      monto_pagado: [0, Validators.required],
-      cuota_numero: [0, Validators.required],
+      monto_pagado: [0, [Validators.required, Validators.min(0)]],
+      cuota_numero: [1, [Validators.required, Validators.min(1)]],
       metodo_pago: ['', Validators.required],
     });
+  }
 
-    this.id = this.route.snapshot.paramMap.get('id') || undefined;
-    if (this.id) {
-      const pago = await this.historialService.getById(this.id);
-      this.form.patchValue(pago!);
-      this.isEdit = true;
+  ngOnInit(): void {
+    // Cargar datos en el formulario si existe un pago seleccionado
+    if (this.pago) {
+      this.form.patchValue(this.pago);
     }
   }
 
-  async onSubmit() {
-    const pago: HistorialPago = this.form.value;
+   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['historial_pagos'] && this.pago) {
+      this.form.patchValue(this.pago);
+    } else {
+      this.form.reset();
+    }
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) return;
+
+    const pagoData: HistorialPago = this.form.value;
 
     try {
-      if (this.isEdit && this.id) {
-        await this.historialService.update(this.id, pago);
+      if (this.pago?.id) {
+        await this.historialPagosService.update(this.pago.id, pagoData);
       } else {
-        await this.historialService.create(pago);
+        await this.historialPagosService.create(pagoData);
       }
-      this.router.navigate(['/historial-pagos']);
-    } catch (err) {
-      console.error('Error guardando historial de pago', err);
+      this.formSaved.emit();
+      this.form.reset();
+    } catch (error) {
+      console.error('Error al guardar el historial de pago:', error);
     }
+  }
+
+  onCancel(): void {
+    this.form.reset();
+    this.cancel.emit();
   }
 }

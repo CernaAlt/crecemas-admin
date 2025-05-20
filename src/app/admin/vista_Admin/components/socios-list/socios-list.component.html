@@ -5,17 +5,30 @@
     <div class="col-12 md:col-6">
       <span class="p-input-icon-left">
         <i class="pi pi-search"></i>
-        <input type="text" pInputText [(ngModel)]="terminoBusqueda" 
-               placeholder="Buscar por nombre, DNI o lugar de trabajo"
-               (keyup.enter)="buscarSocios()">
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="terminoBusqueda"
+          placeholder="Buscar por nombre, DNI o lugar de trabajo"
+          (keyup.enter)="buscarSocios()"
+        />
       </span>
-      <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text ml-2"
-              (click)="cargarDatosIniciales()" [disabled]="loading"></button>
+      <button
+        pButton
+        icon="pi pi-refresh"
+        class="p-button-rounded p-button-text ml-2"
+        (click)="cargarDatosIniciales()"
+        [disabled]="loading"
+      ></button>
     </div>
     <div class="col-12 md:col-6 text-right">
-      <button pButton icon="pi pi-plus" label="Nuevo Socio" 
-              class="p-button-success"
-              (click)="mostrarDialogoEditar()"></button>
+      <button
+        pButton
+        icon="pi pi-plus"
+        label="Nuevo Socio"
+        class="p-button-success"
+        (click)="mostrarDialogoEditar()"
+      ></button>
     </div>
   </div>
 
@@ -33,17 +46,29 @@
     </ng-template>
     <ng-template pTemplate="body" let-socio>
       <tr>
-        <td>{{socio.usuario?.nombre}} {{socio.usuario?.apellido}}</td>
-        <td>{{socio.usuario?.dni}}</td>
-        <td>{{socio.lugar_trabajo}}</td>
-        <td>{{socio.telefono_trabajo}}</td>
-        <td>{{socio.usuario?.telefono_movil}}</td>
-        <td>{{socio.created_at | date:'dd/MM/yyyy'}}</td>
+        <td>{{ socio.usuario?.nombre }} {{ socio.usuario?.apellido }}</td>
+        <td>{{ socio.usuario?.dni }}</td>
+        <td>{{ socio.lugar_trabajo }}</td>
+        <td>{{ socio.telefono_trabajo }}</td>
+        <td>{{ socio.usuario?.telefono_movil }}</td>
+        <td>{{ socio.created_at | date : "dd/MM/yyyy" }}</td>
         <td>
-          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-primary"
-                  (click)="mostrarDialogoEditar(socio)"></button>
-          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                  (click)="confirmarEliminar(socio)"></button>
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text p-button-primary"
+            (click)="mostrarDialogoEditar(socio)"
+          >
+            Editar
+          </button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-text p-button-danger"
+            (click)="confirmarEliminar(socio)"
+          >
+            Eliminar
+          </button>
         </td>
       </tr>
     </ng-template>
@@ -54,36 +79,67 @@
     </ng-template>
   </p-table>
 
-  <p-dialog header="{{socioSeleccionado.id ? 'Editar Socio' : 'Nuevo Socio'}}" 
-            [(visible)]="displayDialog" [style]="{width: '600px'}">
+  <p-dialog
+    header="{{ socioSeleccionado.id ? 'Editar Socio' : 'Nuevo Socio' }}"
+    [(visible)]="displayDialog"
+    [style]="{ width: '600px' }"
+  >
     <div class="grid p-fluid">
       <div class="col-12">
         <label for="usuario_id">Usuario*</label>
-        <p-dropdown [options]="usuarios" [(ngModel)]="socioSeleccionado.usuario_id" 
-                    optionLabel="nombre" [showClear]="true"
-                    placeholder="Seleccione un usuario">
+        <p-dropdown
+          [options]="usuarios"
+          [(ngModel)]="socioSeleccionado.usuario_id"
+          [optionLabel]="'nombre'"
+          [dataKey]="'id'"
+          [filter]="true"
+          placeholder="Seleccione un usuario"
+        >
           <ng-template let-usuario pTemplate="item">
-            <div>{{usuario.nombre}} {{usuario.apellido}} ({{usuario.dni}})</div>
+            <div>
+              {{ usuario.nombre }} {{ usuario.apellido }} ({{ usuario.dni }})
+            </div>
           </ng-template>
         </p-dropdown>
       </div>
       <div class="col-12 md:col-6">
         <label for="lugar_trabajo">Lugar de Trabajo*</label>
-        <input pInputText id="lugar_trabajo" [(ngModel)]="socioSeleccionado.lugar_trabajo">
+        <input
+          pInputText
+          id="lugar_trabajo"
+          [(ngModel)]="socioSeleccionado.lugar_trabajo"
+        />
       </div>
       <div class="col-12 md:col-6">
         <label for="telefono_trabajo">Teléfono Trabajo</label>
-        <input pInputText id="telefono_trabajo" [(ngModel)]="socioSeleccionado.telefono_trabajo">
+        <input
+          pInputText
+          id="telefono_trabajo"
+          [(ngModel)]="socioSeleccionado.telefono_trabajo"
+        />
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <button pButton icon="pi pi-times" label="Cancelar" class="p-button-text"
-              (click)="displayDialog = false"></button>
-      <button pButton icon="pi pi-check" label="Guardar" class="p-button-success"
-              (click)="guardarSocio()" [disabled]="!socioSeleccionado.usuario_id || !socioSeleccionado.lugar_trabajo"></button>
+      <button
+        pButton
+        icon="pi pi-times"
+        label="Cancelar"
+        class="p-button-text"
+        (click)="displayDialog = false"
+      ></button>
+      <button
+        pButton
+        icon="pi pi-check"
+        label="Guardar"
+        class="p-button-success"
+        (click)="guardarSocio()"
+        [disabled]="
+          !socioSeleccionado.usuario_id || !socioSeleccionado.lugar_trabajo
+        "
+      ></button>
     </ng-template>
   </p-dialog>
 
   <p-toast></p-toast>
-  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+  <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 </div>

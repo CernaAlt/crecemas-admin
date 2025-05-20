@@ -14,10 +14,20 @@ import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-socios-list',
-  imports: [TableModule, DialogModule, ConfirmDialogModule, ToastModule, InputTextModule, ButtonModule, DropdownModule, DatePipe,FormsModule],
+  imports: [
+    TableModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToastModule,
+    InputTextModule,
+    ButtonModule,
+    DropdownModule,
+    DatePipe,
+    FormsModule,
+  ],
   templateUrl: './socios-list.component.html',
   styleUrl: './socios-list.component.css',
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService],
 })
 export class SociosListComponent {
   socios: any[] = [];
@@ -36,7 +46,7 @@ export class SociosListComponent {
 
   async ngOnInit() {
     await this.cargarDatosIniciales();
-    console.log("Usuarios", this.usuarios);
+    console.log('Usuarios', this.usuarios);
   }
 
   async cargarDatosIniciales() {
@@ -44,15 +54,17 @@ export class SociosListComponent {
     try {
       // Cargar socios y usuarios disponibles
       await this.sociosService.cargarSocios();
-      this.sociosService.socios$.subscribe(data => {
+      this.sociosService.socios$.subscribe((data) => {
         this.socios = data;
         this.loading = false;
       });
 
       // Cargar usuarios para el dropdown
       await this.usuariosService.cargarUsuarios();
-      this.usuariosService.usuarios$.subscribe(usuarios => {
-        this.usuarios = usuarios.filter(u => u.roles?.nombre === 'socio' || !u.rol_id);
+      this.usuariosService.usuarios$.subscribe((usuarios) => {
+        this.usuarios = usuarios.filter(
+          (u) => u.roles?.nombre === 'socio' || !u.rol_id
+        );
       });
     } catch (error) {
       this.loading = false;
@@ -77,17 +89,27 @@ export class SociosListComponent {
   }
 
   mostrarDialogoEditar(socio?: any) {
-    this.socioSeleccionado = socio ? { ...socio } : {
-      usuario_id: null,
-      lugar_trabajo: '',
-      telefono_trabajo: ''
-    };
+    this.socioSeleccionado = socio
+      ? {
+          ...socio,
+          usuario_id: socio.usuario?.id || socio.usuario_id, // normaliza si se está editando
+        }
+      : {
+          usuario_id: null,
+          lugar_trabajo: '',
+          telefono_trabajo: '',
+        };
     this.displayDialog = true;
   }
 
   async guardarSocio() {
     try {
-      await this.sociosService.guardarSocio(this.socioSeleccionado);
+      await this.sociosService.guardarSocio({
+        ...this.socioSeleccionado,
+        usuario_id:
+          this.socioSeleccionado.usuario_id?.id ||
+          this.socioSeleccionado.usuario_id, // usa el UUID
+      });
       this.mostrarExito('Socio guardado correctamente');
       this.displayDialog = false;
     } catch (error) {
@@ -97,7 +119,9 @@ export class SociosListComponent {
 
   confirmarEliminar(socio: any) {
     this.confirmationService.confirm({
-      message: `¿Estás seguro de eliminar al socio ${socio.usuario?.nombre || ''} ${socio.usuario?.apellido || ''}?`,
+      message: `¿Estás seguro de eliminar al socio ${
+        socio.usuario?.nombre || ''
+      } ${socio.usuario?.apellido || ''}?`,
       header: 'Confirmar eliminación',
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
@@ -107,7 +131,7 @@ export class SociosListComponent {
         } catch (error) {
           this.mostrarError('Error al eliminar socio');
         }
-      }
+      },
     });
   }
 
@@ -115,7 +139,7 @@ export class SociosListComponent {
     this.messageService.add({
       severity: 'success',
       summary: 'Éxito',
-      detail: mensaje
+      detail: mensaje,
     });
   }
 
@@ -123,8 +147,7 @@ export class SociosListComponent {
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
-      detail: mensaje
+      detail: mensaje,
     });
   }
-
 }

@@ -1,35 +1,14 @@
-<div class="container mt-4">
-  <h2>{{ isEdit ? 'Editar Pago' : 'Nuevo Pago' }}</h2>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  <input formControlName="prestamo_id" placeholder="ID Préstamo" class="input" />
+  <label>Fecha de Pago</label>
+  <input formControlName="fecha_pago" type="date" class="input" />
+  <input formControlName="monto_pagado" type="number" placeholder="Monto Pagado" class="input" />
+  <input formControlName="cuota_numero" type="number" placeholder="Número de Cuota" class="input" />
+  <input formControlName="metodo_pago" placeholder="Método de Pago" class="input" />
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="prestamo_id" class="form-label">Préstamo ID</label>
-      <input type="text" id="prestamo_id" formControlName="prestamo_id" class="form-control" required />
-    </div>
+  <div class="button-group">
+    <button type="submit" class="btn primary">{{ pago ? 'Actualizar' : 'Crear' }}</button>
+    <button type="button" (click)="onCancel()" class="btn secondary">Cancelar</button>
+  </div>
+</form>
 
-    <div class="mb-3">
-      <label for="fecha_pago" class="form-label">Fecha de Pago</label>
-      <input type="date" id="fecha_pago" formControlName="fecha_pago" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="monto_pagado" class="form-label">Monto Pagado</label>
-      <input type="number" id="monto_pagado" formControlName="monto_pagado" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="cuota_numero" class="form-label">Cuota Número</label>
-      <input type="number" id="cuota_numero" formControlName="cuota_numero" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="metodo_pago" class="form-label">Método de Pago</label>
-      <input type="text" id="metodo_pago" formControlName="metodo_pago" class="form-control" required />
-    </div>
-
-    <button type="submit" class="btn btn-success me-2">
-      {{ isEdit ? 'Actualizar' : 'Guardar' }}
-    </button>
-    <a routerLink="/historial-pagos" class="btn btn-secondary">Cancelar</a>
-  </form>
-</div>

@@ -1,46 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HistorialPago } from '../../../interfaces/historial-pago.model';
 import { HistorialPagosService } from '../../../services/historial-pagos.service';
-import { DatePipe, NgFor, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { NgFor } from '@angular/common';
+import { HistorialPagosFormComponent } from '../historial-pagos-form/historial-pagos-form.component';
 
 @Component({
   selector: 'app-historial-pagos-list',
-  imports: [NgFor,RouterLink,DatePipe],
+  imports: [NgFor,HistorialPagosFormComponent],
   templateUrl: './historial-pagos-list.component.html',
-  styleUrl: './historial-pagos-list.component.css'
+  styleUrl: './historial-pagos-list.component.css',
 })
 export class HistorialPagosListComponent implements OnInit {
+  historialPagos: HistorialPago[] = [];
+  selectedPago: HistorialPago | null = null;
 
-  pagos:HistorialPago[]=[];
-  loading = false;
+  constructor(private pagosService: HistorialPagosService) {}
 
-
-  constructor(private pagosService: HistorialPagosService) {
-  
+  ngOnInit(): void {
+    this.loadHistorialPagos();
   }
 
-  async ngOnInit() {
-    this.loading = true;
-  try {
-    this.pagos = await this.pagosService.getAll();
-    console.log('Datos de pagos cargados:', this.pagos); // ← Aquí
-  } catch (error) {
-    console.error('Error cargando pagos:', error);
-  } finally {
-    this.loading = false; // Se ejecuta siempre (éxito o error)
+  loadHistorialPagos(): void {
+    this.pagosService.getAll().then((pagos) => {
+      this.historialPagos = pagos;
+    });
   }
 
+  selectHistorialPago(pago: HistorialPago): void {
+    this.selectedPago = { ...pago };
   }
 
-  async deletePago(id: string) {
-    if (confirm('¿Deseas eliminar este pago?')) {
-      try {
-        await this.pagosService.delete(id);
-        this.pagos = this.pagos.filter(p => p.id !== id);
-      } catch (error) {
-        console.error('Error al eliminar:', error);
-      }
+  deleteHistorialPago(id: string): void {
+    if (confirm('¿Estás seguro de eliminar este pago?')) {
+      this.pagosService.delete(id).then(() => {
+        this.loadHistorialPagos();
+      });
     }
   }
+
+  clearForm(): void {
+    this.selectedPago = null;
+  }
+
 }
