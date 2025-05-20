@@ -14,19 +14,31 @@ import { ReservasClientesComponent } from './client/vista_Cliente/reservas-clien
 
 
 export const routes: Routes = [
-  //Rutas publicas
-  {path: 'simulador-creditos', component: SimuladorCreditosComponent},
-  {path: 'reservas', component: ReservasClientesComponent },
-  {path: 'register', component: RegisterUserComponent},
+  // Rutas públicas
+  { path: 'simulador-creditos', component: SimuladorCreditosComponent },
+  { path: 'reservas', component: ReservasClientesComponent },
+  { path: 'register', component: RegisterUserComponent },
 
-  //Rutas protegidas
-  { path: 'admin-panel', component: PanelControlAdminComponent, canActivate: [AdminGuard] },
-  { path: 'socio-panel', component: SocioPanelComponent, canActivate: [SocioGuard] },
-  { path: 'profile', component: ProfileUserComponent, canActivate: [AuthGuard] },
+  // Rutas protegidas
+  { 
+    path: 'admin-panel', 
+    component: PanelControlAdminComponent, 
+    canActivate: [AdminGuard] 
+  },
+  { 
+    path: 'socio-panel', 
+    component: SocioPanelComponent, 
+    canActivate: [SocioGuard] 
+  },
+  { 
+    path: 'profile', 
+    component: ProfileUserComponent, 
+    canActivate: [AuthGuard] 
+  },
   { path: 'login', component: LoginUserComponent },
 
   // Redirecciones
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirige a login si no encuentra la ruta
-  { path: '**', redirectTo: '/login' } // Ruta comodin
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login' }
   
 ];
