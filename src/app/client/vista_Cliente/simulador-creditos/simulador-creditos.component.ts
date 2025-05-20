@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 
 //Importaciones para exportar en excel
-import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import * as ExcelJS from 'exceljs';
 
 @Component({
   selector: 'app-simulador-creditos',
@@ -225,22 +225,42 @@ export class SimuladorCreditosComponent {
   }
 
   exportToExcel(): void {
-    alert('Exportando a Excel...');
-    const worksheet = XLSX.utils.json_to_sheet(this.paymentSchedule);
-    const workbook = {
-      Sheets: { Cronograma: worksheet },
-      SheetNames: ['Cronograma'],
-    };
-    const excelBuffer: any = XLSX.write(workbook, {
-      bookType: 'xlsx',
-      type: 'array',
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Cronograma');
+
+    // Añadir cabeceras
+    worksheet.columns = [
+      { header: 'N°', key: 'number', width: 10 },
+      { header: 'Fecha', key: 'date', width: 15 },
+      { header: 'Cuota', key: 'installment', width: 15 },
+      { header: 'Interés', key: 'interest', width: 15 },
+      { header: 'Capital', key: 'principal', width: 15 },
+      { header: 'Saldo', key: 'balance', width: 15 },
+      { header: 'Seguro', key: 'insurance', width: 15 },
+      { header: 'Seguro Bien', key: 'propertyInsurance', width: 20 },
+    ];
+
+    // Agregar datos
+    this.paymentSchedule.forEach((item) => {
+      worksheet.addRow({
+        number: item.number,
+        date: item.date,
+        installment: item.installment,
+        interest: item.interest,
+        principal: item.principal,
+        balance: item.balance,
+        insurance: item.insurance,
+        propertyInsurance: item.propertyInsurance,
+      });
     });
 
-    const fileName = 'cronograma_pagos.xlsx';
-    const data: Blob = new Blob([excelBuffer], {
-      type: 'application/octet-stream',
+    // Exportar el archivo
+    workbook.xlsx.writeBuffer().then((data) => {
+      const blob = new Blob([data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+      FileSaver.saveAs(blob, 'cronograma_creditos.xlsx');
     });
-    FileSaver.saveAs(data, fileName);
   }
 
   resetForm() {
