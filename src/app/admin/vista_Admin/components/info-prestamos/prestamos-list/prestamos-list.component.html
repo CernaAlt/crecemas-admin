@@ -1,0 +1,32 @@
+<div class="container">
+  <h2>Lista de Préstamos</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Monto</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of prestamos">
+        <td>{{ p.id }}</td>
+        <td>{{ p.monto }}</td>
+        <td>{{ p.estado }}</td>
+        <td>
+          <button (click)="selectPrestamo(p)">Editar</button>
+          <button (click)="deletePrestamo(p.id!)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+  <app-prestamos-form
+    [prestamo]="selectedPrestamo"
+    (formSaved)="loadPrestamos(); clearForm()"
+    (cancel)="clearForm()"
+  ></app-prestamos-form>
+</div>

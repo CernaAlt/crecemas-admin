@@ -9,11 +9,26 @@ import { AdminGuard } from './guards/admin.guard';
 import { SocioGuard } from './guards/socio.guard';
 import { SocioPanelComponent } from './socio/components/socio-panel/socio-panel.component';
 import { ReservasClientesComponent } from './client/vista_Cliente/reservas-clientes/reservas-clientes.component';
+import { HistorialPagosListComponent } from './admin/vista_Admin/components/info-pagos/historial-pagos-list/historial-pagos-list.component';
+import { HistorialPagosFormComponent } from './admin/vista_Admin/components/info-pagos/historial-pagos-form/historial-pagos-form.component';
+import { PrestamosListComponent } from './admin/vista_Admin/components/info-prestamos/prestamos-list/prestamos-list.component';
 
 
 
 
 export const routes: Routes = [
+
+  //Rutas nuevas prestamo
+  { path: 'prestamos', component: PrestamosListComponent },
+
+  //Rutas nuevas pagos
+  { path: 'historial-pagos', component: HistorialPagosListComponent },
+  { path: 'historial-pagos/nuevo', component: HistorialPagosFormComponent },
+  { path: 'historial-pagos/editar/:id', component: HistorialPagosFormComponent },
+  
+  
+  
+  
   // Rutas públicas
   { path: 'simulador-creditos', component: SimuladorCreditosComponent },
   { path: 'reservas', component: ReservasClientesComponent },

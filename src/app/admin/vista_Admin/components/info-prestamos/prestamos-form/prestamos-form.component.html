@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input formControlName="socio_id" placeholder="Socio ID" />
+  <input formControlName="monto" type="number" placeholder="Monto" />
+  <input formControlName="cuotas_totales" type="number" placeholder="Cuotas Totales" />
+  <input formControlName="cuotas_pagadas" type="number" placeholder="Cuotas Pagadas" />
+  <input formControlName="fecha_inicio" type="date" />
+  <input formControlName="fecha_fin" type="date" />
+  <input formControlName="estado" placeholder="Estado" />
+  <button type="submit">{{ prestamo ? 'Actualizar' : 'Crear' }}</button>
+  <button type="button" (click)="onCancel()">Cancelar</button>
+</form>

@@ -36,6 +36,7 @@ export class SociosListComponent {
 
   async ngOnInit() {
     await this.cargarDatosIniciales();
+    console.log("Usuarios", this.usuarios);
   }
 
   async cargarDatosIniciales() {
