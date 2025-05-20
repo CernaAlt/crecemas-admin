@@ -7,10 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-//Importaciones para exportar en excel
-import * as FileSaver from 'file-saver';
-import * as ExcelJS from 'exceljs';
-
 @Component({
   selector: 'app-simulador-creditos',
   imports: [ReactiveFormsModule, NgFor, NgIf],
@@ -224,11 +220,13 @@ export class SimuladorCreditosComponent {
     // This would be implemented with a PDF library like jsPDF
   }
 
-  exportToExcel(): void {
+  async exportToExcel(): Promise<void> {
+    const ExcelJS = await import('exceljs');
+    const FileSaver = await import('file-saver');
+
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Cronograma');
 
-    // Añadir cabeceras
     worksheet.columns = [
       { header: 'N°', key: 'number', width: 10 },
       { header: 'Fecha', key: 'date', width: 15 },
@@ -240,7 +238,6 @@ export class SimuladorCreditosComponent {
       { header: 'Seguro Bien', key: 'propertyInsurance', width: 20 },
     ];
 
-    // Agregar datos
     this.paymentSchedule.forEach((item) => {
       worksheet.addRow({
         number: item.number,
@@ -254,13 +251,11 @@ export class SimuladorCreditosComponent {
       });
     });
 
-    // Exportar el archivo
-    workbook.xlsx.writeBuffer().then((data) => {
-      const blob = new Blob([data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      FileSaver.saveAs(blob, 'cronograma_creditos.xlsx');
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
+    FileSaver.saveAs(blob, 'cronograma_creditos.xlsx');
   }
 
   resetForm() {
