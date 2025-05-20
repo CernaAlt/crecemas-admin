@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 
 import { routes } from './app.routes';
 import { AuthGuard } from './guards/auth.guard';
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     ],
 
     [ConfirmationService], // ✅ Aquí registramos el servicio
-    [BrowserAnimationsModule] // ✅ Aquí es importante
+    [BrowserAnimationsModule], // ✅ Aquí es importante
   
   ]
 

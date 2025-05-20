@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { RolesService } from '../../services/roles.service';
 import { NgFor, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-register-user',
   imports: [FormsModule, NgFor, NgIf],
+  standalone: true,
   templateUrl: './register-user.component.html',
   styleUrl: './register-user.component.css'
 })
@@ -37,8 +38,9 @@ export class RegisterUserComponent {
   constructor(
     private authService: AuthService,
     private rolesService: RolesService,
-    private router: Router) {
-      this.loadRoles();
+    @Inject(Router) private router: Router
+  ) {
+    this.loadRoles();
   }
 
   // Cargar roles al inicializar el componente
