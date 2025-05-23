@@ -12,15 +12,14 @@ import { supabase } from '../../../../../supabase/supabase-client';
 })
 // Este componente muestra el historial de pagos de un préstamo específico. Componente Hijo
 export class HistorialPagosListComponent implements OnInit {
-  @Input() prestamo: Prestamo | null = null; 
+  @Input() prestamo: Prestamo | null = null;
   cuotas: HistorialPago[] = [];
   loading = true;
   errorMessage: string | null = null;
 
   async ngOnInit() {
-
     // Verifica si prestamo no es null y tiene id
-    if (this.prestamo?.id) { 
+    if (this.prestamo?.id) {
       await this.loadCuotas(this.prestamo.id);
     }
   }
@@ -48,21 +47,21 @@ export class HistorialPagosListComponent implements OnInit {
 
   async pagarCuota(cuota: HistorialPago) {
     this.errorMessage = null;
-    
+
     try {
       const { error } = await supabase
         .from('historial_pagos')
         .update({
           estado: 'Pagado',
           fecha_pago_real: new Date().toISOString(),
-          metodo_pago: 'Efectivo'
+          metodo_pago: 'Efectivo',
         })
         .eq('id', cuota.id);
 
       if (error) throw error;
 
       // Actualiza el estado de la cuota en el array local
-      await this.loadCuotas(this.prestamo!.id!); 
+      await this.loadCuotas(this.prestamo!.id!);
       await this.actualizarPrestamo();
     } catch (error) {
       console.error('Error al pagar cuota:', error);
@@ -70,10 +69,11 @@ export class HistorialPagosListComponent implements OnInit {
     }
   }
 
-
   private async actualizarPrestamo() {
-    const cuotasPagadas = this.cuotas.filter(c => c.estado === 'Pagado').length;
-    
+    const cuotasPagadas = this.cuotas.filter(
+      (c) => c.estado === 'Pagado'
+    ).length;
+
     try {
       const { error } = await supabase
         .from('prestamos')

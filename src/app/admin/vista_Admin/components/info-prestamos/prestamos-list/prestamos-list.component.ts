@@ -16,7 +16,7 @@ export class PrestamosListComponent implements OnInit {
   prestamos: Prestamo[] = [];
   selectedPrestamo: Prestamo | null = null;
   // Nueva propiedad para el préstamo seleccionado para pasar el cronograma de pagos
-  prestamoParaHistorial: Prestamo | null = null; // Nueva propiedad
+  prestamoParaHistorial: Prestamo | null = null; 
 
   constructor(
     private prestamosService: PrestamosService,

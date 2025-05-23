@@ -1,3 +1,4 @@
+<!--
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <select formControlName="socio_id">
     <option value="" disabled selected>Seleccione un socio</option>
@@ -31,3 +32,68 @@
   <button type="submit">{{ prestamo ? "Actualizar" : "Crear" }}</button>
   <button type="button" (click)="onCancel()">Cancelar</button>
 </form>
+
+-->
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Selección del socio -->
+  <select formControlName="socio_id">
+    <option value="" disabled selected>Seleccione un socio</option>
+    <option *ngFor="let socio of socios" [value]="socio.id">
+      {{ socio.id }} - {{ socio.usuario?.nombre }}
+      {{ socio.usuario?.apellido }} - {{ socio.usuario?.dni }}
+    </option>
+  </select>
+
+  <!-- Datos financieros -->
+  <label>Producto</label>
+  <input
+    formControlName="producto"
+    placeholder="Ej: Préstamo Libre Disponibilidad"
+  />
+
+  <label>Tipo de Seguro</label>
+  <input
+    formControlName="tipo_seguro"
+    placeholder="Ej: Convencional Individual"
+  />
+
+  <label>Monto</label>
+  <input formControlName="monto" type="number" placeholder="Monto" />
+
+  <label>Cuotas Totales</label>
+  <input
+    formControlName="cuotas_totales"
+    type="number"
+    placeholder="Cuotas Totales"
+  />
+
+  <label>Interés Anual (%)</label>
+  <input
+    formControlName="interes_anual"
+    type="number"
+    step="0.01"
+    placeholder="Interés Anual (%)"
+  />
+
+  <label>Tasa de Seguro de Desgravamen (%)</label>
+  <input
+    formControlName="tasa_seguro"
+    type="number"
+    step="0.001"
+    placeholder="Tasa Seguro"
+  />
+
+  <!-- Fecha de inicio -->
+  <label>Fecha de Inicio</label>
+  <input formControlName="fecha_inicio" type="date" />
+
+  <!-- Botones -->
+  <button type="submit">{{ prestamo ? "Actualizar" : "Crear" }}</button>
+  <button type="button" (click)="onCancel()">Cancelar</button>
+</form>
+
+<!-- Mostrar TCEA solo si está disponible -->
+<div *ngIf="tceaReferencial !== null">
+  <strong>TCEA Referencial:</strong> {{ tceaReferencial }}%
+</div>

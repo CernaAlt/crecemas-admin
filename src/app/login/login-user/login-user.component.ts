@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { supabase } from '../../supabase/supabase-client';
 
 @Component({
@@ -17,7 +16,6 @@ export class LoginUserComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
   ) {
 
   }

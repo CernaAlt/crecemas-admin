@@ -38,21 +38,9 @@ export class PrestamosService {
     return data;
   }
 
-  /*async create(prestamo: Prestamo): Promise<Prestamo> {
-    const { data, error } = await supabase
-      .from(this.table)
-      .insert(prestamo)
-      .select()
-      .single();
-    if (error) throw error;
-    return data;
-  }*/
-
-  // En prestamos.service.ts
   async create(
     prestamo: Prestamo
   ): Promise<{ prestamo: Prestamo; cuotas: HistorialPago[] }> {
-    // Validación básica
     if (
       !prestamo.socio_id ||
       prestamo.monto <= 0 ||
@@ -61,25 +49,79 @@ export class PrestamosService {
       throw new Error('Datos del préstamo inválidos');
     }
 
+    const tasaInteresAnual = prestamo.interes_anual / 100; // ej. 0.05
+    const tasaMensual = Math.pow(1 + tasaInteresAnual, 1 / 12) - 1;
+
+    const tasaSeguroAnual = prestamo.tasa_seguro ?? 0.069;
+    const tasaSeguroMensual = tasaSeguroAnual / 12;
+
+    const monto = prestamo.monto;
+    const cuotas = prestamo.cuotas_totales;
+
+    const cuotaMensual =
+      monto * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -cuotas)));
+    const cuotaConSeguro = cuotaMensual + monto * tasaSeguroMensual;
+
+    // Cálculo TCEA referencial
+    const flujoInicial = -monto;
+    const flujos = Array(cuotas).fill(cuotaConSeguro);
+    const todosFlujos = [flujoInicial, ...flujos];
+
+    const tcea = this.calcularTIR(todosFlujos) * 12; // anualizar
+
+    // valores automáticos
+    prestamo.cuotas_pagadas = 0;
+    prestamo.estado = 'Activo';
+    prestamo.tcea = parseFloat((tcea * 100).toFixed(2)); // en porcentaje
+    prestamo.fecha_fin = this.calcularFechaFin(prestamo.fecha_inicio, cuotas);
+
     const { data, error } = await supabase
       .from(this.table)
       .insert(prestamo)
       .select()
       .single();
+    if (error) throw new Error('No se pudo crear el préstamo');
 
-    if (error) {
-      console.error('Error al crear préstamo:', error);
-      throw new Error('No se pudo crear el préstamo');
-    }
-
-    const cuotas = await this.generarCuotas(
+    const cuotasGeneradas = await this.generarCuotas(
       data.id,
-      data.monto,
-      data.cuotas_totales,
-      data.fecha_inicio
+      monto,
+      cuotas,
+      prestamo.fecha_inicio,
+      prestamo.interes_anual,
+      prestamo.tasa_seguro ?? 0.069
     );
 
-    return { prestamo: data, cuotas };
+    return { prestamo: data, cuotas: cuotasGeneradas };
+  }
+
+  //Función para calcular TIR (Tasa Interna de Retorno)
+  private calcularTIR(flujos: number[], guess = 0.05): number {
+    const maxIter = 1000;
+    const precision = 1e-6;
+    let tasa = guess;
+
+    for (let i = 0; i < maxIter; i++) {
+      let f = 0;
+      let df = 0;
+
+      for (let t = 0; t < flujos.length; t++) {
+        f += flujos[t] / Math.pow(1 + tasa, t);
+        df -= (t * flujos[t]) / Math.pow(1 + tasa, t + 1);
+      }
+
+      const nuevaTasa = tasa - f / df;
+      if (Math.abs(nuevaTasa - tasa) < precision) return nuevaTasa;
+      tasa = nuevaTasa;
+    }
+
+    throw new Error('No se pudo calcular la TIR');
+  }
+
+  //Función para calcular fecha de fin automáticamente
+  private calcularFechaFin(fechaInicio: string, cuotas: number): string {
+    const fecha = new Date(fechaInicio);
+    fecha.setMonth(fecha.getMonth() + cuotas);
+    return fecha.toISOString().split('T')[0];
   }
 
   // Método para generar las cuotas automáticamente
@@ -87,13 +129,29 @@ export class PrestamosService {
     prestamoId: string,
     montoTotal: number,
     cuotasTotales: number,
-    fechaInicio: string
+    fechaInicio: string,
+    interesAnual: number,
+    tasaSeguroAnual: number
   ): Promise<HistorialPago[]> {
-    const montoCuota = montoTotal / cuotasTotales;
+    const tasaInteresMensual = Math.pow(1 + interesAnual / 100, 1 / 12) - 1;
+    const tasaSeguroMensual = tasaSeguroAnual / 12;
+
+    const cuotaMensual =
+      montoTotal *
+      (tasaInteresMensual /
+        (1 - Math.pow(1 + tasaInteresMensual, -cuotasTotales)));
+
+    let saldoPendiente = montoTotal;
     const cuotas: HistorialPago[] = [];
     const fechaInicioObj = new Date(fechaInicio);
 
     for (let i = 1; i <= cuotasTotales; i++) {
+      const interes = saldoPendiente * tasaInteresMensual;
+      const amortizacion = cuotaMensual - interes;
+      const comisiones_seguros = montoTotal * tasaSeguroMensual;
+      const subvencion = 0; // podrías aplicar lógica real si corresponde
+      const monto_pagado = cuotaMensual + comisiones_seguros;
+
       const fechaPago = new Date(fechaInicioObj);
       fechaPago.setMonth(fechaInicioObj.getMonth() + i);
 
@@ -102,18 +160,25 @@ export class PrestamosService {
         .insert({
           prestamo_id: prestamoId,
           fecha_pago: fechaPago.toISOString().split('T')[0],
-          monto_pagado: parseFloat(montoCuota.toFixed(2)),
+          monto_pagado: parseFloat(monto_pagado.toFixed(2)),
           cuota_numero: i,
           metodo_pago: 'Pendiente',
           estado: 'Pendiente',
+          amortizacion: parseFloat(amortizacion.toFixed(2)),
+          interes: parseFloat(interes.toFixed(2)),
+          comisiones_seguros: parseFloat(comisiones_seguros.toFixed(2)),
+          subvencion: parseFloat(subvencion.toFixed(2)),
+          saldo: parseFloat((saldoPendiente - amortizacion).toFixed(2)),
         })
         .select()
         .single();
 
       if (error) {
         console.error(`Error creando cuota ${i}:`, error);
-        continue; // Continuar con las siguientes cuotas
+        continue;
       }
+
+      saldoPendiente -= amortizacion;
 
       if (data) cuotas.push(data);
     }
@@ -121,6 +186,7 @@ export class PrestamosService {
     return cuotas;
   }
 
+  // Método para actualizar un préstamo
   async update(id: string, prestamo: Partial<Prestamo>): Promise<Prestamo> {
     const { data, error } = await supabase
       .from(this.table)
@@ -132,6 +198,7 @@ export class PrestamosService {
     return data;
   }
 
+  // Método para eliminar un préstamo
   async delete(id: string): Promise<void> {
     const { error } = await supabase.from(this.table).delete().eq('id', id);
     if (error) throw error;

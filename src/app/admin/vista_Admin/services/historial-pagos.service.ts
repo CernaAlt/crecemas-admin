@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HistorialPago } from '../interfaces/historial-pago.model';
 import { supabase } from '../../../supabase/supabase-client';
-import { PrestamosService } from './prestamos.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,15 +42,4 @@ export class HistorialPagosService {
     if (error) throw error;
   }
 
-  // historial-pagos.service.ts
-  async getCuotasPagadasPorPrestamo(prestamoId: string): Promise<number[]> {
-    const { data, error } = await supabase
-      .from(this.table)
-      .select('cuota_numero')
-      .eq('prestamo_id', prestamoId);
-
-    if (error) throw error;
-
-    return (data || []).map((p) => p.cuota_numero);
-  }
 }

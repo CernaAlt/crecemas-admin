@@ -98,24 +98,6 @@ export class RolesService {
     }
   }
 
-  // ✅ Obtener un rol por ID
-  /*async getRoleById(roleId: string) {
-    // Verificamos si se recibió un ID
-    if (!roleId) {
-      throw new Error('El ID del rol es requerido');
-    }
-
-    // Consulta a Supabase para obtener el rol
-    const { data, error } = await supabase
-      .from('roles')
-      .select('*')
-      .eq('id', roleId)
-      .single(); // 👈 Esto asegura que solo devuelva un único registro
-
-    if (error) throw error;
-
-    return data; // Devuelve el rol encontrado
-  }*/
 
   /**
    * ✅ Obtiene un rol por su ID de forma asíncrona.

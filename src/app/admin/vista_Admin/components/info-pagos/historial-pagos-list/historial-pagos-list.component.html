@@ -1,54 +1,17 @@
-
-<!---
-<div class="container">
-  <h2>Historial de Pagos</h2>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Monto Pagado</th>
-        <th>Cuota Nº</th>
-        <th>Método</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let h of historialPagos">
-        <td>{{ h.fecha_pago }}</td>
-        <td>{{ h.monto_pagado }}</td>
-        <td>{{ h.cuota_numero }}</td>
-        <td>{{ h.metodo_pago }}</td>
-        <td>
-          <button class="btn secondary" (click)="selectHistorialPago(h)">Editar</button>
-          <button class="btn danger" (click)="deleteHistorialPago(h.id!)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <hr />
-  <app-historial-pagos-form
-    [pago]="selectedPago"
-    (formSaved)="loadHistorialPagos(); clearForm()"
-    (cancel)="clearForm()"
-  ></app-historial-pagos-form>
-</div>
-
-
--->
-
 <!-- historial-pagos.component.html -->
 <div class="card" *ngIf="prestamo">
   <div class="card-header">
-    <h4>Historial de Pagos</h4>
-    <p *ngIf="prestamo.id">Préstamo: {{prestamo.id}} - S/ {{prestamo.monto | number}}</p>
+    <p *ngIf="prestamo">
+      Usuario: {{ prestamo.socio?.usuario?.nombre }} <br />
+      Socio: {{ prestamo.socio?.usuario?.dni }} <br />
+      Monto Prestamo S/: {{ prestamo.monto | number }} <br />
+    </p>
   </div>
-  
+
   <div class="card-body">
     <!-- Mensaje de error general -->
     <div *ngIf="errorMessage" class="alert alert-danger">
-      {{errorMessage}}
+      {{ errorMessage }}
     </div>
 
     <!-- Spinner de carga -->
@@ -62,31 +25,49 @@
     <!-- Tabla de cuotas -->
     <div *ngIf="!loading">
       <table class="table table-striped">
-        <thead>
+        <thead class="table-light">
           <tr>
             <th># Cuota</th>
-            <th>Fecha Pago</th>
-            <th>Monto</th>
+            <th>Vencimiento</th>
+            <th>Amortización</th>
+            <th>Interés</th>
+            <th>Comisiones + Seguros</th>
+            <th>Subvención</th>
+            <th>Cuota</th>
+            <th>Saldo</th>
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let cuota of cuotas">
-            <td>{{cuota.cuota_numero}}</td>
-            <td>{{cuota.fecha_pago | date:'dd/MM/yyyy'}}</td>
-            <td>S/ {{cuota.monto_pagado | number:'1.2-2'}}</td>
+            <td>{{ cuota.cuota_numero }}</td>
+            <td>{{ cuota.fecha_pago | date : "dd/MM/yyyy" }}</td>
+            <td>S/ {{ cuota.amortizacion | number : "1.2-2" }}</td>
+            <td>S/ {{ cuota.interes | number : "1.2-2" }}</td>
+            <td>S/ {{ cuota.comisiones_seguros | number : "1.2-2" }}</td>
+            <td>S/ {{ cuota.subvencion | number : "1.2-2" }}</td>
+            <td>S/ {{ cuota.monto_pagado | number : "1.2-2" }}</td>
+            <td>S/ {{ cuota.saldo | number : "1.2-2" }}</td>
             <td>
-              <span [class]="cuota.estado === 'Pagado' ? 'badge bg-success' : 'badge bg-warning'">
-                {{cuota.estado}}
+              <span
+                [class]="
+                  cuota.estado === 'Pagado'
+                    ? 'badge bg-success'
+                    : 'badge bg-warning'
+                "
+              >
+                {{ cuota.estado }}
               </span>
             </td>
             <td>
-              <button *ngIf="cuota.estado === 'Pendiente'" 
-                      (click)="pagarCuota(cuota)"
-                      class="btn btn-sm btn-primary"
-                      [disabled]="loading">
-                {{loading ? 'Procesando...' : 'Registrar Pago'}}
+              <button
+                *ngIf="cuota.estado === 'Pendiente'"
+                (click)="pagarCuota(cuota)"
+                class="btn btn-sm btn-primary"
+                [disabled]="loading"
+              >
+                {{ loading ? "Procesando..." : "Registrar Pago" }}
               </button>
             </td>
           </tr>
@@ -99,9 +80,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
