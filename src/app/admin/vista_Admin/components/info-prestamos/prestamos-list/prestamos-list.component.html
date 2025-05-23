@@ -1,3 +1,4 @@
+<!---
 <div class="container">
   <h2>Lista de Préstamos</h2>
 
@@ -5,6 +6,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Socio</th>
         <th>Monto</th>
         <th>Estado</th>
         <th>Acciones</th>
@@ -13,6 +15,8 @@
     <tbody>
       <tr *ngFor="let p of prestamos">
         <td>{{ p.id }}</td>
+        <td>{{ p.socio?.usuario?.nombre }} - {{ p.socio?.usuario?.dni }}</td>
+        
         <td>{{ p.monto }}</td>
         <td>{{ p.estado }}</td>
         <td>
@@ -30,3 +34,61 @@
     (cancel)="clearForm()"
   ></app-prestamos-form>
 </div>
+
+-->
+
+<div class="container">
+  <h2>Lista de Préstamos</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Socio</th>
+        <th>Monto</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of prestamos">
+        <td>{{ p.id }}</td>
+        <td>{{ p.socio?.usuario?.nombre }} - {{ p.socio?.usuario?.dni }}</td>
+        <td>S/ {{ p.monto | number }}</td>
+        <td>
+          <span [class]="'badge ' + (p.estado === 'Activo' ? 'bg-success' : 'bg-warning')">
+            {{ p.estado }}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="selectPrestamo(p)">
+            Editar
+          </button>
+          <button class="btn btn-sm btn-danger ms-2" (click)="deletePrestamo(p.id!)">
+            Eliminar
+          </button>
+          <button class="btn btn-sm btn-info ms-2" (click)="verHistorial(p)">
+            Ver Historial
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- Formulario de préstamos -->
+  <app-prestamos-form
+    [prestamo]="selectedPrestamo"
+    (formSaved)="loadPrestamos(); clearForm()"
+    (cancel)="clearForm()"
+  ></app-prestamos-form>
+
+  <!-- Historial de pagos (solo visible cuando hay préstamo seleccionado) -->
+  <div *ngIf="prestamoParaHistorial" class="mt-4">
+    <h3>Historial de Pagos</h3>
+    <app-historial-pagos-list [prestamo]="prestamoParaHistorial"></app-historial-pagos-list>
+  </div>
+</div>
+
+

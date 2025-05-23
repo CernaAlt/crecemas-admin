@@ -19,7 +19,7 @@
         class="p-button-rounded p-button-text ml-2"
         (click)="cargarDatosIniciales()"
         [disabled]="loading"
-      ></button>
+      >recargar</button>
     </div>
     <div class="col-12 md:col-6 text-right">
       <button
@@ -88,6 +88,7 @@
       <div class="col-12">
         <label for="usuario_id">Usuario*</label>
         <p-dropdown
+          id="usuarioDropdown" 
           [options]="usuarios"
           [(ngModel)]="socioSeleccionado.usuario_id"
           [optionLabel]="'nombre'"
@@ -102,6 +103,7 @@
           </ng-template>
         </p-dropdown>
       </div>
+      
       <div class="col-12 md:col-6">
         <label for="lugar_trabajo">Lugar de Trabajo*</label>
         <input

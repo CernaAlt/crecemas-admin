@@ -9,7 +9,6 @@ import { AdminGuard } from './guards/admin.guard';
 import { SocioGuard } from './guards/socio.guard';
 import { SocioPanelComponent } from './socio/components/socio-panel/socio-panel.component';
 import { ReservasClientesComponent } from './client/vista_Cliente/reservas-clientes/reservas-clientes.component';
-import { HistorialPagosListComponent } from './admin/vista_Admin/components/info-pagos/historial-pagos-list/historial-pagos-list.component';
 import { PrestamosListComponent } from './admin/vista_Admin/components/info-prestamos/prestamos-list/prestamos-list.component';
 
 
@@ -17,9 +16,6 @@ export const routes: Routes = [
 
   //Rutas nuevas prestamo
   { path: 'prestamos', component: PrestamosListComponent },
-
-  //Rutas nuevas pagos
-  { path: 'historial-pagos', component: HistorialPagosListComponent },
   
   
   

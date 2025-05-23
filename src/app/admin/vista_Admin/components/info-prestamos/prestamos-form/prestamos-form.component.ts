@@ -13,10 +13,12 @@ import {
 } from '@angular/forms';
 import { PrestamosService } from '../../../services/prestamos.service';
 import { Prestamo } from '../../../interfaces/Prestamo';
+import { SociosService } from '../../../services/socios.service';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-prestamos-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgFor],
   templateUrl: './prestamos-form.component.html',
   styleUrl: './prestamos-form.component.css',
 })
@@ -26,8 +28,13 @@ export class PrestamosFormComponent {
   @Output() cancel = new EventEmitter<void>();
 
   form: FormGroup;
+  socios: any[] = []; // Aquí puedes definir el tipo de datos según tu modelo
 
-  constructor(private fb: FormBuilder, private service: PrestamosService) {
+  constructor(
+    private fb: FormBuilder, 
+    private service: PrestamosService,
+    private sociosService: SociosService
+  ) {
     this.form = this.fb.group({
       socio_id: ['', [Validators.required]], // ✔ Validadores síncronos en un array
       monto: [0, [Validators.required, Validators.min(50)]], // ✔ Correcto
@@ -38,6 +45,15 @@ export class PrestamosFormComponent {
       estado: ['', [Validators.required]], // ✔
     });
   }
+
+  async ngOnInit() {
+    await this.sociosService.cargarSocios();
+
+    this.sociosService.socios$.subscribe((socios) => {
+      this.socios = socios;
+    });
+  }
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['prestamo'] && this.prestamo) {

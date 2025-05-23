@@ -164,3 +164,72 @@ button.p-button-text:hover {
 }
 
 
+/* Estilos específicos para el dropdown de usuario */
+#usuarioDropdown {
+  width: 100%;
+}
+
+/* Fondo sólido para el control */
+#usuarioDropdown .p-dropdown {
+  background: #ffffff !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 8px !important;
+  transition: all 0.3s;
+}
+
+/* Fondo del panel desplegable */
+#usuarioDropdown .p-dropdown-panel {
+  background: #ffffff !important;
+  border: 1px solid #ced4da !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+}
+
+/* Items del dropdown */
+#usuarioDropdown .p-dropdown-items-wrapper {
+  background: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+#usuarioDropdown .p-dropdown-items .p-dropdown-item {
+  background: #ffffff !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 0.75rem 1.25rem !important;
+  margin: 0 !important;
+}
+
+#usuarioDropdown .p-dropdown-items .p-dropdown-item:hover {
+  background: #f8f9fa !important;
+}
+
+#usuarioDropdown .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #007bff !important;
+  color: #ffffff !important;
+}
+
+/* Label del dropdown */
+#usuarioDropdown .p-dropdown-label {
+  background: transparent !important;
+  padding: 0.6rem !important;
+}
+
+/* Input filter si está activo */
+#usuarioDropdown .p-dropdown-filter {
+  background: #ffffff !important;
+  padding: 0.5rem !important;
+}
+
+
+/* Solución nuclear - elimina cualquier posible transparencia */
+#usuarioDropdown .p-dropdown,
+#usuarioDropdown .p-dropdown * {
+  background-color: white !important;
+  opacity: 1 !important;
+  background-image: none !important;
+}
+
+#usuarioDropdown .p-dropdown-panel {
+  background: white !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

@@ -1,11 +1,33 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <input formControlName="socio_id" placeholder="Socio ID" />
+  <select formControlName="socio_id">
+    <option value="" disabled selected>Seleccione un socio</option>
+    <option *ngFor="let socio of socios" [value]="socio.id">
+      {{ socio.id }} - {{ socio.usuario?.nombre }} - {{ socio.usuario?.apellido }} -{{ socio.usuario?.dni }}
+    </option>
+  </select>
+
+  <label>Monto</label>
   <input formControlName="monto" type="number" placeholder="Monto" />
-  <input formControlName="cuotas_totales" type="number" placeholder="Cuotas Totales" />
-  <input formControlName="cuotas_pagadas" type="number" placeholder="Cuotas Pagadas" />
+
+  <label>Cuotas Totales</label>
+  <input
+    formControlName="cuotas_totales"
+    type="number"
+    placeholder="Cuotas Totales"
+  />
+
+  <label>Cuotas Pagadas</label>
+  <input
+    formControlName="cuotas_pagadas"
+    type="number"
+    placeholder="Cuotas Pagadas"
+  />
+  <label>Fecha de Inicio</label>
   <input formControlName="fecha_inicio" type="date" />
+  <label>Fecha de Fin</label>
   <input formControlName="fecha_fin" type="date" />
+  <label>Estado</label>
   <input formControlName="estado" placeholder="Estado" />
-  <button type="submit">{{ prestamo ? 'Actualizar' : 'Crear' }}</button>
+  <button type="submit">{{ prestamo ? "Actualizar" : "Crear" }}</button>
   <button type="button" (click)="onCancel()">Cancelar</button>
 </form>

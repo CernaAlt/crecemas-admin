@@ -6,7 +6,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +15,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAnimations(),
+    //provideAnimations(),
+    provideAnimationsAsync(),
+
+    providePrimeNG({}),
+
     [AuthGuard,
       {
         provide: HTTP_INTERCEPTORS,
@@ -25,9 +30,6 @@ export const appConfig: ApplicationConfig = {
       MessageService
     ],
 
-    //[ConfirmationService], // ✅ Aquí registramos el servicio
-    //[BrowserAnimationsModule], // ✅ Aquí es importante
-  
   ]
 };
 

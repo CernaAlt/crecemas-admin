@@ -41,7 +41,7 @@ export class SociosListComponent {
     private sociosService: SociosService,
     private usuariosService: UsuariosService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {}
 
   async ngOnInit() {

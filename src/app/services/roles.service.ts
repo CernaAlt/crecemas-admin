@@ -37,16 +37,7 @@ export class RolesService {
     }
   }
 
-  // Obtener todos los roles
-  /*async getAllRoles() {
-    const { data, error } = await supabase
-      .from('roles')
-      .select('*')
-      .order('nombre', { ascending: true });
-
-    if (error) throw error;
-    return data;
-  }*/
+  
 
   /**
    * ✅ Obtiene todos los roles en un arreglo.
@@ -83,19 +74,7 @@ export class RolesService {
     }
     return undefined;
   }
-
-  // Obtener el ID del rol por defecto (cliente)
-  /*async getDefaultRoleId() {
-    const { data, error } = await supabase
-      .from('roles')
-      .select('id')
-      .eq('nombre', 'cliente')
-      .single();
-
-    if (error) throw error;
-    return data.id;
-  }*/
-
+  
   /**
    * ✅ Obtiene el ID del rol por defecto (cliente).
    * @returns ID del rol cliente.
