@@ -5,21 +5,20 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Reservation } from '../../interfaces/Reservation';
 import { supabase } from '../../../../supabase/supabase-client';
 
-
 @Component({
   selector: 'app-admin-reservations',
   imports: [NgClass, NgFor, NgIf],
   templateUrl: './admin-reservations.component.html',
-  styleUrl: './admin-reservations.component.css'
+  styleUrl: './admin-reservations.component.css',
 })
 export class AdminReservationsComponent implements OnInit {
   reservations: Reservation[] = [];
   loading = true; // Variable para controlar el estado de carga
-  error='';
+  error = '';
 
   private supabase: SupabaseClient;
 
-  constructor(){
+  constructor() {
     this.supabase = supabase;
   }
 
@@ -27,18 +26,17 @@ export class AdminReservationsComponent implements OnInit {
     await this.loadReservations();
   }
 
-
   async loadReservations() {
     try {
       this.loading = true;
-      
+
       const { data, error } = await this.supabase
         .from('ReservasCreditos')
         .select('*')
         .order('created_at', { ascending: false });
-        
+
       if (error) throw error;
-      
+
       this.reservations = data as Reservation[];
       this.error = '';
     } catch (err: any) {
@@ -54,18 +52,33 @@ export class AdminReservationsComponent implements OnInit {
         .from('ReservasCreditos')
         .update({ atendido: !reservation.atendido })
         .eq('id', reservation.id);
-        
+
       if (error) throw error;
-      
+
       // Actualizar el estado local después de la actualización exitosa
       reservation.atendido = !reservation.atendido;
     } catch (err: any) {
-      alert('Error al actualizar el estado: ' + (err.message || 'Error desconocido'));
+      alert(
+        'Error al actualizar el estado: ' + (err.message || 'Error desconocido')
+      );
     }
   }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleString();
+  }
+
+  //Eliminar una reserva
+  eliminarReserva(reservation: Reservation) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta reserva?')) {
+      this.supabase
+        .from('ReservasCreditos')
+        .delete()
+        .eq('id', reservation.id)
+        .then(() => {
+          this.loadReservations();
+        });
+    }
   }
 }

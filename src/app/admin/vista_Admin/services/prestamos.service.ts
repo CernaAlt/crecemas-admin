@@ -38,7 +38,7 @@ export class PrestamosService {
     return data;
   }
 
-  async create(
+  /*async create(
     prestamo: Prestamo
   ): Promise<{ prestamo: Prestamo; cuotas: HistorialPago[] }> {
     if (
@@ -49,7 +49,7 @@ export class PrestamosService {
       throw new Error('Datos del préstamo inválidos');
     }
 
-    const tasaInteresAnual = prestamo.interes_anual / 100; // ej. 0.05
+    const tasaInteresAnual = prestamo.interes_anual / 100;
     const tasaMensual = Math.pow(1 + tasaInteresAnual, 1 / 12) - 1;
 
     const tasaSeguroAnual = prestamo.tasa_seguro ?? 0.069;
@@ -63,16 +63,23 @@ export class PrestamosService {
     const cuotaConSeguro = cuotaMensual + monto * tasaSeguroMensual;
 
     // Cálculo TCEA referencial
+    // Cálculo TCEA referencial
     const flujoInicial = -monto;
     const flujos = Array(cuotas).fill(cuotaConSeguro);
     const todosFlujos = [flujoInicial, ...flujos];
 
-    const tcea = this.calcularTIR(todosFlujos) * 12; // anualizar
+    const tirMensual = this.calcularTIR(todosFlujos);
+    const tcea = Math.pow(1 + tirMensual, 12) - 1; // anualizar de forma compuesta
 
     // valores automáticos
     prestamo.cuotas_pagadas = 0;
     prestamo.estado = 'Activo';
-    prestamo.tcea = parseFloat((tcea * 100).toFixed(2)); // en porcentaje
+    prestamo.tcea = parseFloat((tcea * 100).toFixed(6)); // en porcentaje con más precisión
+
+    // valores automáticos
+    prestamo.cuotas_pagadas = 0;
+    prestamo.estado = 'Activo';
+    prestamo.tcea = parseFloat((tcea * 100).toFixed(6)); // en porcentaje con más precisión
     prestamo.fecha_fin = this.calcularFechaFin(prestamo.fecha_inicio, cuotas);
 
     const { data, error } = await supabase
@@ -89,6 +96,78 @@ export class PrestamosService {
       prestamo.fecha_inicio,
       prestamo.interes_anual,
       prestamo.tasa_seguro ?? 0.069
+    );
+
+    return { prestamo: data, cuotas: cuotasGeneradas };
+  }*/
+
+  async create(
+    prestamo: Prestamo
+  ): Promise<{ prestamo: Prestamo; cuotas: HistorialPago[] }> {
+    if (
+      !prestamo.socio_id ||
+      prestamo.monto <= 0 ||
+      prestamo.cuotas_totales <= 0
+    ) {
+      throw new Error('Datos del préstamo inválidos');
+    }
+
+    // Parámetros de entrada
+    const monto = prestamo.monto;
+    const cuotas = prestamo.cuotas_totales;
+    const tasaInteresAnual = prestamo.interes_anual / 100;
+    const tasaSeguroAnual = prestamo.tasa_seguro ?? 0.069;
+
+    // Convertir tasas a mensual (capitalización compuesta)
+    const tasaMensual = Math.pow(1 + tasaInteresAnual, 1 / 12) - 1;
+    const tasaSeguroMensual = tasaSeguroAnual / 100 / 12;
+
+    // Calcular cuota mensual base sin seguro
+    const cuotaMensual =
+      monto * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -cuotas)));
+
+    // Generar cuotas preliminares con seguro aplicado sobre saldo
+    let saldoPendiente = monto;
+    const flujos = [];
+
+    for (let i = 0; i < cuotas; i++) {
+      const interes = saldoPendiente * tasaMensual;
+      const amortizacion = cuotaMensual - interes;
+      const seguro = saldoPendiente * tasaSeguroMensual;
+      const cuotaConSeguro = cuotaMensual + seguro;
+
+      flujos.push(cuotaConSeguro);
+      saldoPendiente -= amortizacion;
+    }
+
+    // Calcular TCEA referencial a partir de los flujos
+    const flujoInicial = -monto;
+    const todosFlujos = [flujoInicial, ...flujos];
+    const tirMensual = this.calcularTIR(todosFlujos);
+    const tcea = Math.pow(1 + tirMensual, 12) - 1;
+
+    // Setear datos automáticos al préstamo
+    prestamo.cuotas_pagadas = 0;
+    prestamo.estado = 'Activo';
+    prestamo.tcea = parseFloat((tcea * 100).toFixed(6));
+    prestamo.fecha_fin = this.calcularFechaFin(prestamo.fecha_inicio, cuotas);
+
+    // Guardar préstamo en Supabase
+    const { data, error } = await supabase
+      .from(this.table)
+      .insert(prestamo)
+      .select()
+      .single();
+    if (error) throw new Error('No se pudo crear el préstamo');
+
+    // Generar cuotas con valores detallados
+    const cuotasGeneradas = await this.generarCuotas(
+      data.id,
+      monto,
+      cuotas,
+      prestamo.fecha_inicio,
+      prestamo.interes_anual,
+      tasaSeguroAnual
     );
 
     return { prestamo: data, cuotas: cuotasGeneradas };
@@ -134,7 +213,7 @@ export class PrestamosService {
     tasaSeguroAnual: number
   ): Promise<HistorialPago[]> {
     const tasaInteresMensual = Math.pow(1 + interesAnual / 100, 1 / 12) - 1;
-    const tasaSeguroMensual = tasaSeguroAnual / 12;
+    const tasaSeguroMensual = tasaSeguroAnual / 100 / 12;
 
     const cuotaMensual =
       montoTotal *
@@ -148,12 +227,13 @@ export class PrestamosService {
     for (let i = 1; i <= cuotasTotales; i++) {
       const interes = saldoPendiente * tasaInteresMensual;
       const amortizacion = cuotaMensual - interes;
-      const comisiones_seguros = montoTotal * tasaSeguroMensual;
-      const subvencion = 0; // podrías aplicar lógica real si corresponde
+      const comisiones_seguros = saldoPendiente * tasaSeguroMensual; // CORREGIDO
+      const subvencion = 0;
       const monto_pagado = cuotaMensual + comisiones_seguros;
 
+      // Calcular la fecha exacta sin modificar la original
       const fechaPago = new Date(fechaInicioObj);
-      fechaPago.setMonth(fechaInicioObj.getMonth() + i);
+      fechaPago.setMonth(fechaPago.getMonth() + i);
 
       const { data, error } = await supabase
         .from('historial_pagos')
@@ -201,6 +281,73 @@ export class PrestamosService {
   // Método para eliminar un préstamo
   async delete(id: string): Promise<void> {
     const { error } = await supabase.from(this.table).delete().eq('id', id);
+    if (error) throw error;
+  }
+
+  async getPrestamosDelSocio(authUserId: string): Promise<Prestamo[]> {
+    const { data: prestamos, error } = await supabase
+      .from('prestamos')
+      .select(
+        `
+      *,
+      socio: socio_id (
+        id,
+        usuario: usuario_id (
+          id,
+          auth_user_id
+        )
+      )
+    `
+      )
+      .eq('socio.usuario.auth_user_id', authUserId);
+
+    if (error) throw error;
+
+    // Filtramos explícitamente por si algún préstamo no trajo relación por alguna inconsistencia
+    const prestamosFiltrados = prestamos.filter(
+      (p) => p.socio?.usuario?.auth_user_id === authUserId
+    );
+
+    return prestamosFiltrados;
+  }
+
+  //
+  async getHistorialPagosPorPrestamo(
+    prestamoId: string
+  ): Promise<HistorialPago[]> {
+    const { data, error } = await supabase
+      .from('historial_pagos')
+      .select('*')
+      .eq('prestamo_id', prestamoId)
+      .order('cuota_numero', { ascending: true });
+
+    if (error) throw error;
+    return data;
+  }
+
+  //Actualizar cuotas Pagadas
+  async actualizarCuotasPagadas(
+    prestamoId: string,
+    cuotasPagadas: number
+  ): Promise<void> {
+    const { error } = await supabase
+      .from('prestamos')
+      .update({ cuotas_pagadas: cuotasPagadas })
+      .eq('id', prestamoId);
+
+    if (error) throw error;
+  }
+
+  //Actualizar estado de la cuota si esta pagada o aun no.
+  async actualizarEstadoCuota(
+    historialPagoId: string,
+    nuevoEstado: string
+  ): Promise<void> {
+    const { error } = await supabase
+      .from('historial_pagos')
+      .update({ estado: nuevoEstado })
+      .eq('id', historialPagoId);
+
     if (error) throw error;
   }
 }

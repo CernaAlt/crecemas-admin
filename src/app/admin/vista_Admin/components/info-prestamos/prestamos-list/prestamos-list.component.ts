@@ -8,7 +8,7 @@ import { HistorialPagosListComponent } from "../../info-pagos/historial-pagos-li
 
 @Component({
   selector: 'app-prestamos-list',
-  imports: [NgFor,NgIf, CommonModule, PrestamosFormComponent, HistorialPagosListComponent],
+  imports: [NgFor, NgIf, CommonModule, PrestamosFormComponent, HistorialPagosListComponent],
   templateUrl: './prestamos-list.component.html',
   styleUrl: './prestamos-list.component.css'
 })

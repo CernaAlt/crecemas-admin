@@ -6,9 +6,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { PrestamosService } from '../../../services/prestamos.service';
@@ -39,18 +41,38 @@ export class PrestamosFormComponent {
   ) {
     this.form = this.fb.group({
       socio_id: ['', Validators.required],
-      monto: [0, [Validators.required, Validators.min(50)]],
-      cuotas_totales: [0, [Validators.required, Validators.min(2)]],
-      interes_anual: [5, [Validators.required, Validators.min(0.1)]],
-      tasa_seguro: [
-        0.069,
-        [Validators.required, Validators.min(0)],
+      producto: ['', [Validators.required, Validators.maxLength(100)]],
+      tipo_seguro: ['', [Validators.required, Validators.maxLength(100)]],
+      monto: [
+        '',
+        [Validators.required, Validators.min(400), Validators.max(8000)],
       ],
-      fecha_inicio: ['', Validators.required],
-      // Nuevos
-      producto: ['Préstamo Libre Disponibilidad', Validators.required],
-      tipo_seguro: ['Convencional Individual', Validators.required],
+      cuotas_totales: [
+        '',
+        [Validators.required, Validators.min(6), Validators.max(36)],
+      ],
+      interes_anual: ['', [Validators.required, Validators.min(4)]],
+      tasa_seguro: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
+      fecha_inicio: ['', [Validators.required, this.fechaFuturaValidator]],
     });
+  }
+
+  // Validador personalizado para verificar si la fecha es futura
+  fechaFuturaValidator(control: AbstractControl): ValidationErrors | null {
+    const fecha = new Date(control.value);
+    const hoy = new Date();
+
+    // Ignora la hora y compara solo fechas
+    fecha.setHours(0, 0, 0, 0);
+    hoy.setHours(0, 0, 0, 0);
+
+    if (fecha < hoy) {
+      return { fechaPasada: true };
+    }
+    return null;
   }
 
   async ngOnInit() {
@@ -98,4 +120,14 @@ export class PrestamosFormComponent {
     this.cancel.emit();
     this.form.reset();
   }
+
+  productos: string[] = [
+    'Préstamo Libre Disponibilidad',
+    'Crédito Hipotecario',
+    'Tarjeta de Crédito',
+    'Microcrédito',
+    'Crédito Vehicular',
+  ];
+
+  
 }

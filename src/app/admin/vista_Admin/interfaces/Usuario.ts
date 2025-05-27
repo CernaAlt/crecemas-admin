@@ -1,3 +1,5 @@
+import { Roles } from "./Roles";
+
 export interface Usuario {
   id: string;
   auth_user_id: string;
@@ -12,5 +14,8 @@ export interface Usuario {
   pais: string;
   fecha_ingreso: Date; // ISO string (yyyy-MM-dd)
   rol_id: string;
+  estado: boolean;
   created_at?: Date; // ISO string (yyyy-MM-dd)
+
+  roles?:Roles;
 }

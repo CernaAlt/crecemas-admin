@@ -1,85 +1,373 @@
 <div class="card">
-  <h1>Administración de Usuarios</h1>
+  <!-- Título  de mi componente -->
+  <h1
+    class="text-2xl md:text-3xl font-bold text-green-700 dark:text-black mb-6 border-b border-green-300 dark:border-green-700 pb-2"
+  >
+    Administración de Usuarios
+  </h1>
 
-  <div class="grid">
-    <div class="col-12 md:col-6">
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
-        <input type="text" pInputText [(ngModel)]="terminoBusqueda" 
-               placeholder="Buscar por nombre, email o DNI"
-               (keyup.enter)="buscarUsuarios()">
-      </span>
-      <button pButton icon="pi pi-refresh" class="p-button-rounded p-button-text"
-              (click)="cargarUsuarios()" [disabled]="loading"> Cargar Usuarios</button>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <!-- Búsqueda -->
+    <div class="flex flex-col md:flex-row items-start md:items-center gap-2">
+      <input
+        type="text"
+        [(ngModel)]="terminoBusqueda"
+        placeholder="Buscar por nombre, email o DNI"
+        (keyup.enter)="buscarUsuarios()"
+        class="w-full md:w-auto px-4 py-2 rounded-lg border border-green-300 dark:border-green-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+      />
+      <button
+        (click)="cargarUsuarios()"
+        [disabled]="loading"
+        class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg text-sm transition"
+      >
+        Cargar Usuarios
+      </button>
     </div>
-    <div class="col-12 md:col-6 text-right">
-      <button pButton icon="pi pi-plus" label="Nuevo Usuario" 
-              class="p-button-success"
-              (click)="mostrarDialogoEditar()">Editar usuario</button>
+
+    <!-- Botón de nuevo usuario -->
+    <div class="flex justify-end items-center">
+      <button
+        (click)="mostrarDialogoEditar()"
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition"
+      >
+        Nuevo Usuario
+      </button>
     </div>
   </div>
 
-  <p-table [value]="usuarios" [loading]="loading" [paginator]="true" [rows]="10">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>DNI</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-        <th>Rol</th>
-        <th>Acciones</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-usuario>
-      <tr>
-        <td>{{usuario.dni}}</td>
-        <td>{{usuario.nombre}} {{usuario.apellido}}</td>
-        <td>{{usuario.email}}</td>
-        <td>{{usuario.telefono_movil}}</td>
-        <td>{{usuario.roles?.nombre || 'Sin rol'}}</td>
-        <!--Botones de acción-->
-        <td>
-          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-primary"
-                  (click)="mostrarDialogoEditar(usuario)">Editar</button>
-          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
-                  (click)="confirmarEliminar(usuario)">Eliminar</button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <div
+    class="overflow-x-auto rounded-xl shadow-lg border border-green-300 bg-white dark:bg-gray-900"
+  >
+    <table class="min-w-full divide-y divide-green-200 text-sm">
+      <thead
+        class="bg-green-100 text-green-800 text-left uppercase tracking-wide text-xs"
+      >
+        <tr>
+          <th class="px-4 py-3">DNI</th>
+          <th class="px-4 py-3">Nombre</th>
+          <th class="px-4 py-3">Apellidos</th>
+          <th class="px-4 py-3">Email</th>
+          <th class="px-4 py-3">Teléfono</th>
+          <th class="px-4 py-3">Rol</th>
+          <th class="px-4 py-3">Ciudad</th>
+          <th class="px-4 py-3">País</th>
 
-  <p-dialog  header="{{usuarioSeleccionado.auth_user_id ? 'Editar Usuario' : 'Nuevo Usuario'}}" 
-            [(visible)]="displayDialog" [style]="{width: '500px'}">
-    <div class="grid p-fluid">
-      <div class="col-12 md:col-6">
-        <label for="dni">DNI</label>
-        <input pInputText id="dni" [(ngModel)]="usuarioSeleccionado.dni">
+          <th class="px-4 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-green-100">
+        <tr
+          *ngFor="let usuario of usuarios"
+          class="hover:bg-green-50 dark:hover:bg-green-800 transition duration-150"
+        >
+          <td
+            class="px-4 py-2 whitespace-nowrap text-green-900 dark:text-green-100"
+          >
+            {{ usuario.dni }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.nombre }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.apellido }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.email }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.telefono_movil }}
+          </td>
+          <td class="px-4 py-2">
+            <span
+              class="inline-block px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100"
+            >
+              {{ usuario.roles?.nombre || "Sin rol" }}
+            </span>
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.ciudad}}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ usuario.pais }}
+          </td>
+          <td class="px-4 py-2 flex gap-2">
+            <button
+              (click)="mostrarDialogoEditar(usuario)"
+              class="px-3 py-1 text-xs rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+            >
+              Editar
+            </button>
+            <button
+              (click)="confirmarEliminar(usuario)"
+              class="px-3 py-1 text-xs rounded bg-red-500 text-white hover:bg-red-600 transition"
+            >
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Fondo oscuro y centrado -->
+  <div
+    *ngIf="displayDialog"
+    class="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <!-- Contenido del modal -->
+    <div
+      class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl p-6 space-y-6 border border-green-300"
+    >
+      <!-- Botón cerrar -->
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-green-800 dark:text-green-100">
+          {{ modoEdicion ? "Editar Usuario" : "Registrar Usuario" }}
+        </h2>
+        <span
+          class="text-2xl text-gray-600 cursor-pointer hover:text-red-500"
+          (click)="cerrarDialogo()"
+          >&times;</span
+        >
       </div>
-      <div class="col-12 md:col-6">
-        <label for="nombre">Nombre</label>
-        <input pInputText id="nombre" [(ngModel)]="usuarioSeleccionado.nombre">
-      </div>
-      <div class="col-12 md:col-6">
-        <label for="apellido">Apellido</label>
-        <input pInputText id="apellido" [(ngModel)]="usuarioSeleccionado.apellido">
-      </div>
-      <div class="col-12 md:col-6">
-        <label for="email">Email</label>
-        <input pInputText id="email" [(ngModel)]="usuarioSeleccionado.email">
-      </div>
-      <div class="col-12 md:col-6">
-        <label for="telefono">Teléfono</label>
-        <input pInputText id="telefono" [(ngModel)]="usuarioSeleccionado.telefono_movil">
+
+      <!-- Formulario -->
+      <form
+        (ngSubmit)="guardarUsuario()"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <!-- Tipo de Documento -->
+        <div class="mb-4">
+          <label class="text-green-800 dark:text-green-100"
+            >Tipo de Documento</label
+          >
+          <select
+            [(ngModel)]="tipoDocumento"
+            name="tipoDocumento"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          >
+            <option value="dni">DNI</option>
+            <option value="pasaporte">Pasaporte</option>
+          </select>
+        </div>
+
+        <!-- Campo de DNI o Pasaporte -->
+        <div class="mb-4">
+          <label class="text-green-800 dark:text-green-100">
+            {{
+              tipoDocumento === "dni"
+                ? "DNI (8 dígitos)"
+                : "Pasaporte (6-12 alfanuméricos)"
+            }}
+          </label>
+          <input
+            type="text"
+            name="dni"
+            [(ngModel)]="usuarioSeleccionado.dni"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            [attr.maxlength]="tipoDocumento === 'dni' ? 8 : 12"
+            (keypress)="restringirEntrada($event)"
+            (input)="validarDni()"
+          />
+          <div *ngIf="dniError" class="text-red-600 text-sm mt-1">
+            {{ dniError }}
+          </div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="mb-4">
+          <label class="text-green-800 dark:text-green-100">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="usuarioSeleccionado.nombre"
+            (keypress)="restringirSoloLetras($event)"
+            (input)="validarNombre()"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+          <div *ngIf="nombreError" class="text-red-600 text-sm mt-1">
+            {{ nombreError }}
+          </div>
+        </div>
+
+        <!-- Apellido -->
+        <div class="mb-4">
+          <label class="text-green-800 dark:text-green-100">Apellido</label>
+          <input
+            type="text"
+            name="apellido"
+            [(ngModel)]="usuarioSeleccionado.apellido"
+            (keypress)="restringirSoloLetras($event)"
+            (input)="validarApellido()"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+          <div *ngIf="apellidoError" class="text-red-600 text-sm mt-1">
+            {{ apellidoError }}
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="text-green-800 dark:text-green-100">Email</label>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="usuarioSeleccionado.email"
+            (input)="validarEmail()"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+          <div *ngIf="emailError" class="text-red-600 text-sm mt-1">
+            {{ emailError }}
+          </div>
+        </div>
+
+        <!-- Contraseñas solo si no está en modo edición -->
+        <ng-container *ngIf="!modoEdicion">
+          <div>
+            <label class="text-green-800 dark:text-green-100">Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              [(ngModel)]="usuarioSeleccionado.password"
+              (input)="verificarContrasenas()"
+              class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            />
+          </div>
+
+          <div>
+            <label class="text-green-800 dark:text-green-100"
+              >Confirmar Contraseña</label
+            >
+            <input
+              type="password"
+              name="confirmPassword"
+              [(ngModel)]="usuarioSeleccionado.confirmPassword"
+              (input)="verificarContrasenas()"
+              class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            />
+          </div>
+          <div *ngIf="passwordError" class="text-red-600 text-sm mt-1">
+            {{ passwordError }}
+          </div>
+        </ng-container>
+
+        <!-- Fecha de nacimiento -->
+        <div>
+          <label class="text-green-800 dark:text-green-100"
+            >Fecha Nacimiento</label
+          >
+          <input
+            type="date"
+            name="fecha_nacimiento"
+            [max]="fechaMaxima"
+            [(ngModel)]="usuarioSeleccionado.fecha_nacimiento"
+            (change)="validarFechaNacimiento()"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+          <div *ngIf="fechaNacimientoError" class="text-red-600 text-sm mt-1">
+            {{ fechaNacimientoError }}
+          </div>
+        </div>
+
+        <!-- Género -->
+        <div>
+          <label class="text-green-800 dark:text-green-100">Género</label>
+          <select
+            name="genero"
+            [(ngModel)]="usuarioSeleccionado.genero"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          >
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+          </select>
+        </div>
+
+        <!-- Teléfono -->
+        <div>
+          <label class="text-green-800 dark:text-green-100">Teléfono</label>
+          <input
+            type="text"
+            name="telefono_movil"
+            [(ngModel)]="usuarioSeleccionado.telefono_movil"
+            (input)="onTelefonoInput($event)"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+          <div *ngIf="telefonoError" class="text-red-600 text-sm mt-1">
+            {{ telefonoError }}
+          </div>
+        </div>
+
+        <!-- Ciudad -->
+        <div>
+          <label class="text-green-800 dark:text-green-100">Ciudad</label>
+          <input
+            type="text"
+            name="ciudad"
+            [(ngModel)]="usuarioSeleccionado.ciudad"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+        </div>
+
+        <!-- País -->
+        <div>
+          <label class="text-green-800 dark:text-green-100">País</label>
+          <input
+            type="text"
+            name="pais"
+            [(ngModel)]="usuarioSeleccionado.pais"
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          />
+        </div>
+
+        <!-- Rol -->
+        <div>
+          <label class="text-green-800 dark:text-green-100">Rol</label>
+          <select
+            name="rol_id"
+            [(ngModel)]="usuarioSeleccionado.rol_id"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          >
+            <option *ngFor="let rol of roles" [value]="rol.id">
+              {{ rol.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Botón guardar -->
+        <div class="md:col-span-2 text-right">
+          <button
+            type="submit"
+            class="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow"
+          >
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirmación -->
+  <div *ngIf="confirmVisible" class="modal show">
+    <div class="modal-content">
+      <p>
+        ¿Estás seguro de que deseas eliminar a
+        {{ usuarioSeleccionado.nombre }} {{ usuarioSeleccionado.apellido }}?
+      </p>
+      <div class="text-right">
+        <button (click)="confirmVisible = false">Cancelar</button>
+        <button
+          class="btn-danger"
+          (click)="confirmarEliminar(usuarioSeleccionado)"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
-    <ng-template pTemplate="footer">
-      <button pButton icon="pi pi-times" label="Cancelar" class="p-button-text"
-              (click)="displayDialog = false">Cancelar</button>
-      <button pButton icon="pi pi-check" label="Guardar" class="p-button-success"
-              (click)="guardarUsuario()">Guardar usuario</button>
-    </ng-template>
-  </p-dialog>
+  </div>
 
-  <p-toast></p-toast>
-  <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+  <!-- Notificación -->
+  <div *ngIf="notificacion" class="notificacion" [ngClass]="notificacion.tipo">
+    {{ notificacion.mensaje }}
+  </div>
 </div>

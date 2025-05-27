@@ -1,36 +1,157 @@
-<div class="profile-container">
-    <h2>Perfil del Usuario</h2>
-    
-    <div *ngIf="isLoading" class="loading-message">
-      Cargando datos del perfil...
+<div class="flex min-h-screen bg-gray-100">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 text-white flex flex-col p-4">
+    <div class="text-2xl font-bold mb-8">Usuario</div>
+
+    <nav class="space-y-3">
+      <button
+        (click)="cambiarVista('reservaciones')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>📊</span> <span>Reservaciones</span>
+      </button>
+
+      <button
+        (click)="cambiarVista('calificaciones-servicio')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>⭐</span> <span>Calificaciones</span>
+      </button>
+
+      <button
+        (click)="cambiarVista('simulador')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>💳</span> <span>Simulador</span>
+      </button>
+
+      <button
+        (click)="cambiarVista('asesoria')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>📝</span> <span>Asesoria</span>
+      </button>
+
+      <button
+        (click)="cambiarVista('notificaciones')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>🔔</span> <span>Notificaciones</span>
+      </button>
+
+      <button
+        (click)="cambiarVista('convertirse-socio')"
+        class="p-2 rounded flex items-center gap-2 w-full text-left"
+      >
+        <span>🤝</span> <span>Convertirse en Socio</span>
+      </button>
+    </nav>
+
+    <div class="mt-auto pt-4 border-t border-gray-600">
+      <app-logout-user></app-logout-user>
     </div>
-  
-    <div *ngIf="!isLoading && user" class="profile-info">
-      <!-- Datos de autenticación -->
-      <div class="section">
-        <h3>Información de Cuenta</h3>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Creado en:</strong> {{ user.created_at | date:'medium' }}</p>
-        <p><strong>Último inicio:</strong> {{ user.last_sign_in_at | date:'medium' }}</p>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col">
+    <!-- Topbar -->
+    <header class="bg-white shadow p-4 flex items-center justify-between">
+      <h1 class="text-xl font-semibold">Bienvenido</h1>
+      <input
+        type="search"
+        placeholder="Buscar..."
+        class="border rounded px-4 py-2 w-80 shadow-sm"
+      />
+    </header>
+    <div
+      class=" my-3.5 profile-container max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md border border-green-300"
+    >
+      <h2 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-6">
+        Perfil del Usuario
+      </h2>
+
+      <div *ngIf="isLoading" class="text-gray-600 dark:text-gray-300 italic">
+        Cargando datos del perfil...
       </div>
-  
-      <!-- Datos de la tabla usuarios -->
-      <div class="section">
-        <h3>Información Personal</h3>
-        <p><strong>DNI:</strong> {{ user.dni }}</p>
-        <p><strong>Nombre:</strong> {{ user.nombre }} {{ user.apellido }}</p>
-        <p><strong>Fecha Nacimiento:</strong> {{ user.fecha_nacimiento | date:'longDate' }}</p>
-        <p><strong>Género:</strong> {{ user.genero }}</p>
-        <p><strong>Teléfono:</strong> {{ user.telefono_movil }}</p>
-        <p><strong>Ubicación:</strong> {{ user.ciudad }}, {{ user.pais }}</p>
-        <p><strong>Rol:</strong> {{  user.rol_id | getRoleName }}</p>
-        <p><strong>Fecha Ingreso:</strong> {{ user.fecha_ingreso | date:'longDate' }}</p>
+
+      <div *ngIf="!isLoading && user" class="profile-info space-y-8">
+        <!-- Información de cuenta -->
+        <div class="section">
+          <h3
+            class="text-lg font-semibold text-green-700 dark:text-green-300 mb-2"
+          >
+            Información de Cuenta
+          </h3>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 dark:text-gray-200"
+          >
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p>
+              <strong>Creado en:</strong>
+              {{ user.created_at | date : "medium" }}
+            </p>
+            <p>
+              <strong>Último inicio:</strong>
+              {{ user.last_sign_in_at | date : "medium" }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Información personal -->
+        <div class="section">
+          <h3
+            class="text-lg font-semibold text-green-700 dark:text-green-300 mb-2"
+          >
+            Información Personal
+          </h3>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800 dark:text-gray-200"
+          >
+            <p><strong>DNI:</strong> {{ user.dni }}</p>
+            <p>
+              <strong>Nombre:</strong> {{ user.nombre }} {{ user.apellido }}
+            </p>
+            <p>
+              <strong>Fecha Nacimiento:</strong>
+              {{ user.fecha_nacimiento | date : "longDate" }}
+            </p>
+            <p><strong>Género:</strong> {{ user.genero }}</p>
+            <p><strong>Teléfono:</strong> {{ user.telefono_movil }}</p>
+            <p>
+              <strong>Ubicación:</strong> {{ user.ciudad }}, {{ user.pais }}
+            </p>
+            <p><strong>Rol:</strong> {{ user.rol_id | getRoleName }}</p>
+            <p>
+              <strong>Fecha Ingreso:</strong>
+              {{ user.fecha_ingreso | date : "longDate" }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isLoading && !user"
+        class="text-red-600 dark:text-red-400 font-medium mt-4"
+      >
+        No se pudieron cargar los datos del perfil.
       </div>
     </div>
-  
-    <div *ngIf="!isLoading && !user" class="error-message">
-      No se pudieron cargar los datos del perfil.
-    </div>
-  
-    <app-logout-user></app-logout-user>
+
+    <!-- Contenido dinámico -->
+    <main class="p-6">
+      <!--<app-dashboard *ngIf="vistaActual === 'dashboard'"></app-dashboard>-->
+
+      <app-admin-reservations
+        *ngIf="vistaActual === 'reservaciones'"
+      ></app-admin-reservations>
+
+      <app-calificaciones-form
+        *ngIf="vistaActual === 'calificaciones-servicio'"
+      ></app-calificaciones-form>
+
+      <app-simulador-creditos
+        *ngIf="vistaActual === 'simulador'"
+      ></app-simulador-creditos>
+    </main>
   </div>
+</div>

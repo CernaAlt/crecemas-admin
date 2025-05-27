@@ -1,8 +1,10 @@
-
 <div class="admin-container">
-  <div class="admin-header">
-    <h2>Administración de Reservas</h2>
-  </div>
+  <!-- Títulos del componente -->
+  <h2
+    class="text-2xl md:text-3xl font-bold text-green-700 dark:text-black mb-6 border-b border-green-300 dark:border-green-700 pb-2"
+  >
+    Administración de Reservas
+  </h2>
 
   <div class="loading-spinner" *ngIf="loading">Cargando reservaciones...</div>
 
@@ -10,46 +12,89 @@
     {{ error }}
   </div>
 
-  <div class="reservations-table" *ngIf="!loading && !error">
-    <table>
-      <thead>
+  <div
+    class="overflow-x-auto rounded-xl shadow-lg border border-green-300 bg-white dark:bg-gray-900"
+    *ngIf="!loading && !error"
+  >
+    <table class="min-w-full divide-y divide-green-200 text-sm">
+      <thead
+        class="bg-green-100 text-green-800 text-left uppercase tracking-wide text-xs"
+      >
         <tr>
-          <th>Fecha</th>
-          <th>Apellidos</th>
-          <th>DNI</th>
-          <th>Teléfono</th>
-          <th>Tipo</th>
-          <th>Detalle</th>
-          <th>Estado</th>
-          <th>Acciones</th>
+          <th class="px-4 py-3">Fecha</th>
+          <th class="px-4 py-3">Apellidos</th>
+          <th class="px-4 py-3">DNI</th>
+          <th class="px-4 py-3">Teléfono</th>
+          <th class="px-4 py-3">Tipo</th>
+          <th class="px-4 py-3">Detalle</th>
+          <th class="px-4 py-3">Estado</th>
+          <th class="px-4 py-3">Acciones</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-green-100">
         <tr
           *ngFor="let reservation of reservations"
-          [ngClass]="{ attended: reservation.atendido }"
+          class="hover:bg-green-50 dark:hover:bg-green-800 transition duration-150"
+          [ngClass]="{ 'bg-green-50': reservation.atendido }"
         >
-          <td>{{ formatDate(reservation.created_at) }}</td>
-          <td>{{ reservation.lastName }}</td>
-          <td>{{ reservation.DNI }}</td>
-          <td>{{ reservation.phone }}</td>
-          <td>{{ reservation.typeReason }}</td>
-          <td class="detail-cell">{{ reservation.detailReason }}</td>
-          <td
-            [ngClass]="{
-              'status-pending': !reservation.atendido,
-              'status-attended': reservation.atendido
-            }"
-          >
-            {{ reservation.atendido ? "Atendido" : "Pendiente" }}
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ formatDate(reservation.created_at) }}
           </td>
-          <td>
-            <button class="toggle-btn" (click)="toggleAttended(reservation)">
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ reservation.lastName }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ reservation.DNI }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ reservation.phone }}
+          </td>
+          <td class="px-4 py-2 text-green-900 dark:text-green-100">
+            {{ reservation.typeReason }}
+          </td>
+          <td
+            class="px-4 py-2 text-amber-700 dark:text-amber-100 italic max-w-xs truncate"
+            title="{{ reservation.detailReason }}"
+          >
+            {{ reservation.detailReason }}
+          </td>
+
+
+          <td class="px-4 py-2">
+            <span
+              class="inline-block px-2 py-1 text-xs font-semibold rounded"
+              [ngClass]="{
+                'bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-100':
+                  !reservation.atendido,
+                'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-100':
+                  reservation.atendido
+              }"
+            >
+              {{ reservation.atendido ? "Atendido" : "Pendiente" }}
+            </span>
+          </td>
+          <td class="px-4 py-2 flex gap-2">
+            <button
+              (click)="toggleAttended(reservation)"
+              [ngClass]="
+                reservation.atendido
+                  ? 'bg-yellow-500 hover:bg-yellow-600'
+                  : 'bg-green-500 hover:bg-green-600'
+              "
+              class="text-white px-3 py-1 text-xs rounded transition"
+            >
               {{
                 reservation.atendido
                   ? "Marcar como pendiente"
                   : "Marcar como atendido"
               }}
+            </button>
+
+            <button
+              (click)="eliminarReserva(reservation)"
+              class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded transition"
+            >
+              Eliminar
             </button>
           </td>
         </tr>

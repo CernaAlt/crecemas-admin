@@ -1,0 +1,68 @@
+<!-- src/app/components/reservas-usuario/reservas-usuario.component.html -->
+
+<div *ngIf="loading" class="text-green-700 dark:text-green-300 p-4">
+  Cargando reservas...
+</div>
+
+<div
+  *ngIf="!loading && reservas.length === 0"
+  class="p-4 text-gray-600 dark:text-gray-400"
+>
+  <p>No tienes reservas registradas.</p>
+</div>
+
+<div *ngIf="!loading && reservas.length > 0">
+  <h2 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-4">
+    Mis Reservas
+  </h2>
+
+  <div
+    class="overflow-x-auto rounded-xl shadow-lg border border-green-300 bg-white dark:bg-gray-900"
+  >
+    <table class="min-w-full text-sm divide-y divide-green-200">
+      <thead
+        class="bg-green-100 dark:bg-green-100 text-green-800 dark:text-green-600 text-left uppercase tracking-wide text-xs"
+      >
+        <tr>
+          <th class="px-4 py-3">Apellido</th>
+          <th class="px-4 py-3">Motivo</th>
+          <th class="px-4 py-3">Detalle</th>
+          <th class="px-4 py-3">DNI</th>
+          <th class="px-4 py-3">Teléfono</th>
+          <th class="px-4 py-3">Atendido</th>
+          <th class="px-4 py-3">Fecha</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-lime-100">
+        <tr
+          *ngFor="let r of reservas"
+          class="hover:bg-green-100 dark:hover:bg-green-900 transition duration-150"
+        >
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ r.lastName }}
+          </td>
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ r.typeReason }}
+          </td>
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ r.detailReason }}
+          </td>
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ r.DNI }}
+          </td>
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ r.phone }}
+          </td>
+          <td
+            class="px-4 py-2 text-green-800 dark:text-green-200 font-semibold"
+          >
+            {{ r.atendido ? "Sí" : "No" }}
+          </td>
+          <td class="px-4 py-2 text-amber-700 dark:text-amber-100">
+            {{ r.created_at | date : "short" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

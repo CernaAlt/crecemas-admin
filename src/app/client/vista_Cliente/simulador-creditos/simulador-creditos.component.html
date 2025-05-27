@@ -1,27 +1,48 @@
-<div class="container">
-  <header>
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logo Cooperativa" />
+<div class="container mx-auto px-4 my-5">
+  <header class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-4 shadow">
+    <div class="logo flex-shrink-0">
+      <img src="assets/logo.png" alt="Logo Cooperativa" class="h-16 w-auto object-contain" />
     </div>
-    <div class="title">
-      <h1>{{ title }}</h1>
+    <div class="title text-center sm:text-left">
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ title }}</h1>
     </div>
   </header>
 
-  <div class="main-content">
-    <form [formGroup]="loanForm" (ngSubmit)="calculateLoan()">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="product">Producto:</label>
-          <select id="product" formControlName="product">
+  <div class="main-content my-5">
+    <form
+      [formGroup]="loanForm"
+      (ngSubmit)="calculateLoan()"
+      class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg shadow-md p-6 space-y-6"
+    >
+      <!-- Fila 1 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="product"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Producto:</label
+          >
+          <select
+            id="product"
+            formControlName="product"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          >
             <option *ngFor="let product of loanProducts" [value]="product.id">
               {{ product.name }}
             </option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="currency">Moneda:</label>
-          <select id="currency" formControlName="currency">
+        <div>
+          <label
+            for="currency"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Moneda:</label
+          >
+          <select
+            id="currency"
+            formControlName="currency"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          >
             <option *ngFor="let currency of currencies" [value]="currency.id">
               {{ currency.name }}
             </option>
@@ -29,15 +50,27 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="amount">Monto:</label>
-          <input type="number" id="amount" formControlName="amount" />
+      <!-- Fila 2 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="amount"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Monto:</label
+          >
+          <input
+            type="number"
+            id="amount"
+            formControlName="amount"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          />
         </div>
-        <div class="form-group">
-          <label>Tipo periodo</label>
-          <div class="period-options">
-            <div class="radio-option">
+        <div>
+          <label class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Tipo periodo:</label
+          >
+          <div class="flex gap-4">
+            <label class="inline-flex items-center gap-2">
               <input
                 type="radio"
                 id="fixedPeriod"
@@ -45,9 +78,9 @@
                 [value]="true"
                 (change)="loanForm.patchValue({ fixedDate: false })"
               />
-              <label for="fixedPeriod">Periodo fijo</label>
-            </div>
-            <div class="radio-option">
+              Periodo fijo
+            </label>
+            <label class="inline-flex items-center gap-2">
               <input
                 type="radio"
                 id="fixedDate"
@@ -55,35 +88,48 @@
                 [value]="true"
                 (change)="loanForm.patchValue({ fixedPeriod: false })"
               />
-              <label for="fixedDate">Fecha fija</label>
-            </div>
+              Fecha fija
+            </label>
           </div>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="annualRate">TEA:</label>
+      <!-- Fila 3 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="annualRate"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >TEA:</label
+          >
           <input
             type="number"
             id="annualRate"
             formControlName="annualRate"
             step="0.01"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
           />
         </div>
-        <div class="form-group">
-          <label for="dayOrDate"
-            >{{ loanForm.value.fixedDate ? "Día" : "Periodo" }}:</label
+        <div>
+          <label
+            for="dayOrDate"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
           >
-          <div class="day-selection">
+            {{ loanForm.value.fixedDate ? "Día" : "Periodo" }}:
+          </label>
+          <div class="flex gap-2">
             <input
               type="number"
               id="dayOrDate"
               formControlName="dayOrDate"
               min="1"
               [max]="31"
+              class="w-24 rounded-md border border-gray-300 dark:border-gray-600 p-2"
             />
-            <select formControlName="periodType">
+            <select
+              formControlName="periodType"
+              class="flex-1 rounded-md border border-gray-300 dark:border-gray-600 p-2"
+            >
               <option *ngFor="let period of periodTypes" [value]="period.id">
                 {{ period.name }}
               </option>
@@ -92,186 +138,246 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="installments">Nro. de cuotas:</label>
+      <!-- Fila 4 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="installments"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Nro. de cuotas:</label
+          >
           <input
             type="number"
             id="installments"
             formControlName="installments"
             min="1"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
           />
         </div>
-        <div class="form-group">
-          <div class="checkbox-option">
-            <input
-              type="checkbox"
-              id="propertyInsurance"
-              formControlName="propertyInsurance"
-            />
-            <label for="propertyInsurance">Seg. Bienes</label>
-            <input
-              type="number"
-              formControlName="propertyInsuranceRate"
-              step="0.01"
-              [disabled]="!loanForm.value.propertyInsurance"
-              class="small-input"
-            />
-            <span>%</span>
-          </div>
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="propertyInsurance"
+            formControlName="propertyInsurance"
+          />
+          <label
+            for="propertyInsurance"
+            class="text-gray-700 dark:text-gray-200"
+            >Seg. Bienes</label
+          >
+          <input
+            type="number"
+            formControlName="propertyInsuranceRate"
+            step="0.01"
+            [disabled]="!loanForm.value.propertyInsurance"
+            class="w-20 rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          />
+          <span class="text-gray-600 dark:text-gray-300">%</span>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="disbursementDate">Desembolso:</label>
+      <!-- Fila 5 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="disbursementDate"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Desembolso:</label
+          >
           <input
             type="date"
             id="disbursementDate"
             formControlName="disbursementDate"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
           />
         </div>
-        <div class="form-group">
-          <div class="checkbox-option">
-            <input
-              type="checkbox"
-              id="lifeInsurance"
-              formControlName="lifeInsurance"
-            />
-            <label for="lifeInsurance">Seg. inmueble</label>
-            <input
-              type="number"
-              formControlName="lifeInsuranceRate"
-              step="0.01"
-              [disabled]="!loanForm.value.lifeInsurance"
-              class="small-input"
-            />
-            <span>%</span>
-          </div>
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="lifeInsurance"
+            formControlName="lifeInsurance"
+          />
+          <label for="lifeInsurance" class="text-gray-700 dark:text-gray-200"
+            >Seg. Inmueble</label
+          >
+          <input
+            type="number"
+            formControlName="lifeInsuranceRate"
+            step="0.01"
+            [disabled]="!loanForm.value.lifeInsurance"
+            class="w-20 rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          />
+          <span class="text-gray-600 dark:text-gray-300">%</span>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="propertyValue">Monto Bien:</label>
+      <!-- Fila 6 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="propertyValue"
+            class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >Monto Bien:</label
+          >
           <input
             type="number"
             id="propertyValue"
             formControlName="propertyValue"
+            class="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2"
           />
         </div>
-        <div class="form-group">
-          <div class="checkbox-option">
-            <input
-              type="checkbox"
-              id="gracePeriod"
-              formControlName="gracePeriod"
-            />
-            <label for="gracePeriod">Gracia</label>
-            <input
-              type="number"
-              formControlName="gracePeriodMonths"
-              min="0"
-              [disabled]="!loanForm.value.gracePeriod"
-              class="small-input"
-            />
-          </div>
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="gracePeriod"
+            formControlName="gracePeriod"
+          />
+          <label for="gracePeriod" class="text-gray-700 dark:text-gray-200"
+            >Gracia</label
+          >
+          <input
+            type="number"
+            formControlName="gracePeriodMonths"
+            min="0"
+            [disabled]="!loanForm.value.gracePeriod"
+            class="w-20 rounded-md border border-gray-300 dark:border-gray-600 p-2"
+          />
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>TCEA:</label>
-          <div class="tcea-display">{{ loanForm.value.annualRate }}.00 %</div>
-        </div>
-        <div class="form-group">
-          <div class="insurance-options">
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="individual"
-                formControlName="insuranceOption"
-                value="individual"
-              />
-              <label for="individual">Indiv.</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="mancomunado1"
-                formControlName="insuranceOption"
-                value="mancomunado1"
-              />
-              <label for="mancomunado1">Man. [50-50]</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="mancomunado2"
-                formControlName="insuranceOption"
-                value="mancomunado2"
-              />
-              <label for="mancomunado2">Man. [100-100]</label>
-            </div>
+      <!-- Fila 7 -->
+      <div class="grid md:grid-cols-2 gap-4 items-center">
+        <div>
+          <label class="block font-medium text-gray-700 dark:text-gray-200 mb-1"
+            >TCEA:</label
+          >
+          <div class="text-lg font-semibold text-green-700 dark:text-green-300">
+            {{ loanForm.value.annualRate }}.00 %
           </div>
+        </div>
+        <div class="flex gap-4">
+          <label class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              id="individual"
+              formControlName="insuranceOption"
+              value="individual"
+            />
+            Indiv.
+          </label>
+          <label class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              id="mancomunado1"
+              formControlName="insuranceOption"
+              value="mancomunado1"
+            />
+            Man. [50-50]
+          </label>
+          <label class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              id="mancomunado2"
+              formControlName="insuranceOption"
+              value="mancomunado2"
+            />
+            Man. [100-100]
+          </label>
         </div>
       </div>
 
-      <div class="button-row">
-        <button type="submit" class="btn-primary">Aplicar</button>
-        <button type="button" class="btn-secondary" (click)="resetForm()">
+      <!-- Botones -->
+      <div class="flex justify-end gap-4">
+        <button
+          type="submit"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded shadow"
+        >
+          Aplicar
+        </button>
+        <button
+          type="button"
+          (click)="resetForm()"
+          class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded shadow"
+        >
           Limpiar
         </button>
       </div>
     </form>
 
-    <div class="results" *ngIf="showResults">
-      <h2>Calendario de Pagos</h2>
-      <div class="table-container">
-        <table class="payment-schedule">
-          <thead>
+    <div
+      class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md px-6 py-4 border border-green-200 dark:border-green-700"
+      *ngIf="showResults"
+    >
+      <h2
+        class="text-2xl md:text-3xl font-bold text-green-700 dark:text-green-300 mb-6 border-b border-green-300 dark:border-green-700 pb-2"
+      >
+        Calendario de Pagos
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table
+          class="table-auto w-full text-sm text-left text-gray-700 dark:text-gray-200"
+        >
+          <thead
+            class="bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 uppercase text-xs"
+          >
             <tr>
-              <th>Nro</th>
-              <th>Fecha de pago</th>
-              <th>Importe de Cuota + ITF</th>
-              <th>Seg. Desg.</th>
-              <th>Seg. Bienes</th>
-              <th>Interés</th>
-              <th>Capital</th>
-              <th>Saldo Capital</th>
+              <th class="px-4 py-2">Nro</th>
+              <th class="px-4 py-2">Fecha de pago</th>
+              <th class="px-4 py-2">Cuota + ITF</th>
+              <th class="px-4 py-2">Seg. Desg.</th>
+              <th class="px-4 py-2">Seg. Bienes</th>
+              <th class="px-4 py-2">Interés</th>
+              <th class="px-4 py-2">Capital</th>
+              <th class="px-4 py-2">Saldo Capital</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let payment of paymentSchedule">
-              <td>{{ payment.number }}</td>
-              <td>{{ payment.date }}</td>
-              <td>{{ payment.installment.toFixed(2) }}</td>
-              <td>{{ payment.insurance.toFixed(2) }}</td>
-              <td>{{ payment.propertyInsurance.toFixed(2) }}</td>
-              <td>{{ payment.interest.toFixed(2) }}</td>
-              <td>{{ payment.principal.toFixed(2) }}</td>
-              <td>{{ payment.balance.toFixed(2) }}</td>
+            <tr
+              *ngFor="let payment of paymentSchedule"
+              class="border-b border-gray-200 dark:border-gray-700"
+            >
+              <td class="px-4 py-2">{{ payment.number }}</td>
+              <td class="px-4 py-2">{{ payment.date }}</td>
+              <td class="px-4 py-2">S/ {{ payment.installment.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ payment.insurance.toFixed(2) }}</td>
+              <td class="px-4 py-2">
+                S/ {{ payment.propertyInsurance.toFixed(2) }}
+              </td>
+              <td class="px-4 py-2">S/ {{ payment.interest.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ payment.principal.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ payment.balance.toFixed(2) }}</td>
             </tr>
           </tbody>
-          <tfoot>
+          <tfoot class="font-semibold bg-green-50 dark:bg-green-800">
             <tr>
-              <td colspan="2">Total Cuota</td>
-              <td>{{ totals.installment.toFixed(2) }}</td>
-              <td>{{ totals.insurance.toFixed(2) }}</td>
-              <td>{{ totals.propertyInsurance.toFixed(2) }}</td>
-              <td>{{ totals.interest.toFixed(2) }}</td>
-              <td>{{ totals.capital.toFixed(2) }}</td>
-              <td>{{ totals.totalPayment.toFixed(2) }}</td>
+              <td colspan="2" class="px-4 py-2">Totales</td>
+              <td class="px-4 py-2">S/ {{ totals.installment.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ totals.insurance.toFixed(2) }}</td>
+              <td class="px-4 py-2">
+                S/ {{ totals.propertyInsurance.toFixed(2) }}
+              </td>
+              <td class="px-4 py-2">S/ {{ totals.interest.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ totals.capital.toFixed(2) }}</td>
+              <td class="px-4 py-2">S/ {{ totals.totalPayment.toFixed(2) }}</td>
             </tr>
           </tfoot>
         </table>
       </div>
 
-      <div class="export-buttons">
-        <button type="button" class="btn-secondary" (click)="exportToPdf()">
+      <div class="flex justify-end gap-4 mt-4">
+        <button
+          type="button"
+          class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded shadow"
+          (click)="exportToPdf()"
+        >
           PDF
         </button>
-        <button type="button" class="btn-secondary" (click)="exportToExcel()">
+        <button
+          type="button"
+          class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded shadow"
+          (click)="exportToExcel()"
+        >
           Excel
         </button>
       </div>

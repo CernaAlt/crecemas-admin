@@ -3,34 +3,117 @@
   <form (ngSubmit)="register()">
     <h3>Datos de Acceso</h3>
     <div class="form-group">
-      <input type="email" [(ngModel)]="email" placeholder="Correo electrónico*" name="email" required>
+      <input
+        type="email"
+        [(ngModel)]="email"
+        placeholder="Correo electrónico*"
+        name="email"
+        required
+      />
+    </div>
+    <!--Contraseña-->
+    <div class="form-group">
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Contraseña*"
+        name="password"
+        required
+      />
+      <small class="text-muted">
+        Debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número
+        y un carácter especial.
+      </small>
     </div>
     <div class="form-group">
-      <input type="password" [(ngModel)]="password" placeholder="Contraseña*" name="password" required>
-    </div>
-    <div class="form-group">
-      <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirmar contraseña*" name="confirmPassword"
-        required>
+      <input
+        type="password"
+        [(ngModel)]="confirmPassword"
+        placeholder="Confirmar contraseña*"
+        name="confirmPassword"
+        required
+      />
     </div>
 
     <h3>Datos Personales</h3>
+
     <div class="form-row">
+      <!-- DNI o Pasaporte -->
+      <!-- Selección de tipo de documento -->
       <div class="form-group">
-        <input type="text" [(ngModel)]="dni" placeholder="DNI*" name="dni" required>
+        <label for="tipoDocumento">Tipo de documento</label>
+        <select
+          id="tipoDocumento"
+          [(ngModel)]="tipoDocumento"
+          name="tipoDocumento"
+          required
+        >
+          <option value="dni">DNI</option>
+          <option value="pasaporte">Pasaporte</option>
+        </select>
       </div>
+
+      <!-- Campo de DNI o Pasaporte -->
+      <!-- Campo de DNI o Pasaporte -->
       <div class="form-group">
-        <input type="text" [(ngModel)]="nombre" placeholder="Nombres*" name="nombre" required>
+        <input
+          type="text"
+          [(ngModel)]="dni"
+          placeholder="DNI o Pasaporte*"
+          name="dni"
+          maxlength="12"
+          (input)="validarDni()"
+          (keypress)="restringirEntrada($event)"
+          required
+        />
+        <small class="text-danger" *ngIf="dniError">
+          {{ dniError }}
+        </small>
+        <small class="text-muted" *ngIf="!dniError">
+          {{
+            tipoDocumento === "dni"
+              ? "DNI: exactamente 8 dígitos numéricos."
+              : "Pasaporte: 6 a 12 caracteres alfanuméricos."
+          }}
+        </small>
       </div>
+
+      <!-- Nombre -->
       <div class="form-group">
-        <input type="text" [(ngModel)]="apellido" placeholder="Apellidos*" name="apellido" required>
+        <input
+          type="text"
+          [(ngModel)]="nombre"
+          placeholder="Nombre*"
+          name="nombre"
+          required
+        />
+      </div>
+
+      <!-- Apellido -->
+      <div class="form-group">
+        <input
+          type="text"
+          [(ngModel)]="apellido"
+          placeholder="Apellido*"
+          name="apellido"
+          required
+        />
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label>Fecha Nacimiento*</label>
-        <input type="date" [(ngModel)]="fecha_nacimiento" name="fecha_nacimiento" required>
+        <label>Fecha de Nacimiento</label>
+        <input
+          type="date"
+          [(ngModel)]="fecha_nacimiento"
+          name="fecha_nacimiento"
+          [max]="fechaMaxima"
+          required
+        />
+        <small class="text-muted">Debes ser mayor de 18 años.</small>
       </div>
+
       <div class="form-group">
         <label>Género*</label>
         <select [(ngModel)]="genero" name="genero" required>
@@ -39,29 +122,40 @@
           <option value="otro">Otro</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Rol*</label>
-        <select [(ngModel)]="rol_id" name="rol_id" required [disabled]="roles.length === 0">
-          <option value="">Seleccione un rol</option>
-          <option *ngFor="let role of roles" [value]="role.id">
-            {{ role.nombre }}
-          </option>
-        </select>
-        <div *ngIf="isLoadingRoles" class="loading-message">
-          Cargando roles...
-        </div>
-      </div>
     </div>
 
     <div class="form-row">
+      <!--Telefono-->
       <div class="form-group">
-        <input type="tel" [(ngModel)]="telefono_movil" placeholder="Teléfono móvil*" name="telefono_movil" required>
+        <input
+          type="text"
+          [(ngModel)]="telefono_movil"
+          placeholder="Teléfono Móvil*"
+          name="telefono_movil"
+          maxlength="9"
+          (input)="onTelefonoInput($event)"
+          required
+        />
+        <small class="text-muted">Debe contener 9 dígitos numéricos.</small>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          [(ngModel)]="ciudad"
+          placeholder="Ciudad*"
+          name="ciudad"
+          required
+        />
       </div>
       <div class="form-group">
-        <input type="text" [(ngModel)]="ciudad" placeholder="Ciudad*" name="ciudad" required>
-      </div>
-      <div class="form-group">
-        <input type="text" [(ngModel)]="pais" placeholder="País*" name="pais" required>
+        <input
+          type="text"
+          [(ngModel)]="pais"
+          placeholder="País*"
+          name="pais"
+          required
+        />
       </div>
     </div>
 

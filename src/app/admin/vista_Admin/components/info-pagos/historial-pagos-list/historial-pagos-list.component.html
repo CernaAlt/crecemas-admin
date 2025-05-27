@@ -1,82 +1,123 @@
 <!-- historial-pagos.component.html -->
 <div class="card" *ngIf="prestamo">
-  <div class="card-header">
-    <p *ngIf="prestamo">
-      Usuario: {{ prestamo.socio?.usuario?.nombre }} <br />
-      Socio: {{ prestamo.socio?.usuario?.dni }} <br />
-      Monto Prestamo S/: {{ prestamo.monto | number }} <br />
+  <div
+    class=" my-5 bg-green-100 dark:bg-green-900 text-green-900 dark:text-green-100 rounded-t-lg px-6 py-4 shadow-sm border-b border-green-300 dark:border-green-700"
+  >
+    <p *ngIf="prestamo" class="text-sm md:text-base leading-relaxed space-y-1">
+      <span
+        ><strong>Usuario:</strong> {{ prestamo.socio?.usuario?.nombre }}</span
+      ><br />
+      <span><strong>Socio:</strong> {{ prestamo.socio?.usuario?.dni }}</span
+      ><br />
+      <span
+        ><strong>Monto Préstamo:</strong> S/ {{ prestamo.monto | number }}</span
+      >
     </p>
   </div>
 
   <div class="card-body">
-    <!-- Mensaje de error general -->
-    <div *ngIf="errorMessage" class="alert alert-danger">
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-3 rounded mb-4">
       {{ errorMessage }}
     </div>
 
     <!-- Spinner de carga -->
-    <div *ngIf="loading" class="text-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
-      <p>Cargando historial de pagos...</p>
+    <div *ngIf="loading" class="text-center py-6">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500 mx-auto"
+      ></div>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">
+        Cargando historial de pagos...
+      </p>
     </div>
 
     <!-- Tabla de cuotas -->
-    <div *ngIf="!loading">
-      <table class="table table-striped">
-        <thead class="table-light">
+    <div
+      *ngIf="!loading"
+      class="overflow-x-auto rounded-xl shadow-lg border border-green-300 bg-white dark:bg-gray-900"
+    >
+      <table class="min-w-full text-sm divide-y divide-green-200">
+        <thead
+          class="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 text-left uppercase tracking-wide text-xs"
+        >
           <tr>
-            <th># Cuota</th>
-            <th>Vencimiento</th>
-            <th>Amortización</th>
-            <th>Interés</th>
-            <th>Comisiones + Seguros</th>
-            <th>Subvención</th>
-            <th>Cuota</th>
-            <th>Saldo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th class="px-4 py-3"># Cuota</th>
+            <th class="px-4 py-3">Vencimiento</th>
+            <th class="px-4 py-3 text-right">Amortización</th>
+            <th class="px-4 py-3 text-right">Interés</th>
+            <th class="px-4 py-3 text-right">Comisiones + Seguros</th>
+            <th class="px-4 py-3 text-right">Subvención</th>
+            <th class="px-4 py-3 text-right">Cuota</th>
+            <th class="px-4 py-3 text-right">Saldo</th>
+            <th class="px-4 py-3">Estado</th>
+            <th class="px-4 py-3">Acciones</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let cuota of cuotas">
-            <td>{{ cuota.cuota_numero }}</td>
-            <td>{{ cuota.fecha_pago | date : "dd/MM/yyyy" }}</td>
-            <td>S/ {{ cuota.amortizacion | number : "1.2-2" }}</td>
-            <td>S/ {{ cuota.interes | number : "1.2-2" }}</td>
-            <td>S/ {{ cuota.comisiones_seguros | number : "1.2-2" }}</td>
-            <td>S/ {{ cuota.subvencion | number : "1.2-2" }}</td>
-            <td>S/ {{ cuota.monto_pagado | number : "1.2-2" }}</td>
-            <td>S/ {{ cuota.saldo | number : "1.2-2" }}</td>
-            <td>
+        <tbody class="divide-y divide-lime-100">
+          <tr
+            *ngFor="let cuota of cuotas"
+            class="hover:bg-green-100 dark:hover:bg-green-900 transition duration-150"
+          >
+            <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+              {{ cuota.cuota_numero }}
+            </td>
+            <td class="px-4 py-2 text-amber-700 dark:text-amber-100">
+              {{ cuota.fecha_pago | date : "dd/MM/yyyy" }}
+            </td>
+            <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+              S/ {{ cuota.amortizacion | number : "1.2-2" }}
+            </td>
+            <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+              S/ {{ cuota.interes | number : "1.2-2" }}
+            </td>
+            <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+              S/ {{ cuota.comisiones_seguros | number : "1.2-2" }}
+            </td>
+            <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+              S/ {{ cuota.subvencion | number : "1.2-2" }}
+            </td>
+            <td
+              class="px-4 py-2 text-right font-semibold text-green-900 dark:text-green-100"
+            >
+              S/ {{ cuota.monto_pagado | number : "1.2-2" }}
+            </td>
+            <td
+              class="px-4 py-2 text-right font-semibold text-green-900 dark:text-green-100"
+            >
+              S/ {{ cuota.saldo | number : "1.2-2" }}
+            </td>
+            <td class="px-4 py-2">
               <span
-                [class]="
-                  cuota.estado === 'Pagado'
-                    ? 'badge bg-success'
-                    : 'badge bg-warning'
-                "
+                class="px-3 py-1 rounded-full text-xs font-bold"
+                [ngClass]="{
+                  'bg-green-200 text-green-800': cuota.estado === 'Pagado',
+                  'bg-yellow-200 text-yellow-800': cuota.estado !== 'Pagado'
+                }"
               >
                 {{ cuota.estado }}
               </span>
             </td>
-            <td>
+            <td class="px-4 py-2">
               <button
                 *ngIf="cuota.estado === 'Pendiente'"
                 (click)="pagarCuota(cuota)"
-                class="btn btn-sm btn-primary"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs"
                 [disabled]="loading"
               >
                 {{ loading ? "Procesando..." : "Registrar Pago" }}
               </button>
             </td>
           </tr>
+          <tr *ngIf="cuotas.length === 0">
+            <td
+              colspan="10"
+              class="text-center text-gray-500 dark:text-gray-400 py-4"
+            >
+              No se encontraron cuotas registradas para este préstamo.
+            </td>
+          </tr>
         </tbody>
       </table>
-
-      <div *ngIf="cuotas.length === 0" class="alert alert-info">
-        No se encontraron cuotas registradas para este préstamo.
-      </div>
     </div>
   </div>
 </div>

@@ -1,68 +1,130 @@
+<div class="my-5">
+  <!-- Título del componenete -->
+  <h2
+    class="text-2xl md:text-3xl font-bold text-green-700 dark:text-black mb-6 border-b border-green-300 dark:border-green-700 pb-2"
+  >
+    Lista de Préstamos
+  </h2>
 
-<div class="container">
-  <h2>Lista de Préstamos</h2>
+  <!--Formulario del componente-->
+  <div class="my-5">
+    <app-prestamos-form
+      [prestamo]="selectedPrestamo"
+      (formSaved)="loadPrestamos(); clearForm()"
+      (cancel)="clearForm()"
+    ></app-prestamos-form>
+  </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Socio</th>
-        <th>DNI</th>
+  <!---Tabla del componente-->
+  <div
+    class="overflow-x-auto rounded-xl shadow-lg border border-green-300 bg-white dark:bg-gray-900"
+  >
+    <table class="min-w-full text-sm divide-y divide-green-200">
+      <thead
+        class="bg-green-100 dark:bg-green-100 text-green-800 dark:text-green-600 text-left uppercase tracking-wide text-xs"
+      >
+        <tr>
+          <th class="px-4 py-3">Socio</th>
+          <th class="px-4 py-3">DNI</th>
+          <th class="px-4 py-3">Fecha Inicio</th>
+          <th class="px-4 py-3">Fecha Fin</th>
+          <th class="px-4 py-3 text-right">Cuotas Totales</th>
+          <th class="px-4 py-3 text-right">Cuotas Pagadas</th>
+          <th class="px-4 py-3 text-right">Monto</th>
+          <th class="px-4 py-3">Estado</th>
+          <th class="px-4 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-lime-100">
+        <tr
+          *ngFor="let p of prestamos"
+          class="hover:bg-green-100 dark:hover:bg-green-900 transition duration-150"
+        >
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ p.socio?.usuario?.nombre }}
+          </td>
+          <td class="px-4 py-2 text-gray-900 dark:text-gray-100">
+            {{ p.socio?.usuario?.dni }}
+          </td>
+          <td class="px-4 py-2 text-amber-700 dark:text-amber-100">
+            {{ p.fecha_inicio | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="px-4 py-2 text-amber-700 dark:text-amber-100">
+            {{ p.fecha_fin | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+            {{ p.cuotas_totales | number }}
+          </td>
+          <td class="px-4 py-2 text-right text-green-800 dark:text-green-100">
+            {{ p.cuotas_pagadas | number }}
+          </td>
+          <td
+            class="px-4 py-2 text-right font-semibold text-green-900 dark:text-green-100"
+          >
+            S/ {{ p.monto | number }}
+          </td>
+          <td class="px-4 py-2">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-bold"
+              [ngClass]="{
+                'bg-green-200 text-green-800': p.estado === 'Activo',
+                'bg-yellow-200 text-yellow-800': p.estado !== 'Activo'
+              }"
+            >
+              {{ p.estado }}
+            </span>
+          </td>
+          <td class="px-4 py-2">
+            <div class="flex flex-wrap gap-2">
+              <button
+                class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs"
+                (click)="selectPrestamo(p)"
+              >
+                Editar
+              </button>
+              <button
+                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs"
+                (click)="deletePrestamo(p.id!)"
+              >
+                Eliminar
+              </button>
+              <button
+                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                (click)="verHistorial(p)"
+              >
+                Cronograma
+              </button>
+            </div>
+          </td>
+        </tr>
 
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Cuotas Totales</th>
-        <th>Cuotas Pagadas</th>
-        <th>Monto</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of prestamos">
-        <td>{{ p.socio?.usuario?.nombre }}</td>
-        <td>{{ p.socio?.usuario?.dni }}</td>
-
-        <td>{{ p.fecha_inicio | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ p.fecha_fin | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ p.cuotas_totales| number }}</td>
-        <td>{{ p.cuotas_pagadas| number }}</td>
-        <td>S/ {{ p.monto | number }}</td>
-
-        <td>
-          <span [class]="'badge ' + (p.estado === 'Activo' ? 'bg-success' : 'bg-warning')">
-            {{ p.estado }}
-          </span>
-        </td>
-
-        <td>
-          <button class="btn btn-sm btn-primary" (click)="selectPrestamo(p)">
-            Editar
-          </button>
-          <button class="btn btn-sm btn-danger ms-2" (click)="deletePrestamo(p.id!)">
-            Eliminar
-          </button>
-          <button class="btn btn-sm btn-info ms-2" (click)="verHistorial(p)">
-            Cronograma de Pagos
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <hr />
-
-  <!-- Formulario de préstamos -->
-  <app-prestamos-form
-    [prestamo]="selectedPrestamo"
-    (formSaved)="loadPrestamos(); clearForm()"
-    (cancel)="clearForm()"
-  ></app-prestamos-form>
+        <tr *ngIf="prestamos.length === 0">
+          <td
+            colspan="9"
+            class="text-center text-gray-500 dark:text-gray-400 py-4"
+          >
+            No hay préstamos registrados.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Historial de pagos (solo visible cuando hay préstamo seleccionado) -->
-  <div *ngIf="prestamoParaHistorial" class="mt-4">
-    <h3>Historial de Pagos</h3>
-    <app-historial-pagos-list [prestamo]="prestamoParaHistorial"></app-historial-pagos-list>
+  <div
+    *ngIf="prestamoParaHistorial"
+    class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md px-6 py-4 border border-green-200 dark:border-green-700"
+  >
+    <!-- Título del historial de pagos -->
+    <h3
+      class="text-2xl md:text-3xl font-bold text-green-700 dark:text-green-300 mb-4 border-b border-green-300 dark:border-green-700 pb-2"
+    >
+      Historial de Pagos
+    </h3>
+
+    <!-- Componente de historial de pagos -->
+    <app-historial-pagos-list
+      [prestamo]="prestamoParaHistorial"
+    ></app-historial-pagos-list>
   </div>
 </div>
-
-

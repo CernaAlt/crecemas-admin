@@ -14,7 +14,7 @@ import {
   styleUrl: './simulador-creditos.component.css',
 })
 export class SimuladorCreditosComponent {
-  title = 'Simulador de Calendario de pago de Créditos';
+  title = 'Simulador de microcreditos Crecemas';
 
   loanForm!: FormGroup; // Formulario Prestamo
   paymentSchedule: any[] = []; // programacion de pagos

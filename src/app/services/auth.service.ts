@@ -22,6 +22,7 @@ export class AuthService {
       ciudad: string;
       pais: string;
       rol_id: string;
+      estado: boolean; // opcional, si es necesario
     }
   ) {
     try {
@@ -57,6 +58,7 @@ export class AuthService {
           ciudad: userData.ciudad,
           pais: userData.pais,
           rol_id: userData.rol_id,
+          estado: userData.estado,
           fecha_ingreso: new Date(),
         });
 
