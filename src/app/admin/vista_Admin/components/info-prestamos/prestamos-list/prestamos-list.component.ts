@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrestamosService } from '../../../services/prestamos.service';
+import { PrestamosService } from '../../../../../services/prestamos/prestamos.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Prestamo } from '../../../interfaces/Prestamo';
 import { PrestamosFormComponent } from "../prestamos-form/prestamos-form.component";

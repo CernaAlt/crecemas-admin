@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { RolesService } from '../services/roles.service';
+import { RolesService } from '../services/roles/roles.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Pipe({

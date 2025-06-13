@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { supabase } from '../../../supabase/supabase-client';
-import { Usuario } from '../interfaces/Usuario';
+import { Usuario } from '../../admin/vista_Admin/interfaces/Usuario';
+import { supabase } from '../../supabase/supabase-client';
 
 @Injectable({
   providedIn: 'root',
@@ -160,26 +160,6 @@ export class UsuariosService {
 
     return data as Usuario;
   }
-
-  // Eliminar un usuario (soft delete)
-  /*async eliminarUsuario(id: string): Promise<void> {
-    const { error } = await supabase
-      .from('usuarios')
-      .update({
-        activo: true,
-      })
-      .eq('auth_user_id', id);
-
-    if (error) {
-      console.error('Error al eliminar usuario:', error);
-      throw error;
-    }
-
-    const usuariosActuales = this.usuariosSubject.value.filter(
-      (u) => u.auth_user_id !== id
-    );
-    this.usuariosSubject.next(usuariosActuales);
-  }*/
 
   async eliminarUsuario(id: string): Promise<void> {
     const { error } = await supabase

@@ -13,9 +13,9 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { PrestamosService } from '../../../services/prestamos.service';
+import { PrestamosService } from '../../../../../services/prestamos/prestamos.service';
 import { Prestamo } from '../../../interfaces/Prestamo';
-import { SociosService } from '../../../services/socios.service';
+import { SociosService } from '../../../../../services/socios/socios.service';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({

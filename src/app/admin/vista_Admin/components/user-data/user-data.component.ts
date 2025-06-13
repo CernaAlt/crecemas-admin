@@ -1,12 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { UsuariosService } from '../../services/usuarios.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Usuario } from '../../interfaces/Usuario';
-import { RolesService } from '../../../../services/roles.service';
-import { AuthService } from '../../../../services/auth.service';
+import { RolesService } from '../../../../services/roles/roles.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-user-data',

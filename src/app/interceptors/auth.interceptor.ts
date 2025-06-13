@@ -9,7 +9,7 @@ import {
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { TokenRefreshModalComponent } from '../components/token-refresh-modal/token-refresh-modal.component';
 
 @Injectable()

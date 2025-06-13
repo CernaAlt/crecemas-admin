@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { SociosService } from '../../services/socios.service';
-import { UsuariosService } from '../../services/usuarios.service';
+import { SociosService } from '../../../../services/socios/socios.service';
+
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Socio } from '../../interfaces/Socio';
 import { Usuario } from '../../interfaces/Usuario';
 import { MessageService } from 'primeng/api';
+import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 @Component({
   selector: 'app-socios-list',
   imports: [NgFor, NgIf, DatePipe, FormsModule],

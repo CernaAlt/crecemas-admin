@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../../services/auth/auth.service';
 import { DatePipe, NgIf } from '@angular/common';
 import { LogoutUserComponent } from '../logout-user/logout-user.component';
 import { GetRoleNamePipe } from '../../../../pipes/get-role-name.pipe';

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Prestamo } from '../../../../admin/vista_Admin/interfaces/Prestamo';
-import { PrestamosService } from '../../../../admin/vista_Admin/services/prestamos.service';
+import { PrestamosService } from '../../../../services/prestamos/prestamos.service';
 import { supabase } from '../../../../supabase/supabase-client';
 import { HistorialPago } from '../../../../admin/vista_Admin/interfaces/historial-pago.model';
 import { CommonModule, DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { SociosService } from '../../../../admin/vista_Admin/services/socios.service';
+import { SociosService } from '../../../../services/socios/socios.service';
 import { Socio } from '../../../../admin/vista_Admin/interfaces/Socio';
 
 @Component({

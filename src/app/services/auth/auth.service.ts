@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '../supabase/supabase-client';
+import { supabase } from '../../supabase/supabase-client';
 import { Router } from '@angular/router';
 
 @Injectable({

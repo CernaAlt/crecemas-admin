@@ -1,8 +1,8 @@
 // src/app/services/prestamos.service.ts
 import { Injectable } from '@angular/core';
-import { supabase } from '../../../supabase/supabase-client';
-import { Prestamo } from '../interfaces/Prestamo';
-import { HistorialPago } from '../interfaces/historial-pago.model';
+import { supabase } from '../../supabase/supabase-client';
+import { Prestamo } from '../../admin/vista_Admin/interfaces/Prestamo';
+import { HistorialPago } from '../../admin/vista_Admin/interfaces/historial-pago.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,69 +37,6 @@ export class PrestamosService {
     if (error) throw error;
     return data;
   }
-
-  /*async create(
-    prestamo: Prestamo
-  ): Promise<{ prestamo: Prestamo; cuotas: HistorialPago[] }> {
-    if (
-      !prestamo.socio_id ||
-      prestamo.monto <= 0 ||
-      prestamo.cuotas_totales <= 0
-    ) {
-      throw new Error('Datos del préstamo inválidos');
-    }
-
-    const tasaInteresAnual = prestamo.interes_anual / 100;
-    const tasaMensual = Math.pow(1 + tasaInteresAnual, 1 / 12) - 1;
-
-    const tasaSeguroAnual = prestamo.tasa_seguro ?? 0.069;
-    const tasaSeguroMensual = tasaSeguroAnual / 12;
-
-    const monto = prestamo.monto;
-    const cuotas = prestamo.cuotas_totales;
-
-    const cuotaMensual =
-      monto * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -cuotas)));
-    const cuotaConSeguro = cuotaMensual + monto * tasaSeguroMensual;
-
-    // Cálculo TCEA referencial
-    // Cálculo TCEA referencial
-    const flujoInicial = -monto;
-    const flujos = Array(cuotas).fill(cuotaConSeguro);
-    const todosFlujos = [flujoInicial, ...flujos];
-
-    const tirMensual = this.calcularTIR(todosFlujos);
-    const tcea = Math.pow(1 + tirMensual, 12) - 1; // anualizar de forma compuesta
-
-    // valores automáticos
-    prestamo.cuotas_pagadas = 0;
-    prestamo.estado = 'Activo';
-    prestamo.tcea = parseFloat((tcea * 100).toFixed(6)); // en porcentaje con más precisión
-
-    // valores automáticos
-    prestamo.cuotas_pagadas = 0;
-    prestamo.estado = 'Activo';
-    prestamo.tcea = parseFloat((tcea * 100).toFixed(6)); // en porcentaje con más precisión
-    prestamo.fecha_fin = this.calcularFechaFin(prestamo.fecha_inicio, cuotas);
-
-    const { data, error } = await supabase
-      .from(this.table)
-      .insert(prestamo)
-      .select()
-      .single();
-    if (error) throw new Error('No se pudo crear el préstamo');
-
-    const cuotasGeneradas = await this.generarCuotas(
-      data.id,
-      monto,
-      cuotas,
-      prestamo.fecha_inicio,
-      prestamo.interes_anual,
-      prestamo.tasa_seguro ?? 0.069
-    );
-
-    return { prestamo: data, cuotas: cuotasGeneradas };
-  }*/
 
   async create(
     prestamo: Prestamo
@@ -350,4 +287,7 @@ export class PrestamosService {
 
     if (error) throw error;
   }
+
+
+
 }
