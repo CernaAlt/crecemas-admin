@@ -17,7 +17,7 @@
       <button (click)="cambiarVista('prestamos')" class="p-2 rounded flex items-center gap-2 w-full text-left">
         <span>📧</span> <span>Préstamos</span>
       </button>
-      <button (click)="cambiarVista('dashboard')" class="p-2 rounded flex items-center gap-2 w-full text-left">
+      <button (click)="cambiarVista('generarContrato')" class="p-2 rounded flex items-center gap-2 w-full text-left">
         <span>🏠</span> <span>Generador Contratos</span>
       </button>
       <button (click)="cambiarVista('ajustes')" class="p-2 rounded flex items-center gap-2 w-full text-left">
@@ -46,11 +46,9 @@
       <app-user-data *ngIf="vistaActual === 'usuarios'"></app-user-data>
       <app-socios-list *ngIf="vistaActual === 'socios'"></app-socios-list>
       <app-prestamos-list *ngIf="vistaActual === 'prestamos'"></app-prestamos-list>
-
-      <!--
+      <app-generador-contratos *ngIf="vistaActual === 'generarContrato'"></app-generador-contratos>
       <app-ajustes *ngIf="vistaActual === 'ajustes'"></app-ajustes>
-      
-      -->
+    
       
     </main>
   </div>

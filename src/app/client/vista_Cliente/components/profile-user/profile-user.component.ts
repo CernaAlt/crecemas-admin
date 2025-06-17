@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../../services/auth/auth.service';
-import { DatePipe, NgIf } from '@angular/common';
-import { LogoutUserComponent } from '../logout-user/logout-user.component';
+import { DatePipe, NgIf } from '@angular/common';;
 import { GetRoleNamePipe } from '../../../../pipes/get-role-name.pipe';
 import { ReservasClientesComponent } from '../../reservas-clientes/reservas-clientes.component';
 import { AdminReservationsComponent } from '../../../../admin/vista_Admin/components/admin-reservations/admin-reservations.component';
 import { ReservasListUsuariosComponent } from '../reservas-list-usuarios/reservas-list-usuarios.component';
 import { CalificacionesFormComponent } from '../../calificaciones/calificaciones-form/calificaciones-form.component';
 import { SimuladorCreditosComponent } from '../../simulador-creditos/simulador-creditos.component';
+import { LogoutUserComponent } from '../../../../login/logout-user/logout-user.component';
 
 @Component({
   selector: 'app-profile-user',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HistorialPago } from '../admin/vista_Admin/interfaces/historial-pago.model';
+import { HistorialPago } from '../interfaces/historial-pago.model';
 import { supabase } from '../supabase/supabase-client';
 
 @Injectable({

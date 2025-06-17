@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HistorialPago } from '../../../interfaces/historial-pago.model';
+import { HistorialPago } from '../../../../../interfaces/historial-pago.model';
 import { CommonModule, DatePipe, NgFor } from '@angular/common';
-import { Prestamo } from '../../../interfaces/Prestamo';
+import { Prestamo } from '../../../../../interfaces/Prestamo';
 import { supabase } from '../../../../../supabase/supabase-client';
 
 @Component({

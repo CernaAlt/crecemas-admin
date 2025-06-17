@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PrestamosSocioComponent } from '../../socio-children/components/prestamos-socio/prestamos-socio.component';
-import { LogoutUserComponent } from '../../../client/vista_Cliente/components/logout-user/logout-user.component';
 import { NgIf } from '@angular/common';
+import { LogoutUserComponent } from '../../../login/logout-user/logout-user.component';
 
 @Component({
   selector: 'app-socio-panel',

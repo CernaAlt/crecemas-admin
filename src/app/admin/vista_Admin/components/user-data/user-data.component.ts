@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Usuario } from '../../interfaces/Usuario';
+import { Usuario } from '../../../../interfaces/Usuario';
 import { RolesService } from '../../../../services/roles/roles.service';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { Router } from '@angular/router';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Calificacion } from '../admin/vista_Admin/interfaces/Calificacion';
+import { Calificacion } from '../interfaces/Calificacion';
 import { supabase } from '../supabase/supabase-client';
 
 @Injectable({ providedIn: 'root' })

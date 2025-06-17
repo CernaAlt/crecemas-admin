@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Usuario } from '../../admin/vista_Admin/interfaces/Usuario';
+import { Usuario } from '../../interfaces/Usuario';
 import { supabase } from '../../supabase/supabase-client';
 
 @Injectable({

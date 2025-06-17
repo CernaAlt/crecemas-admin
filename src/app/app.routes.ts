@@ -14,6 +14,8 @@ import { SociosListComponent } from './admin/vista_Admin/components/socios-list/
 import { ReservasClientesComponent } from './client/vista_Cliente/reservas-clientes/reservas-clientes.component';
 import { RegisterUserComponent } from './login/register-user/register-user.component';
 import { PrestamosSocioComponent } from './socio/socio-children/components/prestamos-socio/prestamos-socio.component';
+import { GeneradorContratosComponent } from './admin/generador-contratos/generador-contratos.component';
+import { AjustesComponent } from './admin/ajustes/ajustes.component';
 
 export const routes: Routes = [
 
@@ -22,6 +24,10 @@ export const routes: Routes = [
   { path: 'simulador-creditos', component: SimuladorCreditosComponent },
   { path: 'solicitud-creditos', component: ReservasClientesComponent },
   { path: 'register', component: RegisterUserComponent },
+  { path: 'usuarios', component: UserDataComponent },
+  { path: 'reservaciones', component: AdminReservationsComponent },
+
+  { path: 'prestamos', component: PrestamosListComponent },
 
   // Rutas protegidas
   {
@@ -35,6 +41,10 @@ export const routes: Routes = [
       { path: 'usuarios', component: UserDataComponent },
       { path: 'socios', component: SociosListComponent },
       { path: 'prestamos', component: PrestamosListComponent },
+      { path: 'generar-contratos', component: GeneradorContratosComponent },
+      { path: 'ajustes', component: AjustesComponent },
+
+
       //{ path: 'pagos', component:  },
       //{ path: 'ajustes', component: AjustesComponent },
     ],
@@ -47,6 +57,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'prestamos', pathMatch: 'full' },
       //{ path: 'dashboard', component: DashboardComponent },
       { path: 'prestamos', component: PrestamosSocioComponent }
+
     ]
   },
   {

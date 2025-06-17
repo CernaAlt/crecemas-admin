@@ -1,4 +1,4 @@
-import { Usuario } from '../../admin/vista_Admin/interfaces/Usuario';
+import { Usuario } from '../../interfaces/Usuario';
 import { supabase } from '../../supabase/supabase-client';
 import { UsuariosService } from './usuarios.service';
 

@@ -1,0 +1,240 @@
+<!-- Formulario para generar contrato -->
+<div
+  class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-green-300 max-w-2xl mx-auto mt-6"
+>
+  <h2 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-4">
+    Generar Contrato
+  </h2>
+
+  <form
+    [formGroup]="contratoForm"
+    (ngSubmit)="generarContrato()"
+    class="space-y-4 max-w-2xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-green-300"
+  >
+    <h2 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-4">
+      Generar Contrato
+    </h2>
+
+    <!-- NOMBRE -->
+    <div>
+      <input
+        formControlName="nombre"
+        placeholder="Nombre completo"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('nombre')?.touched &&
+          contratoForm.get('nombre')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('nombre')?.errors?.['required']"
+          >El nombre es obligatorio.</span
+        >
+        <span *ngIf="contratoForm.get('nombre')?.errors?.['pattern']"
+          >Solo se permiten letras y espacios.</span
+        >
+      </p>
+    </div>
+
+    <!-- DNI -->
+    <div>
+      <input formControlName="dni" placeholder="DNI" class="input-field text-white" />
+      <p
+        *ngIf="
+          contratoForm.get('dni')?.touched && contratoForm.get('dni')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('dni')?.errors?.['required']"
+          >El DNI es obligatorio.</span
+        >
+        <span *ngIf="contratoForm.get('dni')?.errors?.['pattern']"
+          >Debe tener exactamente 8 dígitos numéricos.</span
+        >
+      </p>
+    </div>
+
+    <!-- NACIMIENTO -->
+    <div>
+      <input
+        formControlName="nacimiento"
+        type="date"
+        placeholder="Fecha de nacimiento"
+        class="input-field  text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('nacimiento')?.touched &&
+          contratoForm.get('nacimiento')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('nacimiento')?.errors?.['required']"
+          >La fecha de nacimiento es obligatoria.</span
+        >
+        <span *ngIf="contratoForm.get('nacimiento')?.errors?.['menorDeEdad']"
+          >Debes ser mayor de 18 años.</span
+        >
+      </p>
+    </div>
+
+    <!-- TRABAJO -->
+    <div>
+      <input
+        formControlName="trabajo"
+        placeholder="Lugar de trabajo"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('trabajo')?.touched &&
+          contratoForm.get('trabajo')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('trabajo')?.errors?.['required']"
+          >Este campo es obligatorio.</span
+        >
+        <span *ngIf="contratoForm.get('trabajo')?.errors?.['maxlength']"
+          >Máximo 20 caracteres permitidos.</span
+        >
+      </p>
+    </div>
+
+    <!-- MONTO -->
+    <div>
+      <input
+        formControlName="monto"
+        type="number"
+        placeholder="Monto del préstamo"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('monto')?.touched &&
+          contratoForm.get('monto')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('monto')?.errors?.['required']"
+          >Campo obligatorio.</span
+        >
+        <span *ngIf="contratoForm.get('monto')?.errors?.['min']"
+          >Debe ser mayor a 0.</span
+        >
+      </p>
+    </div>
+
+    <!-- CUOTAS -->
+    <div>
+      <input
+        formControlName="cuotas"
+        type="number"
+        placeholder="Cantidad de cuotas"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('cuotas')?.touched &&
+          contratoForm.get('cuotas')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('cuotas')?.errors?.['required']"
+          >Campo obligatorio.</span
+        >
+        <span *ngIf="contratoForm.get('cuotas')?.errors?.['min']"
+          >Debe ser mayor a 0.</span
+        >
+      </p>
+    </div>
+
+    <!-- DIA DE PAGO -->
+    <div>
+      <input
+        formControlName="diaPago"
+        type="number"
+        placeholder="Día de pago"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('diaPago')?.touched &&
+          contratoForm.get('diaPago')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('diaPago')?.errors?.['required']"
+          >Campo obligatorio.</span
+        >
+        <span
+          *ngIf="
+            contratoForm.get('diaPago')?.errors?.['min'] ||
+            contratoForm.get('diaPago')?.errors?.['max']
+          "
+          >Debe estar entre 1 y 31.</span
+        >
+      </p>
+    </div>
+
+    <!-- TASA DE MORA -->
+    <div>
+      <input
+        formControlName="tasaMora"
+        type="number"
+        step="0.01"
+        placeholder="Tasa de morosidad (%)"
+        class="input-field text-white"
+      />
+      <p
+        *ngIf="
+          contratoForm.get('tasaMora')?.touched &&
+          contratoForm.get('tasaMora')?.errors
+        "
+        class="text-red-600 text-sm mt-1"
+      >
+        <span *ngIf="contratoForm.get('tasaMora')?.errors?.['required']"
+          >Campo obligatorio.</span
+        >
+        <span
+          *ngIf="
+            contratoForm.get('tasaMora')?.errors?.['min'] ||
+            contratoForm.get('tasaMora')?.errors?.['max']
+          "
+          >Debe estar entre 0.1% y 10%.</span
+        >
+      </p>
+    </div>
+
+    <!-- BOTÓN DE ENVÍO -->
+    <button
+      type="submit"
+      class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 transition duration-200"
+      [disabled]="contratoForm.invalid"
+    >
+      Generar contrato
+    </button>
+  </form>
+</div>
+
+<!-- Resultado del contrato generado -->
+<div
+  *ngIf="contratoGenerado"
+  class="p-6 mt-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-green-300 max-w-2xl mx-auto"
+>
+  <h2 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-2">
+    Contrato generado:
+  </h2>
+  <pre
+    class="bg-gray-100 dark:bg-gray-800 p-4 rounded-md text-gray-800 dark:text-gray-100 overflow-auto whitespace-pre-wrap"
+    >{{ contratoGenerado }}
+  </pre>
+  <button
+    (click)="descargarContrato()"
+    class="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition duration-200"
+  >
+    Descargar Contrato
+  </button>
+</div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Reservation } from '../../../../admin/vista_Admin/interfaces/Reservation';
-import { Usuario } from '../../../../admin/vista_Admin/interfaces/Usuario';
-import { ReservasService } from '../../../../services/reservas.service';
+import { Reservation } from '../../../../interfaces/Reservation';
+import { Usuario } from '../../../../interfaces/Usuario';
+import { ReservasService } from '../../../../services/reservas/reservas.service';
 import { supabase } from '../../../../supabase/supabase-client';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 

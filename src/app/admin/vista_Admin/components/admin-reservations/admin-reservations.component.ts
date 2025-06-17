@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Reservation } from '../../interfaces/Reservation';
+import { Reservation } from '../../../../interfaces/Reservation';
 import { supabase } from '../../../../supabase/supabase-client';
 
 @Component({

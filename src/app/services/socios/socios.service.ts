@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { supabase } from '../../supabase/supabase-client';
-import { Socio } from '../../admin/vista_Admin/interfaces/Socio';
+import { Socio } from '../../interfaces/Socio';
 
 @Injectable({
   providedIn: 'root',

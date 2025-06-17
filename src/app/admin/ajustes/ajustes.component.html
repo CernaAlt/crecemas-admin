@@ -1,0 +1,34 @@
+<div class="p-6 max-w-md mx-auto bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-lg rounded-xl">
+  <h2 class="text-lg font-semibold mb-4">Ajustes de Usuario</h2>
+
+  <!-- Tema -->
+  <div class="mb-4">
+    <label class="block font-medium mb-1">Tema:</label>
+    <select [(ngModel)]="tema" (change)="guardarPreferencias()" class="w-full p-2 rounded bg-gray-100 dark:bg-gray-700">
+      <option value="claro">Claro</option>
+      <option value="oscuro">Oscuro</option>
+    </select>
+  </div>
+
+  <!-- Idioma -->
+  <div class="mb-4">
+    <label class="block font-medium mb-1">Idioma:</label>
+    <select [(ngModel)]="idioma" (change)="guardarPreferencias()" class="w-full p-2 rounded bg-gray-100 dark:bg-gray-700">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+
+  <!-- Filtro Daltonico -->
+  <div class="mb-4 flex items-center">
+    <input type="checkbox" [(ngModel)]="filtroDaltonico" (change)="guardarPreferencias()" class="mr-2" />
+    <label>Filtro para daltónicos</label>
+  </div>
+
+  <!-- Fuente grande -->
+  <div class="mb-4 flex items-center">
+    <input type="checkbox" [(ngModel)]="fuenteGrande" (change)="guardarPreferencias()" class="mr-2" />
+    <label>Aumentar tamaño de fuente</label>
+  </div>
+</div>
+

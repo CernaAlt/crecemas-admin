@@ -1,8 +1,8 @@
 // src/app/services/prestamos.service.ts
 import { Injectable } from '@angular/core';
 import { supabase } from '../../supabase/supabase-client';
-import { Prestamo } from '../../admin/vista_Admin/interfaces/Prestamo';
-import { HistorialPago } from '../../admin/vista_Admin/interfaces/historial-pago.model';
+import { Prestamo } from '../../interfaces/Prestamo';
+import { HistorialPago } from '../../interfaces/historial-pago.model';
 
 @Injectable({
   providedIn: 'root',

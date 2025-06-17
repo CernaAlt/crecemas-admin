@@ -1,7 +1,7 @@
 // src/app/services/reservas.service.ts
 import { Injectable } from '@angular/core';
-import { Reservation } from '../admin/vista_Admin/interfaces/Reservation';
-import { supabase } from '../supabase/supabase-client';
+import { Reservation } from '../../interfaces/Reservation';
+import { supabase } from '../../supabase/supabase-client';
 
 @Injectable({
   providedIn: 'root',

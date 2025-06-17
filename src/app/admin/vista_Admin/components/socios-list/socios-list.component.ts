@@ -3,8 +3,8 @@ import { SociosService } from '../../../../services/socios/socios.service';
 
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Socio } from '../../interfaces/Socio';
-import { Usuario } from '../../interfaces/Usuario';
+import { Socio } from '../../../../interfaces/Socio';
+import { Usuario } from '../../../../interfaces/Usuario';
 import { MessageService } from 'primeng/api';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 @Component({

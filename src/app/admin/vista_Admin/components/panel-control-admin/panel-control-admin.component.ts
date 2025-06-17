@@ -3,8 +3,10 @@ import { UserDataComponent } from '../user-data/user-data.component';
 import { SociosListComponent } from '../socios-list/socios-list.component';
 import { PrestamosListComponent } from "../info-prestamos/prestamos-list/prestamos-list.component";
 import { NgIf } from '@angular/common';
-import { LogoutUserComponent } from "../../../../client/vista_Cliente/components/logout-user/logout-user.component";
 import { AdminReservationsComponent } from "../admin-reservations/admin-reservations.component";
+import { LogoutUserComponent } from '../../../../login/logout-user/logout-user.component';
+import { GeneradorContratosComponent } from "../../../generador-contratos/generador-contratos.component";
+import { AjustesComponent } from "../../../ajustes/ajustes.component";
 
 @Component({
   selector: 'app-panel-control-admin',
@@ -14,7 +16,9 @@ import { AdminReservationsComponent } from "../admin-reservations/admin-reservat
     SociosListComponent,
     PrestamosListComponent,
     LogoutUserComponent,
-    AdminReservationsComponent
+    AdminReservationsComponent,
+    GeneradorContratosComponent,
+    AjustesComponent
 ],
   templateUrl: './panel-control-admin.component.html',
   styleUrl: './panel-control-admin.component.css',
