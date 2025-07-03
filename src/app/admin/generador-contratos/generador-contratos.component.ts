@@ -121,12 +121,19 @@ Firma de la Financiera: _______________________
   }
 
   async descargarContratoDoc() {
-    const blob = new Blob([this.contratoGenerado], {
-      type: 'text/plain;charset=utf-8',
-    });
-    const { saveAs } = await import('file-saver');
-    saveAs(blob, 'ContratoCredito.doc');
+  if (typeof window === 'undefined') {
+    console.warn('La descarga solo puede ejecutarse en el navegador.');
+    return;
   }
+
+  const blob = new Blob([this.contratoGenerado], {
+    type: 'text/plain;charset=utf-8',
+  });
+
+  const { saveAs } = await import('file-saver');
+  saveAs(blob, 'ContratoCredito.doc');
+}
+
 
   /*async descargarContratoPdf() {
     const { jsPDF } = await import('jspdf');
