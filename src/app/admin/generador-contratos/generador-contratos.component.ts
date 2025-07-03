@@ -50,7 +50,10 @@ export class GeneradorContratosComponent {
           Validators.min(1), // monto mayor a cero
         ],
       ],
-      cuotas: ['', [Validators.required, Validators.min(1), Validators.max(36)]],
+      cuotas: [
+        '',
+        [Validators.required, Validators.min(1), Validators.max(36)],
+      ],
       diaPago: [
         '',
         [Validators.required, Validators.min(1), Validators.max(31)],
@@ -62,23 +65,21 @@ export class GeneradorContratosComponent {
     });
   }
 
-
   mayorDeEdadValidator(edadMinima: number) {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const fechaNacimiento = new Date(control.value);
-    if (isNaN(fechaNacimiento.getTime())) return null; // No es una fecha válida
+    return (control: AbstractControl): ValidationErrors | null => {
+      const fechaNacimiento = new Date(control.value);
+      if (isNaN(fechaNacimiento.getTime())) return null; // No es una fecha válida
 
-    const hoy = new Date();
-    const fechaLimite = new Date(
-      hoy.getFullYear() - edadMinima,
-      hoy.getMonth(),
-      hoy.getDate()
-    );
+      const hoy = new Date();
+      const fechaLimite = new Date(
+        hoy.getFullYear() - edadMinima,
+        hoy.getMonth(),
+        hoy.getDate()
+      );
 
-    return fechaNacimiento <= fechaLimite ? null : { menorDeEdad: true };
-  };
-}
-
+      return fechaNacimiento <= fechaLimite ? null : { menorDeEdad: true };
+    };
+  }
 
   generarContrato() {
     const {
@@ -119,11 +120,24 @@ Firma de la Financiera: _______________________
   `;
   }
 
-  async descargarContrato() {
+  async descargarContratoDoc() {
     const blob = new Blob([this.contratoGenerado], {
       type: 'text/plain;charset=utf-8',
     });
-    const FileSaver = await import('file-saver');
-    FileSaver.saveAs(blob, 'ContratoCredito.doc');
+    const { saveAs } = await import('file-saver');
+    saveAs(blob, 'ContratoCredito.doc');
   }
+
+  /*async descargarContratoPdf() {
+    const { jsPDF } = await import('jspdf');
+    const doc = new jsPDF();
+
+    const texto = this.contratoGenerado;
+
+    const lineas = doc.splitTextToSize(texto, 180); // Ajusta el ancho del texto
+    doc.setFontSize(12);
+    doc.text(lineas, 10, 10); // Posición inicial
+
+    doc.save('ContratoCredito.pdf');
+  }*/
 }
