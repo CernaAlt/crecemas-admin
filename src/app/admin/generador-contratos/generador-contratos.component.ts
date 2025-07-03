@@ -120,20 +120,33 @@ Firma de la Financiera: _______________________
   `;
   }
 
-  async descargarContratoDoc() {
-  if (typeof window === 'undefined') {
-    console.warn('La descarga solo puede ejecutarse en el navegador.');
-    return;
+  /*async descargarContratoDoc() {
+    if (typeof window === 'undefined') {
+      console.warn('La descarga solo puede ejecutarse en el navegador.');
+      return;
+    }
+
+    const blob = new Blob([this.contratoGenerado], {
+      type: 'text/plain;charset=utf-8',
+    });
+
+    const { saveAs } = await import('file-saver');
+    saveAs(blob, 'ContratoCredito.doc');
+  }*/
+ 
+  descargarContratoDocAlternativo() {
+    const blob = new Blob([this.contratoGenerado], {
+      type: 'text/plain;charset=utf-8',
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'ContratoCredito.doc';
+    link.click();
+
+    window.URL.revokeObjectURL(url);
   }
-
-  const blob = new Blob([this.contratoGenerado], {
-    type: 'text/plain;charset=utf-8',
-  });
-
-  const { saveAs } = await import('file-saver');
-  saveAs(blob, 'ContratoCredito.doc');
-}
-
 
   /*async descargarContratoPdf() {
     const { jsPDF } = await import('jspdf');
