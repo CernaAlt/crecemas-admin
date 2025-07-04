@@ -1,164 +1,197 @@
-<div class="register-container">
-  <h2>Registro para Clientes</h2>
-  <form (ngSubmit)="register()">
-    <h3>Datos de Acceso</h3>
-    <div class="form-group">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        placeholder="Correo electrónico*"
-        name="email"
-        required
-      />
-    </div>
-    <!--Contraseña-->
-    <div class="form-group">
-      <input
-        type="password"
-        [(ngModel)]="password"
-        placeholder="Contraseña*"
-        name="password"
-        required
-      />
-      <small class="text-muted">
-        Debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número
-        y un carácter especial.
-      </small>
-    </div>
-    <div class="form-group">
-      <input
-        type="password"
-        [(ngModel)]="confirmPassword"
-        placeholder="Confirmar contraseña*"
-        name="confirmPassword"
-        required
-      />
-    </div>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white dark:bg-gray-900 border border-green-300 shadow-lg rounded-xl">
+  <form (ngSubmit)="register()" class="space-y-6">
 
-    <h3>Datos Personales</h3>
+    <h2 class="text-2xl font-semibold text-green-800 dark:text-green-200 text-center">Registro para Clientes</h2>
 
-    <div class="form-row">
-      <!-- DNI o Pasaporte -->
-      <!-- Selección de tipo de documento -->
-      <div class="form-group">
-        <label for="tipoDocumento">Tipo de documento</label>
-        <select
-          id="tipoDocumento"
-          [(ngModel)]="tipoDocumento"
-          name="tipoDocumento"
+    <!-- Sección de Acceso -->
+    <div>
+      <h3 class="text-lg font-semibold text-green-700 dark:text-green-100 mb-2">Datos de Acceso</h3>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Correo electrónico*"
           required
-        >
-          <option value="dni">DNI</option>
-          <option value="pasaporte">Pasaporte</option>
-        </select>
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+        />
       </div>
 
-      <!-- Campo de DNI o Pasaporte -->
-      <!-- Campo de DNI o Pasaporte -->
-      <div class="form-group">
+      <!-- Contraseña -->
+      <div class="mb-2">
         <input
-          type="text"
-          [(ngModel)]="dni"
-          placeholder="DNI o Pasaporte*"
-          name="dni"
-          maxlength="12"
-          (input)="validarDni()"
-          (keypress)="restringirEntrada($event)"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Contraseña*"
           required
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
-        <small class="text-danger" *ngIf="dniError">
-          {{ dniError }}
-        </small>
-        <small class="text-muted" *ngIf="!dniError">
-          {{
-            tipoDocumento === "dni"
-              ? "DNI: exactamente 8 dígitos numéricos."
-              : "Pasaporte: 6 a 12 caracteres alfanuméricos."
-          }}
+        <small class="text-sm text-gray-600 dark:text-gray-400">
+          Mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.
         </small>
       </div>
 
-      <!-- Nombre -->
-      <div class="form-group">
+      <!-- Confirmar contraseña -->
+      <div>
         <input
-          type="text"
-          [(ngModel)]="nombre"
-          placeholder="Nombre*"
-          name="nombre"
+          type="password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="Confirmar contraseña*"
           required
-        />
-      </div>
-
-      <!-- Apellido -->
-      <div class="form-group">
-        <input
-          type="text"
-          [(ngModel)]="apellido"
-          placeholder="Apellido*"
-          name="apellido"
-          required
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Fecha de Nacimiento</label>
-        <input
-          type="date"
-          [(ngModel)]="fecha_nacimiento"
-          name="fecha_nacimiento"
-          [max]="fechaMaxima"
-          required
-        />
-        <small class="text-muted">Debes ser mayor de 18 años.</small>
-      </div>
+    <!-- Sección de Datos Personales -->
+    <div>
+      <h3 class="text-lg font-semibold text-green-700 dark:text-green-100 mb-2">Datos Personales</h3>
 
-      <div class="form-group">
-        <label>Género*</label>
-        <select [(ngModel)]="genero" name="genero" required>
-          <option value="masculino">Masculino</option>
-          <option value="femenino">Femenino</option>
-          <option value="otro">Otro</option>
-        </select>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Tipo de documento -->
+        <div>
+          <label class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1">Tipo de Documento</label>
+          <select
+            [(ngModel)]="tipoDocumento"
+            name="tipoDocumento"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            <option value="dni">DNI</option>
+            <option value="pasaporte">Pasaporte</option>
+          </select>
+        </div>
+
+        <!-- DNI/Pasaporte -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="dni"
+            name="dni"
+            placeholder="DNI o Pasaporte*"
+            maxlength="12"
+            (input)="validarDni()"
+            (keypress)="restringirEntrada($event)"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <small class="text-sm text-red-500" *ngIf="dniError">{{ dniError }}</small>
+          <small class="text-sm text-gray-600 dark:text-gray-400" *ngIf="!dniError">
+            {{
+              tipoDocumento === 'dni'
+                ? 'DNI: exactamente 8 dígitos numéricos.'
+                : 'Pasaporte: 6 a 12 caracteres alfanuméricos.'
+            }}
+          </small>
+        </div>
+
+        <!-- Nombre -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="nombre"
+            name="nombre"
+            placeholder="Nombre*"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+        </div>
+
+        <!-- Apellido -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="apellido"
+            name="apellido"
+            placeholder="Apellido*"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <div>
+          <label class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1">Fecha de nacimiento</label>
+          <input
+            type="date"
+            [(ngModel)]="fecha_nacimiento"
+            name="fecha_nacimiento"
+            [max]="fechaMaxima"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <small class="text-sm text-gray-600 dark:text-gray-400">Debes ser mayor de 18 años.</small>
+        </div>
+
+        <!-- Género -->
+        <div>
+          <label class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1">Género*</label>
+          <select
+            [(ngModel)]="genero"
+            name="genero"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <!-- Teléfono -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="telefono_movil"
+            name="telefono_movil"
+            placeholder="Teléfono Móvil*"
+            maxlength="9"
+            (input)="onTelefonoInput($event)"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <small class="text-sm text-gray-600 dark:text-gray-400">Debe contener 9 dígitos numéricos.</small>
+        </div>
+
+        <!-- Ciudad -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="ciudad"
+            name="ciudad"
+            placeholder="Ciudad*"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+        </div>
+
+        <!-- País -->
+        <div>
+          <input
+            type="text"
+            [(ngModel)]="pais"
+            name="pais"
+            placeholder="País*"
+            required
+            class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+        </div>
       </div>
     </div>
 
-    <div class="form-row">
-      <!--Telefono-->
-      <div class="form-group">
-        <input
-          type="text"
-          [(ngModel)]="telefono_movil"
-          placeholder="Teléfono Móvil*"
-          name="telefono_movil"
-          maxlength="9"
-          (input)="onTelefonoInput($event)"
-          required
-        />
-        <small class="text-muted">Debe contener 9 dígitos numéricos.</small>
-      </div>
-
-      <div class="form-group">
-        <input
-          type="text"
-          [(ngModel)]="ciudad"
-          placeholder="Ciudad*"
-          name="ciudad"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          [(ngModel)]="pais"
-          placeholder="País*"
-          name="pais"
-          required
-        />
-      </div>
+    <!-- Botón de registro -->
+    <div class="pt-4">
+      <button
+        type="submit"
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-md shadow transition"
+      >
+        Registrarse
+      </button>
     </div>
-
-    <button type="submit">Registrarse</button>
   </form>
 </div>

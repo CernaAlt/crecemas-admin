@@ -35,23 +35,33 @@
         <tr
           *ngFor="let reservation of reservations"
           class="hover:bg-green-50 dark:hover:bg-green-800 transition duration-150"
-          [ngClass]="{ 'bg-green-50': reservation.atendido }"
         >
+          <!-- Fecha -->
           <td class="px-4 py-2 text-green-900 dark:text-green-100">
             {{ formatDate(reservation.created_at) }}
           </td>
+
+          <!-- Apellidos -->
           <td class="px-4 py-2 text-green-900 dark:text-green-100">
             {{ reservation.lastName }}
           </td>
+
+          <!-- DNI -->
           <td class="px-4 py-2 text-green-900 dark:text-green-100">
             {{ reservation.DNI }}
           </td>
+
+          <!-- Teléfono -->
           <td class="px-4 py-2 text-green-900 dark:text-green-100">
             {{ reservation.phone }}
           </td>
+
+          <!-- Tipo -->
           <td class="px-4 py-2 text-green-900 dark:text-green-100">
             {{ reservation.typeReason }}
           </td>
+
+          <!-- Detalle -->
           <td
             class="px-4 py-2 text-amber-700 dark:text-amber-100 italic max-w-xs truncate"
             title="{{ reservation.detailReason }}"
@@ -59,7 +69,7 @@
             {{ reservation.detailReason }}
           </td>
 
-
+          <!-- Estado -->
           <td class="px-4 py-2">
             <span
               class="inline-block px-2 py-1 text-xs font-semibold rounded"
@@ -73,7 +83,9 @@
               {{ reservation.atendido ? "Atendido" : "Pendiente" }}
             </span>
           </td>
-          <td class="px-4 py-2 flex gap-2">
+
+          <!-- Acciones -->
+          <td class="px-4 py-2 flex flex-wrap gap-2">
             <button
               (click)="toggleAttended(reservation)"
               [ngClass]="
@@ -81,7 +93,7 @@
                   ? 'bg-yellow-500 hover:bg-yellow-600'
                   : 'bg-green-500 hover:bg-green-600'
               "
-              class="text-white px-3 py-1 text-xs rounded transition"
+              class="text-white px-3 py-1 text-xs rounded shadow transition"
             >
               {{
                 reservation.atendido
@@ -92,7 +104,7 @@
 
             <button
               (click)="eliminarReserva(reservation)"
-              class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded transition"
+              class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded shadow transition"
             >
               Eliminar
             </button>

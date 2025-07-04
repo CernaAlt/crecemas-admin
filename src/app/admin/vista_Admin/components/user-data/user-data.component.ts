@@ -24,6 +24,8 @@ export class UserDataComponent {
   usuarioSeleccionado: any = {};
   modoEdicion: boolean = false;
 
+  emailUsuarioLogueado: string = '';
+
   //Roles
   roles: { id: string; nombre: string }[] = [];
 
@@ -33,6 +35,7 @@ export class UserDataComponent {
   constructor(
     private usuarioService: UsuariosService,
     private rolesService: RolesService,
+    private authService: AuthService,
     @Inject(Router) private router: Router
   ) {}
 
@@ -58,6 +61,15 @@ export class UserDataComponent {
   }
 
   async ngOnInit() {
+    const { user, error } = await this.authService.getCompleteUserData();
+
+    if (error || !user) {
+      console.error('Error al obtener datos del usuario:', error);
+      return;
+    }
+
+    this.emailUsuarioLogueado = user.email;
+
     await this.cargarUsuarios();
     this.cargarRoles();
   }
@@ -74,7 +86,11 @@ export class UserDataComponent {
     try {
       await this.usuarioService.cargarUsuarios();
       this.usuarioService.usuarios$.subscribe((usuarios) => {
-        this.usuarios = usuarios; // ✅ Aquí ya no se asigna a usuarioSeleccionado
+        // ✅ Aquí ya no se asigna a usuarioSeleccionado
+        // 3. Filtrar para excluir el usuario logueado
+        this.usuarios = usuarios.filter(
+          (usuario) => usuario.email !== this.emailUsuarioLogueado
+        );
         this.loading = false;
       });
     } catch (error) {

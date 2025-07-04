@@ -187,7 +187,14 @@ export class AuthService {
       // 2. Obtener datos adicionales de public.usuarios
       const { data: userData, error: userError } = await supabase
         .from('usuarios')
-        .select('*')
+        .select(
+          `
+    *,
+    roles:rol_id (
+      nombre
+    )
+  `
+        )
         .eq('auth_user_id', authUser.id)
         .single();
 

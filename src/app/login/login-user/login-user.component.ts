@@ -3,10 +3,11 @@ import { AuthService } from '../../services/auth/auth.service';
 import { FormsModule } from '@angular/forms';
 import { supabase } from '../../supabase/supabase-client';
 import { RouterModule } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-user',
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, NgIf],
   templateUrl: './login-user.component.html',
   styleUrl: './login-user.component.css',
 })
@@ -29,8 +30,7 @@ export class LoginUserComponent {
         alert('❌ Error al iniciar sesión: ' + error.message);
         return;
       }
-
-  
+      
       const userId = data.user?.id;
 
       // 🔎 Consultar estado del usuario
