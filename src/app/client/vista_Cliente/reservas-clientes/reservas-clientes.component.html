@@ -1,121 +1,187 @@
-<div class="my-5 max-w-3xl mx-auto px-4 py-6 bg-white dark:bg-gray-800 border border-green-300 dark:border-green-700 rounded-lg shadow">
+<div
+  class="my-5 max-w-3xl mx-auto px-4 py-6 bg-white dark:bg-gray-800 border border-green-300 dark:border-green-700 rounded-lg shadow"
+>
   <div class="mb-6">
-    <h2 class="text-2xl font-bold text-green-700 dark:text-white">Reserva de Asesoría Crediticia</h2>
-    <p class="text-gray-600 dark:text-gray-300">Complete el formulario para solicitar una asesoría en nuestras instalaciones</p>
+    <h2 class="text-2xl font-bold text-green-700 dark:text-white">
+      Reserva de Asesoría Crediticia
+    </h2>
+    <p class="text-gray-600 dark:text-gray-300">
+      Complete el formulario para solicitar una asesoría en nuestras
+      instalaciones
+    </p>
   </div>
 
-  <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <!-- Nombres y Apellidos -->
-    <div>
-      <label for="lastName" class="block font-medium text-gray-800 dark:text-white">Nombres y Apellidos</label>
-      <input
-        type="text"
-        id="lastName"
-        formControlName="LastName"
-        class="mt-1 w-full rounded border px-3 py-2 text-gray-900 dark:text-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        [ngClass]="{ 'border-red-500': f['LastName'].invalid && f['LastName'].touched }"
-        placeholder="Ingrese sus nombres y apellidos"
-      />
-      <div class="text-red-500 text-sm mt-1" *ngIf="f['LastName'].touched">
-        <span *ngIf="f['LastName'].errors?.['required']">Los nombres y apellidos son obligatorios.</span>
-        <span *ngIf="f['LastName'].errors?.['minlength']">Ingrese al menos 2 caracteres.</span>
-      </div>
-    </div>
+  <div
+    class="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-green-300 max-w-2xl mx-auto mt-6"
+  >
+    <h2 class="text-lg font-semibold text-green-800 dark:text-green-200 mb-4">
+      Solicitud de Asesoría
+    </h2>
 
-    <!-- Tipo de Asesoría -->
-    <div>
-      <label for="typeReason" class="block font-medium text-gray-800 dark:text-white">Tipo de Asesoría</label>
-      <select
-        id="typeReason"
-        formControlName="typeReason"
-        class="mt-1 w-full rounded border px-3 py-2 text-gray-900 dark:text-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        [ngClass]="{ 'border-red-500': f['typeReason'].invalid && f['typeReason'].touched }"
-      >
-        <option value="">Seleccione un tipo</option>
-        <option *ngFor="let reason of reasonTypes" [value]="reason">{{ reason }}</option>
-      </select>
-      <div class="text-red-500 text-sm mt-1" *ngIf="f['typeReason'].touched">
-        <span *ngIf="f['typeReason'].errors?.['required']">Seleccione un tipo de asesoría.</span>
+    <form
+      [formGroup]="reservationForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-5"
+    >
+      <!-- Nombres y Apellidos -->
+      <div>
+        <label
+          class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1"
+        >
+          Nombres y Apellidos
+        </label>
+        <input
+          formControlName="LastName"
+          placeholder="Ingrese sus nombres y apellidos"
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          [ngClass]="{
+            'border-red-500': f['LastName'].invalid && f['LastName'].touched
+          }"
+        />
+        <div class="text-red-500 text-sm mt-1" *ngIf="f['LastName'].touched">
+          <div *ngIf="f['LastName'].errors?.['required']">
+            Campo obligatorio.
+          </div>
+          <div *ngIf="f['LastName'].errors?.['minlength']">
+            Mínimo 2 caracteres.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Detalle de la Consulta -->
-    <div>
-      <label for="detailReason" class="block font-medium text-gray-800 dark:text-white">Detalle de la consulta</label>
-      <textarea
-        id="detailReason"
-        formControlName="detailReason"
-        rows="4"
-        class="mt-1 w-full rounded border px-3 py-2 text-gray-900 dark:text-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        [ngClass]="{ 'border-red-500': f['detailReason'].invalid && f['detailReason'].touched }"
-        placeholder="Describa brevemente el motivo de su consulta"
-      ></textarea>
-      <div class="text-red-500 text-sm mt-1" *ngIf="f['detailReason'].touched">
-        <span *ngIf="f['detailReason'].errors?.['required']">El detalle es obligatorio.</span>
+      <!-- Tipo de Asesoría -->
+      <div>
+        <label
+          class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1"
+        >
+          Tipo de Asesoría
+        </label>
+        <select
+          formControlName="typeReason"
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          [ngClass]="{
+            'border-red-500': f['typeReason'].invalid && f['typeReason'].touched
+          }"
+        >
+          <option value="">Seleccione un tipo</option>
+          <option *ngFor="let reason of reasonTypes" [value]="reason">
+            {{ reason }}
+          </option>
+        </select>
+        <div class="text-red-500 text-sm mt-1" *ngIf="f['typeReason'].touched">
+          <div *ngIf="f['typeReason'].errors?.['required']">
+            Campo obligatorio.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- DNI -->
-    <div>
-      <label for="DNI" class="block font-medium text-gray-800 dark:text-white">DNI</label>
-      <input
-        maxlength="8"
-        type="text"
-        id="DNI"
-        formControlName="DNI"
-        (keypress)="onlyNumbers($event)"
-        (paste)="preventPaste($event)"
-        class="mt-1 w-full rounded border px-3 py-2 text-gray-900 dark:text-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        [ngClass]="{ 'border-red-500': f['DNI'].invalid && f['DNI'].touched }"
-        placeholder="Ingrese su DNI"
-      />
-      <div class="text-red-500 text-sm mt-1" *ngIf="f['DNI'].touched">
-        <span *ngIf="f['DNI'].errors?.['required']">El DNI es obligatorio.</span>
-        <span *ngIf="f['DNI'].errors?.['pattern']">El DNI debe contener exactamente 8 dígitos.</span>
+      <!-- Detalle de la Consulta -->
+      <div>
+        <label
+          class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1"
+        >
+          Detalle de la consulta
+        </label>
+        <textarea
+          formControlName="detailReason"
+          rows="4"
+          placeholder="Describa brevemente el motivo de su consulta"
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          [ngClass]="{
+            'border-red-500':
+              f['detailReason'].invalid && f['detailReason'].touched
+          }"
+        ></textarea>
+        <div
+          class="text-red-500 text-sm mt-1"
+          *ngIf="f['detailReason'].touched"
+        >
+          <div *ngIf="f['detailReason'].errors?.['required']">
+            Campo obligatorio.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Teléfono -->
-    <div>
-      <label for="phone" class="block font-medium text-gray-800 dark:text-white">Teléfono</label>
-      <input
-        type="tel"
-        id="phone"
-        formControlName="Phone"
-        maxlength="9"
-        (keypress)="onlyNumbers($event)"
-        (paste)="preventPaste($event)"
-        class="mt-1 w-full rounded border px-3 py-2 text-gray-900 dark:text-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        [ngClass]="{ 'border-red-500': f['Phone'].invalid && f['Phone'].touched }"
-        placeholder="Ingrese su número telefónico (9 dígitos)"
-      />
-      <div class="text-red-500 text-sm mt-1" *ngIf="f['Phone'].touched">
-        <span *ngIf="f['Phone'].errors?.['required']">El teléfono es obligatorio.</span>
-        <span *ngIf="f['Phone'].errors?.['pattern']">El teléfono debe contener exactamente 9 dígitos.</span>
+      <!-- DNI -->
+      <div>
+        <label
+          class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1"
+        >
+          DNI
+        </label>
+        <input
+          formControlName="DNI"
+          type="text"
+          maxlength="8"
+          placeholder="Ingrese su DNI"
+          (keypress)="onlyNumbers($event)"
+          (paste)="preventPaste($event)"
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          [ngClass]="{ 'border-red-500': f['DNI'].invalid && f['DNI'].touched }"
+        />
+        <div class="text-red-500 text-sm mt-1" *ngIf="f['DNI'].touched">
+          <div *ngIf="f['DNI'].errors?.['required']">Campo obligatorio.</div>
+          <div *ngIf="f['DNI'].errors?.['pattern']">
+            Debe tener 8 dígitos numéricos.
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Botones -->
-    <div class="flex justify-end gap-4 mt-6">
-      <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700" [disabled]="isSubmitting">
-        {{ isSubmitting ? 'Enviando...' : 'Enviar Solicitud' }}
-      </button>
-      <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400" (click)="resetForm()" [disabled]="isSubmitting">
-        Limpiar
-      </button>
-    </div>
+      <!-- Teléfono -->
+      <div>
+        <label
+          class="block text-sm font-medium text-green-800 dark:text-green-100 mb-1"
+        >
+          Teléfono
+        </label>
+        <input
+          formControlName="Phone"
+          type="tel"
+          maxlength="9"
+          placeholder="Ingrese su número telefónico"
+          (keypress)="onlyNumbers($event)"
+          (paste)="preventPaste($event)"
+          class="w-full border border-green-300 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          [ngClass]="{
+            'border-red-500': f['Phone'].invalid && f['Phone'].touched
+          }"
+        />
+        <div class="text-red-500 text-sm mt-1" *ngIf="f['Phone'].touched">
+          <div *ngIf="f['Phone'].errors?.['required']">Campo obligatorio.</div>
+          <div *ngIf="f['Phone'].errors?.['pattern']">
+            Debe tener 9 dígitos numéricos.
+          </div>
+        </div>
+      </div>
 
-    <!-- Mensajes -->
-    <div class="mt-4 text-sm">
-      <div class="text-green-600" *ngIf="submitSuccess">
-        ✅ Su solicitud ha sido registrada correctamente. Nos comunicaremos con usted a la brevedad.
+      <!-- Botones -->
+      <div class="flex justify-end gap-4 mt-6">
+        <button
+          type="submit"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md shadow transition"
+          [disabled]="isSubmitting"
+        >
+          {{ isSubmitting ? "Enviando..." : "Enviar Solicitud" }}
+        </button>
+        <button
+          type="button"
+          (click)="resetForm()"
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-2 rounded-md transition"
+          [disabled]="isSubmitting"
+        >
+          Limpiar
+        </button>
       </div>
-      <div class="text-red-600" *ngIf="submitError">
-        ❌ {{ submitError }}
+
+      <!-- Mensajes -->
+      <div class="mt-4 text-sm">
+        <div class="text-green-600" *ngIf="submitSuccess">
+          ✅ Su solicitud ha sido registrada correctamente.
+        </div>
+        <div class="text-red-600" *ngIf="submitError">❌ {{ submitError }}</div>
+        <div class="text-yellow-600" *ngIf="cooldownError">
+          ⚠️ Ya tiene una solicitud en las últimas 4 horas.
+        </div>
       </div>
-      <div class="text-yellow-600" *ngIf="cooldownError">
-        ⚠️ Ya tiene una solicitud registrada en las últimas 4 horas. Por favor, intente más tarde.
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>

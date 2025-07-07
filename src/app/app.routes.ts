@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'solicitud-creditos', component: ReservasClientesComponent },
   { path: 'register', component: RegisterUserComponent },
   { path: 'usuarios', component: UserDataComponent },
-  { path: 'reservaciones', component: AdminReservationsComponent },
+  //{ path: 'reservaciones', component: AdminReservationsComponent },
 
   { path: 'prestamos', component: PrestamosListComponent },
 
